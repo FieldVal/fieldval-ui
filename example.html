@@ -1,0 +1,100 @@
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script src="bower_components/fieldval/fieldval.min.js"></script>
+<script src="bower_components/fieldval-basicval/fieldval-basicval.min.js"></script>
+<script src="fieldval-ui.min.js"></script>
+
+<!-- Apply the "minimal" theme to FieldVal-UI -->
+<link rel="stylesheet" type="text/css" href="themes/minimal.css">
+<script src="themes/minimal.js"></script>
+
+<style type="text/css">
+	body{
+		font-family: "Helvetica";
+	}
+</style>
+
+<script>
+$(document).ready(function(){
+	var form = new Form();
+	var output;
+
+	//values and displayed names
+	var gender_choices = [
+		["m","Male"],
+		["f","Female"]
+	];
+
+	Field.prototype.show_error = function(){
+		var field = this;
+		field.error_message.slideDown();
+	}
+
+	form.add_field("first_name", new TextField("First Name"));
+	form.add_field("last_name", new TextField("Last Name"));
+	form.add_field("date_of_birth", new DateField("Date of Birth"));
+	form.add_field("gender", new ChoiceField("Gender",gender_choices));
+	form.add_field("email", new TextField("Email"));
+	form.add_field("bio", new TextField("Bio","textarea"));
+
+	form.add_field("address", new ObjectField("Address"));
+	form.fields.address.add_field("house_number", new TextField("House Number","number"));
+	form.fields.address.add_field("line_1", new TextField("Line 1"));
+	form.fields.address.add_field("line_2", new TextField("Line 2"));
+	form.fields.address.add_field("line_3", new TextField("Line 3"));
+
+	$("body").append(
+		form.element.append(
+			$("<button />").text("Submit")
+		),
+		output = $("<pre />")
+	)
+
+	form.val({
+		first_name: "Marcus",
+		last_name: "Longmuir",
+		date_of_birth: "1992-05-11",
+		gender: "f",
+		address: {
+			line_1: "Flat 47"
+		}
+	})
+
+	form.on_submit(function(object){
+
+		var validator = new Validator(object);
+		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5));
+		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
+		var date_of_birth = validator.get("date_of_birth",BasicVal.string(true));
+		var gender = validator.get("gender",BasicVal.one_of(gender_choices));
+		var email = validator.get("email",BasicVal.string(true), BasicVal.email());
+		var bio = validator.get("bio",BasicVal.string(true));
+		
+
+		var address = validator.get("address",BasicVal.object(true));
+		if(address){
+
+			var address_validator = new Validator(address);
+			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(0));
+			address_validator.get("line_1", BasicVal.string(true), BasicVal.min_length(5));
+			address_validator.get("line_2", BasicVal.string(true), BasicVal.min_length(5));
+			address_validator.get("line_3", BasicVal.string(true), BasicVal.min_length(5));
+			var address_error = address_validator.end();
+			if(address_error){
+				validator.invalid("address",address_error);
+			}
+		}
+
+		var error = validator.end();
+
+		if(error){
+			console.log(error);
+			form.error(error)
+			output.text('"error": '+JSON.stringify(error,null,4));
+		} else {
+			form.clear_errors();
+			output.text('"object": '+JSON.stringify(object,null,4));
+		}
+	})
+})
+</script>

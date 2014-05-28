@@ -1,0 +1,20 @@
+@import "TextField/TextField.subless";
+@import "DateField/DateField.subless";
+@import "ChoiceField/ChoiceField.subless";
+
+.field{
+
+	position: relative;
+
+	.error{
+		text-align: center;
+		font-size: 13px;
+		line-height: 22px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		background-color: #D03929;
+		color: white;
+		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+}

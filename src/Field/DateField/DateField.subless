@@ -1,0 +1,18 @@
+.date_field{
+	.date_input{
+		.sa_text_input;
+
+		&.day_input{
+			width: 26%;
+			margin-right: 4%;
+		}
+		&.month_input{
+			width: 26%;
+			margin-right: 4%;
+		}
+		&.year_input{
+			width: 40%;
+		}
+		display: inline-block;
+	}
+}
