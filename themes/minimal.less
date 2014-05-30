@@ -2,6 +2,14 @@
 	width: auto;
 	display: block;
 
+	>.error_message{
+		background-color: #AA0000;
+		color: white;
+		font-size: 14px;
+		display: inline-block;
+		padding: 5px;
+	}
+
 	.field_container{
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -9,40 +17,42 @@
 
 		&.field_error{
 			>.field_title{
-				color: red;
+				color: #AA0000;
 			}
 			>.field{
 				>.input_holder{
 					>input{
-						border: 1px solid red;
+						border: 1px solid #AA0000;
 					}
 					>textarea{
-						border: 1px solid red;
+						border: 1px solid #AA0000;
 					}
 				}
 			}
 		}
 
-		.field_title{
-			font-size: 15px;
+		>.field_title{
+			font-size: 16px;
 			display: inline-block;
 			padding-right: 5px;
 		}
 
-		.error_message{
-			background-color: red;
-			color: white;
-			font-size: 12px;
-			display: inline-block;
-			padding: 5px;
-		}
-
-		.field{
+		>.field{
 			margin-top: 5px;
+
+			>.error_message{
+				background-color: #AA0000;
+				color: white;
+				font-size: 14px;
+				display: inline-block;
+				padding: 5px;
+			}
 
 			>.input_holder{
 				box-sizing: border-box;
 				>input{
+					border-radius: 0px;
+					-webkit-border-radius: 0px;
 					padding-left: 5px;
 					box-sizing: border-box;
 					margin: 0px;
@@ -51,12 +61,23 @@
 					border: 1px solid #999;
 				}
 				>textarea{
+					border-radius: 0px;
+					-webkit-border-radius: 0px;
 					margin: 0px;
 					resize: none;
 					min-height: 100px;
 					box-sizing: border-box;
+					border: 1px solid #999;
 				}
 			}
+		}
+	}
+}
+
+.display_field{
+	>.input_holder{
+		>div{
+			font-size: 14px;
 		}
 	}
 }

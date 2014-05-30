@@ -104,9 +104,24 @@ Field.prototype.hide_error = function(){
 Field.prototype.error = function(error) {
     var field = this;
 
-    if (error != null) {
+    if (error) {
         field.error_message.empty();
-        field.error_message.text(error.error_message);
+        if(error.error===4){
+            var error_list = $("<ul />");
+            for(var i = 0; i < error.errors.length; i++){
+                var sub_error = error.errors[i];
+                error_list.append(
+                    $("<li />").text(sub_error.error_message)
+                )
+            }
+            field.error_message.append(
+                error_list
+            );
+        } else {
+            field.error_message.append(
+                $("<span />").text(error.error_message)
+            )
+        }
         if(field.container){
             field.container.addClass("field_error");
         }

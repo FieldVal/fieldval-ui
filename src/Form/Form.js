@@ -1,7 +1,9 @@
 function Form(fields){
 	var form = this;
 
-	form.element = $("<form />").addClass("fieldval_ui_form").on("submit",function(event){
+	form.element = $("<form />").addClass("fieldval_ui_form").append(
+		form.error_message = $("<div />").addClass("error_message").hide()
+	).on("submit",function(event){
         event.preventDefault();
         form.submit();
 	});
@@ -50,11 +52,10 @@ Form.prototype.clear_errors = function(){
 	form.error(null);
 }
 
-Form.prototype.error = function(error) {
-    var form = this;
+Form.prototype.fields_error = function(error){
+	var form = this;
 
-    if(error){
-
+	if(error){
 	    var invalid_fields = error.invalid || {};
 	    var missing_fields = error.missing || {};
 	    var unrecognized_fields = error.unrecognized || {};
@@ -72,6 +73,79 @@ Form.prototype.error = function(error) {
 			field.error(null);
 		}
 	}
+}
+
+Form.prototype.show_error = function(){
+    var form = this;
+    form.error_message.show();
+}
+
+Form.prototype.hide_error = function(){
+    var form = this;
+    form.error_message.hide();
+}
+
+Form.prototype.error = function(error) {
+    var form = this;
+
+    form.error_message.empty();
+
+    if(error){
+
+    	if(error.error===undefined){
+    		console.error("No error provided");
+    		return;
+    	}
+
+    	if(error.error===0){
+        	form.fields_error(error);
+        	form.hide_error();
+        } else {
+        	if(error.error===4){
+	            var error_list = $("<ul />");
+	            for(var i = 0; i < error.errors.length; i++){
+	                var sub_error = error.errors[i];
+	                if(sub_error.error===0){
+	                	form.fields_error(sub_error);
+	                } else {
+		                error_list.append(
+		                    $("<li />").text(sub_error.error_message)
+		                )
+		            }
+	            }
+	            form.error_message.append(
+	                error_list
+	            );
+	        } else {
+	        	form.error_message.append(
+	                $("<span />").text(error.error_message)
+	            )
+	        }
+	        form.show_error();
+		}
+    } else {
+    	//Clear error
+    	form.fields_error(null);
+    	form.hide_error();
+    }
+}
+
+Form.prototype.disable = function(){
+	var form = this;
+
+	for(var i in form.fields){
+		var field = form.fields[i];
+		field.disable();
+	}
+}
+
+Form.prototype.enable = function(){
+	var form = this;
+
+	for(var i in form.fields){
+		var field = form.fields[i];
+		field.enable();
+	}	
 }
 
 Form.prototype.val = function(set_val){

@@ -72,16 +72,15 @@ TextField.prototype.blur = function() {
     return field;
 }
 
+TextField.numeric_regex = /^\d+(?:\.\d+)$/;
+
 TextField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         var value = field.input.val();
-        if(field.input_type==="number"){
-            var parsed = parseFloat(value);
-            if(parsed){
-                return parsed;
-            }
+        if(field.input_type==="number" && TextField.numeric_regex.test(value)){
+            return parseFloat(value);
         }
         if(value.length===0){
             return null;
