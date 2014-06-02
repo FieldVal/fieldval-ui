@@ -450,19 +450,32 @@ DisplayField.prototype.change_name = function(name) {
     return field;
 }
 
+DisplayField.replace_line_breaks = function(string){
+    if(typeof string !== 'string'){
+        return string;
+    }
+    var htmls = [];
+    var lines = string.split(/\n/);
+    var tmpDiv = jQuery(document.createElement('div'));
+    for (var i = 0 ; i < lines.length ; i++) {
+        htmls.push(tmpDiv.text(lines[i]).html());
+    }
+    return htmls.join("<br>");
+}
+
 DisplayField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         return field.input.text();
     } else {
-        field.input.text(set_val);
+        field.input.html(DisplayField.replace_line_breaks(set_val));
         return field;
     }
 }
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, choices) {
+function ChoiceField(name, choices, allow_empty) {
     var field = this;
 
     ChoiceField.superConstructor.call(this, name);
@@ -477,6 +490,11 @@ function ChoiceField(name, choices) {
     .appendTo(field.input_holder);
 
     field.choice_values = [];
+
+    if(allow_empty){
+        var option = $("<option />").attr("value",null).text("")
+        field.select.append(option);
+    }
 
     for(var i = 0; i < choices.length; i++){
         var choice = choices[i];
@@ -651,6 +669,57 @@ DateField.prototype.val = function(set_val) {
             field.year_input.val(year);
         }
 
+        return field;
+    }
+}
+fieldval_ui_extend(BooleanField, Field);
+
+function BooleanField(name) {
+    var field = this;
+
+    BooleanField.superConstructor.call(this, name);
+
+    field.element.addClass("choice_field");
+
+    field.input = $("<input type='checkbox' />")
+    .addClass("boolean_input")
+    .on("change",function(){
+        field.did_change()
+    })
+    .appendTo(field.input_holder);
+}
+
+BooleanField.prototype.disable = function() {
+    var field = this;
+    field.input.attr("disabled", "disabled");
+    return field;
+}
+
+BooleanField.prototype.enable = function() {
+    var field = this;
+    field.input.attr("disabled", null);
+    return field;
+}
+
+BooleanField.prototype.focus = function() {
+    var field = this;
+    field.input.focus();
+    return field;
+}
+
+BooleanField.prototype.blur = function() {
+    var field = this;
+    field.input.blur();
+    return field;
+}
+
+BooleanField.prototype.val = function(set_val) {
+    var field = this;
+
+    if (arguments.length===0) {
+        return field.input.is(":checked")
+    } else {
+       	field.input.prop('checked', set_val);
         return field;
     }
 }

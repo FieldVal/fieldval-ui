@@ -35,13 +35,26 @@ DisplayField.prototype.change_name = function(name) {
     return field;
 }
 
+DisplayField.replace_line_breaks = function(string){
+    if(typeof string !== 'string'){
+        return string;
+    }
+    var htmls = [];
+    var lines = string.split(/\n/);
+    var tmpDiv = jQuery(document.createElement('div'));
+    for (var i = 0 ; i < lines.length ; i++) {
+        htmls.push(tmpDiv.text(lines[i]).html());
+    }
+    return htmls.join("<br>");
+}
+
 DisplayField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         return field.input.text();
     } else {
-        field.input.text(set_val);
+        field.input.html(DisplayField.replace_line_breaks(set_val));
         return field;
     }
 }

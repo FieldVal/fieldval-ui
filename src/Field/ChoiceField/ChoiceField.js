@@ -1,6 +1,6 @@
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, choices) {
+function ChoiceField(name, choices, allow_empty) {
     var field = this;
 
     ChoiceField.superConstructor.call(this, name);
@@ -15,6 +15,11 @@ function ChoiceField(name, choices) {
     .appendTo(field.input_holder);
 
     field.choice_values = [];
+
+    if(allow_empty){
+        var option = $("<option />").attr("value",null).text("")
+        field.select.append(option);
+    }
 
     for(var i = 0; i < choices.length; i++){
         var choice = choices[i];

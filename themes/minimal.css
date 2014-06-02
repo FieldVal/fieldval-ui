@@ -1,6 +1,7 @@
 .fieldval_ui_form {
   width: auto;
   display: block;
+  position: relative;
 }
 .fieldval_ui_form > .error_message {
   background-color: #AA0000;
