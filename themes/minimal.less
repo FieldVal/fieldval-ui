@@ -1,0 +1,119 @@
+.fieldval_ui_form{
+	width: auto;
+	display: block;
+	position: relative;
+
+	>.error_message{
+		background-color: #AA0000;
+		color: white;
+		font-size: 14px;
+		display: inline-block;
+		padding: 5px;
+	}
+
+	.field_container{
+		padding-top: 10px;
+		padding-bottom: 10px;
+		box-sizing: border-box;
+
+		&.field_error{
+			>.field_title{
+				color: #AA0000;
+			}
+			>.field{
+				>.input_holder{
+					>input{
+						border: 1px solid #AA0000;
+					}
+					>textarea{
+						border: 1px solid #AA0000;
+					}
+				}
+			}
+		}
+
+		>.field_title{
+			font-size: 16px;
+			display: inline-block;
+			padding-right: 5px;
+		}
+
+		>.field{
+			margin-top: 5px;
+
+			>.error_message{
+				background-color: #AA0000;
+				color: white;
+				font-size: 14px;
+				display: inline-block;
+				padding: 5px;
+			}
+
+			>.input_holder{
+				box-sizing: border-box;
+				>input{
+					border-radius: 0px;
+					-webkit-border-radius: 0px;
+					padding-left: 5px;
+					box-sizing: border-box;
+					margin: 0px;
+					height: 30px;
+					line-height: 30px;
+					border: 1px solid #999;
+				}
+				>textarea{
+					border-radius: 0px;
+					-webkit-border-radius: 0px;
+					margin: 0px;
+					resize: none;
+					min-height: 100px;
+					box-sizing: border-box;
+					border: 1px solid #999;
+				}
+			}
+		}
+	}
+}
+
+.display_field{
+	>.input_holder{
+		>div{
+			font-size: 14px;
+		}
+	}
+}
+
+.text_field{
+	>.input_holder{
+		>textarea.text_input{
+			width: 100%;
+			font-size: 14px;
+		}
+		>input.text_input{
+			width: 100%;
+			font-size: 14px;
+		}
+	}
+}
+
+.date_field{
+	>.input_holder{
+		>.date_input{
+			&.day_input{
+				font-size: 14px;
+				width: 26%;
+				margin-right: 4%;
+			}
+			&.month_input{
+				font-size: 14px;
+				width: 26%;
+				margin-right: 4%;
+			}
+			&.year_input{
+				font-size: 14px;
+				width: 40%;
+			}
+			display: inline-block;
+		}
+	}
+}

@@ -1,0 +1,86 @@
+.fieldval_ui_form {
+  width: auto;
+  display: block;
+  position: relative;
+}
+.fieldval_ui_form > .error_message {
+  background-color: #AA0000;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+}
+.fieldval_ui_form .field_container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+}
+.fieldval_ui_form .field_container.field_error > .field_title {
+  color: #AA0000;
+}
+.fieldval_ui_form .field_container.field_error > .field > .input_holder > input {
+  border: 1px solid #AA0000;
+}
+.fieldval_ui_form .field_container.field_error > .field > .input_holder > textarea {
+  border: 1px solid #AA0000;
+}
+.fieldval_ui_form .field_container > .field_title {
+  font-size: 16px;
+  display: inline-block;
+  padding-right: 5px;
+}
+.fieldval_ui_form .field_container > .field {
+  margin-top: 5px;
+}
+.fieldval_ui_form .field_container > .field > .error_message {
+  background-color: #AA0000;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+}
+.fieldval_ui_form .field_container > .field > .input_holder {
+  box-sizing: border-box;
+}
+.fieldval_ui_form .field_container > .field > .input_holder > input {
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  padding-left: 5px;
+  box-sizing: border-box;
+  margin: 0px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #999;
+}
+.fieldval_ui_form .field_container > .field > .input_holder > textarea {
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  margin: 0px;
+  resize: none;
+  min-height: 100px;
+  box-sizing: border-box;
+  border: 1px solid #999;
+}
+.display_field > .input_holder > div {
+  font-size: 14px;
+}
+.text_field > .input_holder > textarea.text_input {
+  width: 100%;
+}
+.text_field > .input_holder > input.text_input {
+  width: 100%;
+}
+.date_field > .input_holder > .date_input {
+  display: inline-block;
+}
+.date_field > .input_holder > .date_input.day_input {
+  width: 26%;
+  margin-right: 4%;
+}
+.date_field > .input_holder > .date_input.month_input {
+  width: 26%;
+  margin-right: 4%;
+}
+.date_field > .input_holder > .date_input.year_input {
+  width: 40%;
+}
