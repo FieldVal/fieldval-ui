@@ -1,9 +1,9 @@
 fieldval_ui_extend(BooleanField, Field);
 
-function BooleanField(name) {
+function BooleanField(name, properties) {
     var field = this;
 
-    BooleanField.superConstructor.call(this, name);
+    BooleanField.superConstructor.call(this, name, properties);
 
     field.element.addClass("choice_field");
 

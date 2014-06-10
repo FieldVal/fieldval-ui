@@ -1,9 +1,9 @@
 fieldval_ui_extend(ObjectField, Field);
 
-function ObjectField(name) {
+function ObjectField(name, properties) {
     var field = this;
 
-    ObjectField.superConstructor.call(this, name);
+    ObjectField.superConstructor.call(this, name, properties);
 
     field.element.addClass("object_field");
 
@@ -45,9 +45,15 @@ ObjectField.prototype.blur = function() {
 ObjectField.prototype.error = function(error){
 	var field = this;
 
-	ObjectField.superClass.error.call(this,error);
+	Form.prototype.fields_error.call(this,error);
 
-	Form.prototype.error.call(this,error);
+    ObjectField.superClass.error.call(this,error);
+}
+
+ObjectField.prototype.fields_error = function(error){
+    var field = this;
+
+    Form.prototype.fields_error.call(this,error);
 }
 
 

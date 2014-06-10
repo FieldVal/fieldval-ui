@@ -30,15 +30,28 @@ $(document).ready(function(){
 		field.error_message.slideDown();
 	}
 
-	form.add_field("first_name", new TextField("First Name"));
-	form.add_field("last_name", new TextField("Last Name"));
-	form.add_field("date_of_birth", new DateField("Date of Birth"));
-	form.add_field("gender", new ChoiceField("Gender",gender_choices));
+	form.add_field("first_name", new TextField("First Name",{
+		description: "Enter your first name"
+	}));
+	form.add_field("last_name", new TextField("Last Name",{
+		description: "Enter your last name"
+	}));
+	form.add_field("date_of_birth", new DateField("Date of Birth",{
+		description: "Enter your date of birth"
+	}));
+	form.add_field("gender", new ChoiceField("Gender",{
+		description: "Select your gender",
+		choices: gender_choices
+	}));
 	form.add_field("email", new TextField("Email"));
-	form.add_field("bio", new TextField("Bio","textarea"));
+	form.add_field("bio", new TextField("Bio",{
+		type: "textarea"
+	}));
 
 	form.add_field("address", new ObjectField("Address"));
-	form.fields.address.add_field("house_number", new TextField("House Number","number"));
+	form.fields.address.add_field("house_number", new TextField("House Number",{
+		type: "number"
+	}));
 	form.fields.address.add_field("line_1", new TextField("Line 1"));
 	form.fields.address.add_field("line_2", new TextField("Line 2"));
 	form.fields.address.add_field("line_3", new TextField("Line 3"));
@@ -49,16 +62,6 @@ $(document).ready(function(){
 		),
 		output = $("<pre />")
 	)
-
-	form.val({
-		first_name: "Marcus",
-		last_name: "Longmuir",
-		date_of_birth: "1992-05-11",
-		gender: "f",
-		address: {
-			line_1: "Flat 47"
-		}
-	})
 
 	form.on_submit(function(object){
 
