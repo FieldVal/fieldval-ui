@@ -1,5 +1,7 @@
-function Field(name) {
+function Field(name, properties) {
     var field = this;
+
+    field.properties = properties || {};
 
     field.name = name;
 
@@ -32,6 +34,10 @@ Field.prototype.layout = function(){
             field.error_message
         )
     )
+
+    if(field.properties.description){
+        $("<div />").addClass("field_description").text(" - "+field.properties.description).insertAfter(field.title);
+    }
 }
 
 Field.prototype.on_change = function(callback){

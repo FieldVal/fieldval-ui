@@ -26,6 +26,14 @@
 }
 .fieldval_ui_form .field_container > .field_title {
   font-size: 16px;
+  line-height: 16px;
+  display: inline-block;
+  padding-right: 5px;
+}
+.fieldval_ui_form .field_container > .field_description {
+  font-size: 14px;
+  line-height: 16px;
+  color: gray;
   display: inline-block;
   padding-right: 5px;
 }
@@ -61,26 +69,34 @@
   box-sizing: border-box;
   border: 1px solid #999;
 }
+.object_field > .input_holder {
+  margin-left: 10px;
+}
 .display_field > .input_holder > div {
   font-size: 14px;
 }
 .text_field > .input_holder > textarea.text_input {
   width: 100%;
+  font-size: 14px;
 }
 .text_field > .input_holder > input.text_input {
   width: 100%;
+  font-size: 14px;
 }
 .date_field > .input_holder > .date_input {
   display: inline-block;
 }
 .date_field > .input_holder > .date_input.day_input {
+  font-size: 14px;
   width: 26%;
   margin-right: 4%;
 }
 .date_field > .input_holder > .date_input.month_input {
+  font-size: 14px;
   width: 26%;
   margin-right: 4%;
 }
 .date_field > .input_holder > .date_input.year_input {
+  font-size: 14px;
   width: 40%;
 }

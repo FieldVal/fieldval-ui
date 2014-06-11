@@ -1,20 +1,22 @@
 fieldval_ui_extend(TextField, Field);
 
-function TextField(name, input_type) {
+function TextField(name, properties) {
     var field = this;
 
-    field.input_type = input_type || "text";
+    TextField.superConstructor.call(this, name, properties);
 
-    TextField.superConstructor.call(this, name);
+    if(!field.input_type){
+        field.input_type = field.properties.type || "text"
+    }
 
     field.element.addClass("text_field");
 
-    if(input_type==='textarea'){
+    if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(input_type==='text' || input_type==='number' || !input_type) {
+    } else if(field.input_type==='text' || field.input_type==='number') {
         field.input = $("<input type='text' />")
     } else {
-        field.input = $("<input type='"+input_type+"' />")
+        field.input = $("<input type='"+field.input_type+"' />")
     }
     
     field.input.addClass("text_input")
@@ -72,18 +74,18 @@ TextField.prototype.blur = function() {
     return field;
 }
 
-TextField.numeric_regex = /^\d+(?:\.\d+)$/;
+TextField.numeric_regex = /^-?\d+(\.\d+)?$/;
 
 TextField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         var value = field.input.val();
-        if(field.input_type==="number" && TextField.numeric_regex.test(value)){
-            return parseFloat(value);
-        }
         if(value.length===0){
             return null;
+        }
+        if(field.input_type==="number" && TextField.numeric_regex.test(value)){
+            return parseFloat(value);
         }
         return value;
     } else {
@@ -97,5 +99,7 @@ fieldval_ui_extend(PasswordField, TextField);
 function PasswordField(name) {
     var field = this;
 
-    PasswordField.superConstructor.call(this, name, "password");
+    PasswordField.superConstructor.call(this, name, {
+        type: "password"
+    });
 }

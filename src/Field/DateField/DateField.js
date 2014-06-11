@@ -1,11 +1,13 @@
 fieldval_ui_extend(DateField, Field);
 
-function DateField(name, format) {//format is currently unused
+function DateField(name, properties) {//format is currently unused
     var field = this;
 
-    field.format = format;
+    DateField.superConstructor.call(this, name, properties);
 
-    DateField.superConstructor.call(this, name);
+    if(!field.format){
+        field.format = field.properties.format || "YYYY-MM-DD";
+    }
 
     field.element.addClass("date_field");
 

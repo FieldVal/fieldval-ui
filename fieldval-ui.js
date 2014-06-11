@@ -177,8 +177,10 @@ Form.prototype.val = function(set_val){
         return form;
     }
 }
-function Field(name) {
+function Field(name, properties) {
     var field = this;
+
+    field.properties = properties || {};
 
     field.name = name;
 
@@ -211,6 +213,10 @@ Field.prototype.layout = function(){
             field.error_message
         )
     )
+
+    if(field.properties.description){
+        $("<div />").addClass("field_description").text(" - "+field.properties.description).insertAfter(field.title);
+    }
 }
 
 Field.prototype.on_change = function(callback){
@@ -314,21 +320,23 @@ Field.prototype.error = function(error) {
 }
 fieldval_ui_extend(TextField, Field);
 
-function TextField(name, input_type) {
+function TextField(name, properties) {
     var field = this;
 
-    field.input_type = input_type || "text";
+    TextField.superConstructor.call(this, name, properties);
 
-    TextField.superConstructor.call(this, name);
+    if(!field.input_type){
+        field.input_type = field.properties.type || "text"
+    }
 
     field.element.addClass("text_field");
 
-    if(input_type==='textarea'){
+    if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(input_type==='text' || input_type==='number' || !input_type) {
+    } else if(field.input_type==='text' || field.input_type==='number') {
         field.input = $("<input type='text' />")
     } else {
-        field.input = $("<input type='"+input_type+"' />")
+        field.input = $("<input type='"+field.input_type+"' />")
     }
     
     field.input.addClass("text_input")
@@ -386,18 +394,18 @@ TextField.prototype.blur = function() {
     return field;
 }
 
-TextField.numeric_regex = /^\d+(?:\.\d+)$/;
+TextField.numeric_regex = /^-?\d+(\.\d+)?$/;
 
 TextField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         var value = field.input.val();
-        if(field.input_type==="number" && TextField.numeric_regex.test(value)){
-            return parseFloat(value);
-        }
         if(value.length===0){
             return null;
+        }
+        if(field.input_type==="number" && TextField.numeric_regex.test(value)){
+            return parseFloat(value);
         }
         return value;
     } else {
@@ -411,14 +419,16 @@ fieldval_ui_extend(PasswordField, TextField);
 function PasswordField(name) {
     var field = this;
 
-    PasswordField.superConstructor.call(this, name, "password");
+    PasswordField.superConstructor.call(this, name, {
+        type: "password"
+    });
 }
 fieldval_ui_extend(DisplayField, Field);
 
-function DisplayField(name, input_type) {
+function DisplayField(name, properties) {
     var field = this;
 
-    DisplayField.superConstructor.call(this, name);
+    DisplayField.superConstructor.call(this, name, properties);
 
     field.element.addClass("display_field");
 
@@ -475,10 +485,13 @@ DisplayField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, choices, allow_empty) {
+function ChoiceField(name, properties) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name);
+    ChoiceField.superConstructor.call(this, name, properties);
+
+    field.choices = field.properties.choices || [];
+    field.allow_empty = field.allow_empty || false;
 
     field.element.addClass("choice_field");
 
@@ -491,13 +504,13 @@ function ChoiceField(name, choices, allow_empty) {
 
     field.choice_values = [];
 
-    if(allow_empty){
+    if(field.allow_empty){
         var option = $("<option />").attr("value",null).text("")
         field.select.append(option);
     }
 
-    for(var i = 0; i < choices.length; i++){
-        var choice = choices[i];
+    for(var i = 0; i < field.choices.length; i++){
+        var choice = field.choices[i];
 
         var choice_value,choice_text;
         if((typeof choice)=="object"){
@@ -555,12 +568,14 @@ ChoiceField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(DateField, Field);
 
-function DateField(name, format) {//format is currently unused
+function DateField(name, properties) {//format is currently unused
     var field = this;
 
-    field.format = format;
+    DateField.superConstructor.call(this, name, properties);
 
-    DateField.superConstructor.call(this, name);
+    if(!field.format){
+        field.format = field.properties.format || "YYYY-MM-DD";
+    }
 
     field.element.addClass("date_field");
 
@@ -674,10 +689,10 @@ DateField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(BooleanField, Field);
 
-function BooleanField(name) {
+function BooleanField(name, properties) {
     var field = this;
 
-    BooleanField.superConstructor.call(this, name);
+    BooleanField.superConstructor.call(this, name, properties);
 
     field.element.addClass("choice_field");
 
@@ -725,10 +740,10 @@ BooleanField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(ObjectField, Field);
 
-function ObjectField(name) {
+function ObjectField(name, properties) {
     var field = this;
 
-    ObjectField.superConstructor.call(this, name);
+    ObjectField.superConstructor.call(this, name, properties);
 
     field.element.addClass("object_field");
 
@@ -770,9 +785,15 @@ ObjectField.prototype.blur = function() {
 ObjectField.prototype.error = function(error){
 	var field = this;
 
-	ObjectField.superClass.error.call(this,error);
+	Form.prototype.fields_error.call(this,error);
 
-	Form.prototype.error.call(this,error);
+    ObjectField.superClass.error.call(this,error);
+}
+
+ObjectField.prototype.fields_error = function(error){
+    var field = this;
+
+    Form.prototype.fields_error.call(this,error);
 }
 
 
