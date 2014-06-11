@@ -65,7 +65,7 @@ $(document).ready(function(){
 
 	form.on_submit(function(object){
 
-		var validator = new Validator(object);
+		var validator = new FieldVal(object);
 		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5));
 		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
 		var date_of_birth = validator.get("date_of_birth",BasicVal.string(true));
@@ -77,7 +77,7 @@ $(document).ready(function(){
 		var address = validator.get("address",BasicVal.object(true));
 		if(address){
 
-			var address_validator = new Validator(address);
+			var address_validator = new FieldVal(address);
 			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(0));
 			address_validator.get("line_1", BasicVal.string(true), BasicVal.min_length(5));
 			address_validator.get("line_2", BasicVal.string(true), BasicVal.min_length(5));

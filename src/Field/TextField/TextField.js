@@ -99,5 +99,7 @@ fieldval_ui_extend(PasswordField, TextField);
 function PasswordField(name) {
     var field = this;
 
-    PasswordField.superConstructor.call(this, name, "password");
+    PasswordField.superConstructor.call(this, name, {
+        type: "password"
+    });
 }
