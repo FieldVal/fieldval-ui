@@ -25,6 +25,26 @@ function Form(fields){
 	form.submit_callbacks = [];
 }
 
+Form.prototype.edit_mode = function(callback){
+	var form = this;
+
+	for(var i in form.fields){
+		form.fields[i].edit_mode();
+	}
+
+	return form;
+}
+
+Form.prototype.view_mode = function(callback){
+	var form = this;
+
+	for(var i in form.fields){
+		form.fields[i].view_mode();
+	}
+
+	return form;
+}
+
 Form.prototype.on_submit = function(callback){
 	var form = this;
 
@@ -195,6 +215,14 @@ function Field(name) {
     field.layout();
 }
 
+Field.prototype.view_mode = function(){
+    var field = this;    
+}
+
+Field.prototype.edit_mode = function(){
+    var field = this;    
+}
+
 Field.prototype.change_name = function(name) {
     var field = this;
     field.name = name;
@@ -339,6 +367,28 @@ function TextField(name, input_type) {
     .appendTo(field.input_holder);
 }
 
+TextField.prototype.view_mode = function(){
+    var field = this;
+
+    field.input.prop({
+        "readonly": "readonly",
+        "disabled": "disabled"
+    })
+
+    field.element.addClass("view_mode")
+}
+
+TextField.prototype.edit_mode = function(){
+    var field = this;
+
+    field.input.prop({
+        "readonly": null,
+        "disabled": null
+    })
+
+    field.element.removeClass("view_mode")
+}
+
 TextField.prototype.icon = function(params) {
     var field = this;
 
@@ -475,10 +525,13 @@ DisplayField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, choices, allow_empty) {
+function ChoiceField(name, properties) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name);
+    ChoiceField.superConstructor.call(this, name, properties);
+
+    field.choices = field.properties.choices || [];
+    field.allow_empty = field.properties.allow_empty || false;
 
     field.element.addClass("choice_field");
 
@@ -547,7 +600,6 @@ ChoiceField.prototype.val = function(set_val) {
         if(set_val!=null){
             field.select.val(set_val);
         } else {
-            console.log(set_val);
             field.select.val(field.choice_values[0]);
         }
         return field;
@@ -745,6 +797,22 @@ ObjectField.prototype.change_name = function(name) {
     var field = this;
     ObjectField.superClass.change_name.call(this,name);
     return field;
+}
+
+ObjectField.prototype.view_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].view_mode();
+    }
+}
+
+ObjectField.prototype.edit_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].edit_mode();
+    }
 }
 
 ObjectField.prototype.disable = function() {

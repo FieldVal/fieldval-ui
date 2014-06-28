@@ -70,6 +70,12 @@
 .text_field > .input_holder > input.text_input {
   width: 100%;
 }
+.text_field.view_mode > .input_holder > input.text_input {
+  border: 1px solid #EEE;
+}
+.text_field.view_mode > .input_holder > textarea.text_input {
+  border: 1px solid #EEE;
+}
 .date_field > .input_holder > .date_input {
   display: inline-block;
 }

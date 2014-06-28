@@ -25,6 +25,28 @@ function TextField(name, input_type) {
     .appendTo(field.input_holder);
 }
 
+TextField.prototype.view_mode = function(){
+    var field = this;
+
+    field.input.prop({
+        "readonly": "readonly",
+        "disabled": "disabled"
+    })
+
+    field.element.addClass("view_mode")
+}
+
+TextField.prototype.edit_mode = function(){
+    var field = this;
+
+    field.input.prop({
+        "readonly": null,
+        "disabled": null
+    })
+
+    field.element.removeClass("view_mode")
+}
+
 TextField.prototype.icon = function(params) {
     var field = this;
 

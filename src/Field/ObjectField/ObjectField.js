@@ -22,6 +22,22 @@ ObjectField.prototype.change_name = function(name) {
     return field;
 }
 
+ObjectField.prototype.view_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].view_mode();
+    }
+}
+
+ObjectField.prototype.edit_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].edit_mode();
+    }
+}
+
 ObjectField.prototype.disable = function() {
     var field = this;
     return field;

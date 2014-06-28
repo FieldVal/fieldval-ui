@@ -16,6 +16,26 @@ function Form(fields){
 	form.submit_callbacks = [];
 }
 
+Form.prototype.edit_mode = function(callback){
+	var form = this;
+
+	for(var i in form.fields){
+		form.fields[i].edit_mode();
+	}
+
+	return form;
+}
+
+Form.prototype.view_mode = function(callback){
+	var form = this;
+
+	for(var i in form.fields){
+		form.fields[i].view_mode();
+	}
+
+	return form;
+}
+
 Form.prototype.on_submit = function(callback){
 	var form = this;
 

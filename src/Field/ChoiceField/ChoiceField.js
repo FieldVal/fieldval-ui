@@ -1,9 +1,12 @@
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, choices, allow_empty) {
+function ChoiceField(name, properties) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name);
+    ChoiceField.superConstructor.call(this, name, properties);
+
+    field.choices = field.properties.choices || [];
+    field.allow_empty = field.properties.allow_empty || false;
 
     field.element.addClass("choice_field");
 
@@ -72,7 +75,6 @@ ChoiceField.prototype.val = function(set_val) {
         if(set_val!=null){
             field.select.val(set_val);
         } else {
-            console.log(set_val);
             field.select.val(field.choice_values[0]);
         }
         return field;

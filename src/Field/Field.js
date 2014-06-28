@@ -16,6 +16,14 @@ function Field(name) {
     field.layout();
 }
 
+Field.prototype.view_mode = function(){
+    var field = this;    
+}
+
+Field.prototype.edit_mode = function(){
+    var field = this;    
+}
+
 Field.prototype.change_name = function(name) {
     var field = this;
     field.name = name;
