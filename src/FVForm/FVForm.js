@@ -1,4 +1,4 @@
-function Form(fields){
+function FVForm(fields){
 	var form = this;
 
 	form.element = $("<form />").addClass("fieldval_ui_form").append(
@@ -10,13 +10,13 @@ function Form(fields){
 
 	form.fields = fields || {};
 
-	//Used because ObjectField uses some Form.prototype functions
+	//Used because ObjectField uses some FVForm.prototype functions
 	form.fields_element = form.element;
 
 	form.submit_callbacks = [];
 }
 
-Form.prototype.edit_mode = function(callback){
+FVForm.prototype.edit_mode = function(callback){
 	var form = this;
 
 	for(var i in form.fields){
@@ -26,7 +26,7 @@ Form.prototype.edit_mode = function(callback){
 	return form;
 }
 
-Form.prototype.view_mode = function(callback){
+FVForm.prototype.view_mode = function(callback){
 	var form = this;
 
 	for(var i in form.fields){
@@ -36,7 +36,7 @@ Form.prototype.view_mode = function(callback){
 	return form;
 }
 
-Form.prototype.on_submit = function(callback){
+FVForm.prototype.on_submit = function(callback){
 	var form = this;
 
 	form.submit_callbacks.push(callback);
@@ -44,7 +44,7 @@ Form.prototype.on_submit = function(callback){
 	return form;
 }
 
-Form.prototype.submit = function(){
+FVForm.prototype.submit = function(){
 	var form = this;
 
 	var compiled = form.val();
@@ -59,20 +59,22 @@ Form.prototype.submit = function(){
 	return compiled;
 }
 
-Form.prototype.add_field = function(name, field){
+FVForm.prototype.add_field = function(name, field){
 	var form = this;
 
     field.container.appendTo(form.fields_element);
     form.fields[name] = field;
+
+    return form;
 }
 
-//Same as Form.error(null)
-Form.prototype.clear_errors = function(){
+//Same as FVForm.error(null)
+FVForm.prototype.clear_errors = function(){
 	var form = this;
 	form.error(null);
 }
 
-Form.prototype.fields_error = function(error){
+FVForm.prototype.fields_error = function(error){
 	var form = this;
 
 	if(error){
@@ -95,17 +97,17 @@ Form.prototype.fields_error = function(error){
 	}
 }
 
-Form.prototype.show_error = function(){
+FVForm.prototype.show_error = function(){
     var form = this;
     form.error_message.show();
 }
 
-Form.prototype.hide_error = function(){
+FVForm.prototype.hide_error = function(){
     var form = this;
     form.error_message.hide();
 }
 
-Form.prototype.error = function(error) {
+FVForm.prototype.error = function(error) {
     var form = this;
 
     form.error_message.empty();
@@ -150,7 +152,7 @@ Form.prototype.error = function(error) {
     }
 }
 
-Form.prototype.disable = function(){
+FVForm.prototype.disable = function(){
 	var form = this;
 
 	for(var i in form.fields){
@@ -159,7 +161,7 @@ Form.prototype.disable = function(){
 	}
 }
 
-Form.prototype.enable = function(){
+FVForm.prototype.enable = function(){
 	var form = this;
 
 	for(var i in form.fields){
@@ -168,7 +170,7 @@ Form.prototype.enable = function(){
 	}	
 }
 
-Form.prototype.val = function(set_val){
+FVForm.prototype.val = function(set_val){
     var form = this;
 
     if (arguments.length===0) {

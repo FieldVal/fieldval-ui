@@ -5,6 +5,8 @@ function ChoiceField(name, properties) {
 
     ChoiceField.superConstructor.call(this, name, properties);
 
+    field.properties = properties;
+
     field.choices = field.properties.choices || [];
     field.allow_empty = field.properties.allow_empty || false;
 
@@ -19,13 +21,13 @@ function ChoiceField(name, properties) {
 
     field.choice_values = [];
 
-    if(allow_empty){
+    if(field.allow_empty){
         var option = $("<option />").attr("value",null).text("")
         field.select.append(option);
     }
 
-    for(var i = 0; i < choices.length; i++){
-        var choice = choices[i];
+    for(var i = 0; i < field.choices.length; i++){
+        var choice = field.choices[i];
 
         var choice_value,choice_text;
         if((typeof choice)=="object"){

@@ -1,20 +1,31 @@
 fieldval_ui_extend(TextField, Field);
 
-function TextField(name, input_type) {
+function TextField(name, options) {
     var field = this;
 
-    field.input_type = input_type || "text";
+    var options_type = typeof options;
+
+    if(options_type === "string"){
+        field.input_type = options;
+        options = {};
+    } else if(options_type === "object"){
+        field.input_type = options.input_type || "text";
+    } else {
+        options = {};
+    }
+
+    field.options = options;
 
     TextField.superConstructor.call(this, name);
 
     field.element.addClass("text_field");
 
-    if(input_type==='textarea'){
+    if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(input_type==='text' || input_type==='number' || !input_type) {
+    } else if(field.input_type==='text' || field.input_type==='number') {
         field.input = $("<input type='text' />")
     } else {
-        field.input = $("<input type='"+input_type+"' />")
+        field.input = $("<input type='"+field.input_type+"' />")
     }
     
     field.input.addClass("text_input")

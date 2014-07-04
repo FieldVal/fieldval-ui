@@ -7,7 +7,7 @@ function fieldval_ui_extend(sub, sup) {
 	sub.superConstructor = sup;
 	sub.superClass = sup.prototype;
 }
-function Form(fields){
+function FVForm(fields){
 	var form = this;
 
 	form.element = $("<form />").addClass("fieldval_ui_form").append(
@@ -19,13 +19,13 @@ function Form(fields){
 
 	form.fields = fields || {};
 
-	//Used because ObjectField uses some Form.prototype functions
+	//Used because ObjectField uses some FVForm.prototype functions
 	form.fields_element = form.element;
 
 	form.submit_callbacks = [];
 }
 
-Form.prototype.edit_mode = function(callback){
+FVForm.prototype.edit_mode = function(callback){
 	var form = this;
 
 	for(var i in form.fields){
@@ -35,7 +35,7 @@ Form.prototype.edit_mode = function(callback){
 	return form;
 }
 
-Form.prototype.view_mode = function(callback){
+FVForm.prototype.view_mode = function(callback){
 	var form = this;
 
 	for(var i in form.fields){
@@ -45,7 +45,7 @@ Form.prototype.view_mode = function(callback){
 	return form;
 }
 
-Form.prototype.on_submit = function(callback){
+FVForm.prototype.on_submit = function(callback){
 	var form = this;
 
 	form.submit_callbacks.push(callback);
@@ -53,7 +53,7 @@ Form.prototype.on_submit = function(callback){
 	return form;
 }
 
-Form.prototype.submit = function(){
+FVForm.prototype.submit = function(){
 	var form = this;
 
 	var compiled = form.val();
@@ -68,20 +68,22 @@ Form.prototype.submit = function(){
 	return compiled;
 }
 
-Form.prototype.add_field = function(name, field){
+FVForm.prototype.add_field = function(name, field){
 	var form = this;
 
     field.container.appendTo(form.fields_element);
     form.fields[name] = field;
+
+    return form;
 }
 
-//Same as Form.error(null)
-Form.prototype.clear_errors = function(){
+//Same as FVForm.error(null)
+FVForm.prototype.clear_errors = function(){
 	var form = this;
 	form.error(null);
 }
 
-Form.prototype.fields_error = function(error){
+FVForm.prototype.fields_error = function(error){
 	var form = this;
 
 	if(error){
@@ -104,17 +106,17 @@ Form.prototype.fields_error = function(error){
 	}
 }
 
-Form.prototype.show_error = function(){
+FVForm.prototype.show_error = function(){
     var form = this;
     form.error_message.show();
 }
 
-Form.prototype.hide_error = function(){
+FVForm.prototype.hide_error = function(){
     var form = this;
     form.error_message.hide();
 }
 
-Form.prototype.error = function(error) {
+FVForm.prototype.error = function(error) {
     var form = this;
 
     form.error_message.empty();
@@ -159,7 +161,7 @@ Form.prototype.error = function(error) {
     }
 }
 
-Form.prototype.disable = function(){
+FVForm.prototype.disable = function(){
 	var form = this;
 
 	for(var i in form.fields){
@@ -168,7 +170,7 @@ Form.prototype.disable = function(){
 	}
 }
 
-Form.prototype.enable = function(){
+FVForm.prototype.enable = function(){
 	var form = this;
 
 	for(var i in form.fields){
@@ -177,7 +179,7 @@ Form.prototype.enable = function(){
 	}	
 }
 
-Form.prototype.val = function(set_val){
+FVForm.prototype.val = function(set_val){
     var form = this;
 
     if (arguments.length===0) {
@@ -342,21 +344,32 @@ Field.prototype.error = function(error) {
 }
 fieldval_ui_extend(TextField, Field);
 
-function TextField(name, input_type) {
+function TextField(name, options) {
     var field = this;
 
-    field.input_type = input_type || "text";
+    var options_type = typeof options;
+
+    if(options_type === "string"){
+        field.input_type = options;
+        options = {};
+    } else if(options_type === "object"){
+        field.input_type = options.input_type || "text";
+    } else {
+        options = {};
+    }
+
+    field.options = options;
 
     TextField.superConstructor.call(this, name);
 
     field.element.addClass("text_field");
 
-    if(input_type==='textarea'){
+    if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(input_type==='text' || input_type==='number' || !input_type) {
+    } else if(field.input_type==='text' || field.input_type==='number') {
         field.input = $("<input type='text' />")
     } else {
-        field.input = $("<input type='"+input_type+"' />")
+        field.input = $("<input type='"+field.input_type+"' />")
     }
     
     field.input.addClass("text_input")
@@ -530,6 +543,8 @@ function ChoiceField(name, properties) {
 
     ChoiceField.superConstructor.call(this, name, properties);
 
+    field.properties = properties;
+
     field.choices = field.properties.choices || [];
     field.allow_empty = field.properties.allow_empty || false;
 
@@ -544,13 +559,13 @@ function ChoiceField(name, properties) {
 
     field.choice_values = [];
 
-    if(allow_empty){
+    if(field.allow_empty){
         var option = $("<option />").attr("value",null).text("")
         field.select.append(option);
     }
 
-    for(var i = 0; i < choices.length; i++){
-        var choice = choices[i];
+    for(var i = 0; i < field.choices.length; i++){
+        var choice = field.choices[i];
 
         var choice_value,choice_text;
         if((typeof choice)=="object"){
@@ -836,11 +851,17 @@ ObjectField.prototype.blur = function() {
 }
 
 ObjectField.prototype.error = function(error){
-	var field = this;
+    var field = this;
 
-	ObjectField.superClass.error.call(this,error);
+    ObjectField.superClass.error.call(this,error);
 
-	Form.prototype.error.call(this,error);
+    Form.prototype.error.call(this,error);
+}
+
+ObjectField.prototype.fields_error = function(error){
+    var field = this;
+
+    Form.prototype.fields_error.call(this,error);
 }
 
 

@@ -1,9 +1,5 @@
 {
   "name": "fieldval-ui",
   "version": "0.0.1",
-  "dependencies": {
-  	"fieldval": "*",
-  	"fieldval-basicval": "*"
-  },
   "private": true
 }

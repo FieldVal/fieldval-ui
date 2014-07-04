@@ -66,9 +66,11 @@
 }
 .text_field > .input_holder > textarea.text_input {
   width: 100%;
+  font-size: 14px;
 }
 .text_field > .input_holder > input.text_input {
   width: 100%;
+  font-size: 14px;
 }
 .text_field.view_mode > .input_holder > input.text_input {
   border: 1px solid #EEE;
@@ -80,13 +82,16 @@
   display: inline-block;
 }
 .date_field > .input_holder > .date_input.day_input {
+  font-size: 14px;
   width: 26%;
   margin-right: 4%;
 }
 .date_field > .input_holder > .date_input.month_input {
+  font-size: 14px;
   width: 26%;
   margin-right: 4%;
 }
 .date_field > .input_holder > .date_input.year_input {
+  font-size: 14px;
   width: 40%;
 }

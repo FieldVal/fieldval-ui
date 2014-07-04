@@ -59,11 +59,17 @@ ObjectField.prototype.blur = function() {
 }
 
 ObjectField.prototype.error = function(error){
-	var field = this;
+    var field = this;
 
-	ObjectField.superClass.error.call(this,error);
+    ObjectField.superClass.error.call(this,error);
 
-	Form.prototype.error.call(this,error);
+    Form.prototype.error.call(this,error);
+}
+
+ObjectField.prototype.fields_error = function(error){
+    var field = this;
+
+    Form.prototype.fields_error.call(this,error);
 }
 
 
