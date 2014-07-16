@@ -16,7 +16,7 @@
 
 <script>
 $(document).ready(function(){
-	var form = new Form();
+	var form = new FVForm();
 	var output;
 
 	//values and displayed names
@@ -33,7 +33,9 @@ $(document).ready(function(){
 	form.add_field("first_name", new TextField("First Name"));
 	form.add_field("last_name", new TextField("Last Name"));
 	form.add_field("date_of_birth", new DateField("Date of Birth"));
-	form.add_field("gender", new ChoiceField("Gender",gender_choices));
+	form.add_field("gender", new ChoiceField("Gender",{
+		choices: gender_choices
+	}));
 	form.add_field("email", new TextField("Email"));
 	form.add_field("bio", new TextField("Bio","textarea"));
 
@@ -62,7 +64,7 @@ $(document).ready(function(){
 
 	form.on_submit(function(object){
 
-		var validator = new Validator(object);
+		var validator = new FieldVal(object);
 		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5));
 		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
 		var date_of_birth = validator.get("date_of_birth",BasicVal.string(true));
@@ -74,7 +76,7 @@ $(document).ready(function(){
 		var address = validator.get("address",BasicVal.object(true));
 		if(address){
 
-			var address_validator = new Validator(address);
+			var address_validator = new FieldVal(address);
 			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(0));
 			address_validator.get("line_1", BasicVal.string(true), BasicVal.min_length(5));
 			address_validator.get("line_2", BasicVal.string(true), BasicVal.min_length(5));

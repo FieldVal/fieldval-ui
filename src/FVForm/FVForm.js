@@ -16,6 +16,17 @@ function FVForm(fields){
 	form.submit_callbacks = [];
 }
 
+FVForm.prototype.blur = function() {
+    var form = this;
+
+    for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.blur();
+    }
+
+    return form;
+}
+
 FVForm.prototype.edit_mode = function(callback){
 	var form = this;
 
@@ -178,7 +189,10 @@ FVForm.prototype.val = function(set_val){
 		for(var i in form.fields){
 			var field = form.fields[i];
 			if(field.show_on_form_flag){
-				output[i] = field.val();
+				var value = field.val();
+				if(value!=null){
+					output[i] = value;
+				}
 			}
 		}
 		return output;

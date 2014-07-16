@@ -9,10 +9,12 @@ function TextField(name, options) {
         field.input_type = options;
         options = {};
     } else if(options_type === "object"){
-        field.input_type = options.input_type || "text";
+        field.input_type = options.type || "text";
     } else {
         options = {};
     }
+
+
 
     field.options = options;
 
@@ -105,7 +107,7 @@ TextField.prototype.blur = function() {
     return field;
 }
 
-TextField.numeric_regex = /^\d+(?:\.\d+)$/;
+TextField.numeric_regex = /^\d+(\.\d+)?$/;
 
 TextField.prototype.val = function(set_val) {
     var field = this;

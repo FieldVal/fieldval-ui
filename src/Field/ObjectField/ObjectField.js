@@ -13,7 +13,7 @@ function ObjectField(name) {
 }
 
 ObjectField.prototype.add_field = function(name, field){
-	Form.prototype.add_field.call(this,name,field);
+	FVForm.prototype.add_field.call(this,name,field);
 }
 
 ObjectField.prototype.change_name = function(name) {
@@ -55,7 +55,8 @@ ObjectField.prototype.focus = function() {
 
 ObjectField.prototype.blur = function() {
     var field = this;
-    return field;
+
+    FVForm.prototype.blur.call(this);
 }
 
 ObjectField.prototype.error = function(error){
@@ -63,20 +64,20 @@ ObjectField.prototype.error = function(error){
 
     ObjectField.superClass.error.call(this,error);
 
-    Form.prototype.error.call(this,error);
+    FVForm.prototype.error.call(this,error);
 }
 
 ObjectField.prototype.fields_error = function(error){
     var field = this;
 
-    Form.prototype.fields_error.call(this,error);
+    FVForm.prototype.fields_error.call(this,error);
 }
 
 
 ObjectField.prototype.clear_errors = function(){
 	var field = this;
 
-	Form.prototype.clear_errors.call(this);
+	FVForm.prototype.clear_errors.call(this);
 }
 
 ObjectField.prototype.val = function(set_val) {

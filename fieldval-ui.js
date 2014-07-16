@@ -25,6 +25,17 @@ function FVForm(fields){
 	form.submit_callbacks = [];
 }
 
+FVForm.prototype.blur = function() {
+    var form = this;
+
+    for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.blur();
+    }
+
+    return form;
+}
+
 FVForm.prototype.edit_mode = function(callback){
 	var form = this;
 
@@ -187,7 +198,10 @@ FVForm.prototype.val = function(set_val){
 		for(var i in form.fields){
 			var field = form.fields[i];
 			if(field.show_on_form_flag){
-				output[i] = field.val();
+				var value = field.val();
+				if(value!=null){
+					output[i] = value;
+				}
 			}
 		}
 		return output;
@@ -353,10 +367,12 @@ function TextField(name, options) {
         field.input_type = options;
         options = {};
     } else if(options_type === "object"){
-        field.input_type = options.input_type || "text";
+        field.input_type = options.type || "text";
     } else {
         options = {};
     }
+
+
 
     field.options = options;
 
@@ -449,7 +465,7 @@ TextField.prototype.blur = function() {
     return field;
 }
 
-TextField.numeric_regex = /^\d+(?:\.\d+)$/;
+TextField.numeric_regex = /^\d+(\.\d+)?$/;
 
 TextField.prototype.val = function(set_val) {
     var field = this;
@@ -577,7 +593,10 @@ function ChoiceField(name, properties) {
 
         field.choice_values.push(choice_value);
 
-        var option = $("<option />").attr("value",choice_value).text(choice_text)
+        var option = $("<option />")
+            .attr("value",choice_value)
+            .data("value",choice_value)
+            .text(choice_text)
         field.select.append(option);
     }
 }
@@ -610,7 +629,7 @@ ChoiceField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
-        return field.select.find(":selected").attr("value")
+        return field.select.find(":selected").data("value")
     } else {
         if(set_val!=null){
             field.select.val(set_val);
@@ -805,7 +824,7 @@ function ObjectField(name) {
 }
 
 ObjectField.prototype.add_field = function(name, field){
-	Form.prototype.add_field.call(this,name,field);
+	FVForm.prototype.add_field.call(this,name,field);
 }
 
 ObjectField.prototype.change_name = function(name) {
@@ -847,7 +866,8 @@ ObjectField.prototype.focus = function() {
 
 ObjectField.prototype.blur = function() {
     var field = this;
-    return field;
+
+    FVForm.prototype.blur.call(this);
 }
 
 ObjectField.prototype.error = function(error){
@@ -855,20 +875,20 @@ ObjectField.prototype.error = function(error){
 
     ObjectField.superClass.error.call(this,error);
 
-    Form.prototype.error.call(this,error);
+    FVForm.prototype.error.call(this,error);
 }
 
 ObjectField.prototype.fields_error = function(error){
     var field = this;
 
-    Form.prototype.fields_error.call(this,error);
+    FVForm.prototype.fields_error.call(this,error);
 }
 
 
 ObjectField.prototype.clear_errors = function(){
 	var field = this;
 
-	Form.prototype.clear_errors.call(this);
+	FVForm.prototype.clear_errors.call(this);
 }
 
 ObjectField.prototype.val = function(set_val) {
