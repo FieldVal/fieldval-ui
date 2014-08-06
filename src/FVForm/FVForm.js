@@ -16,6 +16,26 @@ function FVForm(fields){
 	form.submit_callbacks = [];
 }
 
+FVForm.prototype.init = function(){
+	var form = this;
+
+	for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.init();
+    }
+}
+
+FVForm.prototype.remove = function(){
+	var form = this;
+
+	console.trace();
+
+	for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.remove();
+    }
+}
+
 FVForm.prototype.blur = function() {
     var form = this;
 
@@ -77,6 +97,15 @@ FVForm.prototype.add_field = function(name, field){
     form.fields[name] = field;
 
     return form;
+}
+
+FVForm.prototype.remove_field = function(name){
+	var form = this;
+
+    var field = form.fields[name];
+    if(field){
+    	field.remove();//Field class will perform field.container.remove()
+    }
 }
 
 //Same as FVForm.error(null)

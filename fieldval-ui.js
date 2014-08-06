@@ -25,6 +25,26 @@ function FVForm(fields){
 	form.submit_callbacks = [];
 }
 
+FVForm.prototype.init = function(){
+	var form = this;
+
+	for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.init();
+    }
+}
+
+FVForm.prototype.remove = function(){
+	var form = this;
+
+	console.trace();
+
+	for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.remove();
+    }
+}
+
 FVForm.prototype.blur = function() {
     var form = this;
 
@@ -86,6 +106,15 @@ FVForm.prototype.add_field = function(name, field){
     form.fields[name] = field;
 
     return form;
+}
+
+FVForm.prototype.remove_field = function(name){
+	var form = this;
+
+    var field = form.fields[name];
+    if(field){
+    	field.remove();//Field class will perform field.container.remove()
+    }
 }
 
 //Same as FVForm.error(null)
@@ -229,6 +258,16 @@ function Field(name) {
     field.error_message = $("<div />").addClass("error_message").hide()
 
     field.layout();
+}
+
+Field.prototype.init = function(){
+    var field = this;
+}
+
+Field.prototype.remove = function(){
+    var field = this;
+
+    field.container.remove();
 }
 
 Field.prototype.view_mode = function(){
@@ -568,10 +607,13 @@ function ChoiceField(name, properties) {
 
     field.select = $("<select/>")
     .addClass("choice_input")
-    .on("change",function(){
-        field.did_change()
-    })
     .appendTo(field.input_holder);
+
+    setTimeout(function(){
+        field.select.on("change",function(){
+            field.did_change()
+        })
+    },100)
 
     field.choice_values = [];
 
@@ -594,9 +636,9 @@ function ChoiceField(name, properties) {
         field.choice_values.push(choice_value);
 
         var option = $("<option />")
-            .attr("value",choice_value)
-            .data("value",choice_value)
-            .text(choice_text)
+        .attr("value",choice_value)
+        .text(choice_text)
+
         field.select.append(option);
     }
 }
@@ -629,7 +671,8 @@ ChoiceField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
-        return field.select.find(":selected").data("value")
+        var selected = field.select.find(":selected");
+        return field.choice_values[selected.index()]
     } else {
         if(set_val!=null){
             field.select.val(set_val);
@@ -811,8 +854,10 @@ BooleanField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(ObjectField, Field);
 
-function ObjectField(name) {
+function ObjectField(name, options) {
     var field = this;
+
+    field.options = options || {};
 
     ObjectField.superConstructor.call(this, name);
 
@@ -823,8 +868,16 @@ function ObjectField(name) {
     field.fields = {};
 }
 
+ObjectField.prototype.init = function(){
+    FVForm.prototype.init.call(this);
+}
+
+ObjectField.prototype.remove = function(){
+    FVForm.prototype.remove.call(this);
+}
+
 ObjectField.prototype.add_field = function(name, field){
-	FVForm.prototype.add_field.call(this,name,field);
+    FVForm.prototype.add_field.call(this,name,field);
 }
 
 ObjectField.prototype.change_name = function(name) {
@@ -904,7 +957,9 @@ ObjectField.prototype.val = function(set_val) {
     } else {
     	for(var i in set_val){
     		var inner_field = field.fields[i];
-    		inner_field.val(set_val[i]);
+            if(inner_field){
+        		inner_field.val(set_val[i]);
+            }
     	}
         return field;
     }

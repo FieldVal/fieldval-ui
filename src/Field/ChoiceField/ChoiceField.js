@@ -14,10 +14,13 @@ function ChoiceField(name, properties) {
 
     field.select = $("<select/>")
     .addClass("choice_input")
-    .on("change",function(){
-        field.did_change()
-    })
     .appendTo(field.input_holder);
+
+    setTimeout(function(){
+        field.select.on("change",function(){
+            field.did_change()
+        })
+    },100)
 
     field.choice_values = [];
 
@@ -40,9 +43,9 @@ function ChoiceField(name, properties) {
         field.choice_values.push(choice_value);
 
         var option = $("<option />")
-            .attr("value",choice_value)
-            .data("value",choice_value)
-            .text(choice_text)
+        .attr("value",choice_value)
+        .text(choice_text)
+
         field.select.append(option);
     }
 }
@@ -75,7 +78,8 @@ ChoiceField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
-        return field.select.find(":selected").data("value")
+        var selected = field.select.find(":selected");
+        return field.choice_values[selected.index()]
     } else {
         if(set_val!=null){
             field.select.val(set_val);

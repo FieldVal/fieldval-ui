@@ -16,6 +16,16 @@ function Field(name) {
     field.layout();
 }
 
+Field.prototype.init = function(){
+    var field = this;
+}
+
+Field.prototype.remove = function(){
+    var field = this;
+
+    field.container.remove();
+}
+
 Field.prototype.view_mode = function(){
     var field = this;    
 }

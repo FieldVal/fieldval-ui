@@ -1,7 +1,9 @@
 fieldval_ui_extend(ObjectField, Field);
 
-function ObjectField(name) {
+function ObjectField(name, options) {
     var field = this;
+
+    field.options = options || {};
 
     ObjectField.superConstructor.call(this, name);
 
@@ -12,8 +14,16 @@ function ObjectField(name) {
     field.fields = {};
 }
 
+ObjectField.prototype.init = function(){
+    FVForm.prototype.init.call(this);
+}
+
+ObjectField.prototype.remove = function(){
+    FVForm.prototype.remove.call(this);
+}
+
 ObjectField.prototype.add_field = function(name, field){
-	FVForm.prototype.add_field.call(this,name,field);
+    FVForm.prototype.add_field.call(this,name,field);
 }
 
 ObjectField.prototype.change_name = function(name) {
@@ -93,7 +103,9 @@ ObjectField.prototype.val = function(set_val) {
     } else {
     	for(var i in set_val){
     		var inner_field = field.fields[i];
-    		inner_field.val(set_val[i]);
+            if(inner_field){
+        		inner_field.val(set_val[i]);
+            }
     	}
         return field;
     }
