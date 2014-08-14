@@ -670,7 +670,7 @@ ChoiceField.prototype.val = function(set_val) {
     if (arguments.length===0) {
         var selected = field.select.find(":selected");
         var index = selected.index() - (field.allow_empty ? 1 : 0);
-        if(field.allow_empty && index===0){
+        if(field.allow_empty && index===-1){
             return null;
         }
         return field.choice_values[index];
