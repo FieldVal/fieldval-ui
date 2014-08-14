@@ -37,8 +37,6 @@ FVForm.prototype.init = function(){
 FVForm.prototype.remove = function(){
 	var form = this;
 
-	console.trace();
-
 	for(var i in form.fields){
         var inner_field = form.fields[i];
         inner_field.remove();
@@ -114,6 +112,7 @@ FVForm.prototype.remove_field = function(name){
     var field = form.fields[name];
     if(field){
     	field.remove();//Field class will perform field.container.remove()
+    	delete form.fields[name];
     }
 }
 
@@ -226,7 +225,7 @@ FVForm.prototype.val = function(set_val){
         var output = {};
 		for(var i in form.fields){
 			var field = form.fields[i];
-			if(field.show_on_form_flag){
+			if(field.show_on_form_flag!==false){
 				var value = field.val();
 				if(value!=null){
 					output[i] = value;
@@ -411,8 +410,6 @@ function TextField(name, options) {
         options = {};
     }
 
-
-
     field.options = options;
 
     TextField.superConstructor.call(this, name);
@@ -421,7 +418,7 @@ function TextField(name, options) {
 
     if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(field.input_type==='text' || field.input_type==='number') {
+    } else if(field.input_type==='text' || field.input_type==='number' || !field.input_type) {
         field.input = $("<input type='text' />")
     } else {
         field.input = $("<input type='"+field.input_type+"' />")
@@ -672,7 +669,11 @@ ChoiceField.prototype.val = function(set_val) {
 
     if (arguments.length===0) {
         var selected = field.select.find(":selected");
-        return field.choice_values[selected.index()]
+        var index = selected.index() - (field.allow_empty ? 1 : 0);
+        if(field.allow_empty && index===0){
+            return null;
+        }
+        return field.choice_values[index];
     } else {
         if(set_val!=null){
             field.select.val(set_val);
@@ -874,6 +875,8 @@ ObjectField.prototype.init = function(){
 
 ObjectField.prototype.remove = function(){
     FVForm.prototype.remove.call(this);
+
+    Field.prototype.remove.call(this);
 }
 
 ObjectField.prototype.add_field = function(name, field){

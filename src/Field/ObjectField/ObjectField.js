@@ -20,6 +20,8 @@ ObjectField.prototype.init = function(){
 
 ObjectField.prototype.remove = function(){
     FVForm.prototype.remove.call(this);
+
+    Field.prototype.remove.call(this);
 }
 
 ObjectField.prototype.add_field = function(name, field){

@@ -79,7 +79,11 @@ ChoiceField.prototype.val = function(set_val) {
 
     if (arguments.length===0) {
         var selected = field.select.find(":selected");
-        return field.choice_values[selected.index()]
+        var index = selected.index() - (field.allow_empty ? 1 : 0);
+        if(field.allow_empty && index===0){
+            return null;
+        }
+        return field.choice_values[index];
     } else {
         if(set_val!=null){
             field.select.val(set_val);

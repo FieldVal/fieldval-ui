@@ -14,8 +14,6 @@ function TextField(name, options) {
         options = {};
     }
 
-
-
     field.options = options;
 
     TextField.superConstructor.call(this, name);
@@ -24,7 +22,7 @@ function TextField(name, options) {
 
     if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(field.input_type==='text' || field.input_type==='number') {
+    } else if(field.input_type==='text' || field.input_type==='number' || !field.input_type) {
         field.input = $("<input type='text' />")
     } else {
         field.input = $("<input type='"+field.input_type+"' />")

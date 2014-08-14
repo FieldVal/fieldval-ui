@@ -28,8 +28,6 @@ FVForm.prototype.init = function(){
 FVForm.prototype.remove = function(){
 	var form = this;
 
-	console.trace();
-
 	for(var i in form.fields){
         var inner_field = form.fields[i];
         inner_field.remove();
@@ -105,6 +103,7 @@ FVForm.prototype.remove_field = function(name){
     var field = form.fields[name];
     if(field){
     	field.remove();//Field class will perform field.container.remove()
+    	delete form.fields[name];
     }
 }
 
@@ -217,7 +216,7 @@ FVForm.prototype.val = function(set_val){
         var output = {};
 		for(var i in form.fields){
 			var field = form.fields[i];
-			if(field.show_on_form_flag){
+			if(field.show_on_form_flag!==false){
 				var value = field.val();
 				if(value!=null){
 					output[i] = value;
