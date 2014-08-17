@@ -18,7 +18,7 @@ function TextField(name, options) {
 
     TextField.superConstructor.call(this, name);
 
-    field.element.addClass("text_field");
+    field.element.addClass("fv_text_field");
 
     if(field.input_type==='textarea'){
         field.input = $("<textarea />")
@@ -28,7 +28,7 @@ function TextField(name, options) {
         field.input = $("<input type='"+field.input_type+"' />")
     }
     
-    field.input.addClass("text_input")
+    field.input.addClass("fv_text_input")
     .attr("placeholder", name)
     .on("keyup",function(){
         field.did_change()
@@ -44,7 +44,7 @@ TextField.prototype.view_mode = function(){
         "disabled": "disabled"
     })
 
-    field.element.addClass("view_mode")
+    field.element.addClass("fv_view_mode")
 }
 
 TextField.prototype.edit_mode = function(){
@@ -55,7 +55,7 @@ TextField.prototype.edit_mode = function(){
         "disabled": null
     })
 
-    field.element.removeClass("view_mode")
+    field.element.removeClass("fv_view_mode")
 }
 
 TextField.prototype.icon = function(params) {

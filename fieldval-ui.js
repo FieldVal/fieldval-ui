@@ -10,8 +10,8 @@ function fieldval_ui_extend(sub, sup) {
 function FVForm(fields){
 	var form = this;
 
-	form.element = $("<form />").addClass("fieldval_ui_form").append(
-		form.error_message = $("<div />").addClass("error_message").hide()
+	form.element = $("<form />").addClass("fv_form").append(
+		form.error_message = $("<div />").addClass("fv_error_message").hide()
 	).on("submit",function(event){
         event.preventDefault();
         form.submit();
@@ -24,6 +24,7 @@ function FVForm(fields){
 
 	form.submit_callbacks = [];
 }
+FVForm.button_event = 'click';
 
 FVForm.prototype.init = function(){
 	var form = this;
@@ -247,16 +248,34 @@ function Field(name) {
     field.name = name;
 
     field.show_on_form_flag = true;
+    field.is_in_array = false;
 
     field.on_change_callbacks = [];
 
-    field.container = $("<div />").addClass("field_container");
-    field.element = $("<div />").addClass("field");
-    field.title = $("<div />").addClass("field_title").text(field.name)
-    field.input_holder = $("<div />").addClass("input_holder")
-    field.error_message = $("<div />").addClass("error_message").hide()
+    field.container = $("<div />").addClass("fv_field_container");
+    field.element = $("<div />").addClass("fv_field");
+    field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    field.input_holder = $("<div />").addClass("fv_input_holder")
+    field.error_message = $("<div />").addClass("fv_error_message").hide()
 
     field.layout();
+}
+
+Field.prototype.in_array = function(remove_callback){
+    var field = this;
+
+    field.is_in_array = true;
+
+    field.element.addClass("fv_nested")
+    .append(
+        $("<button />")
+        .addClass("fv_field_remove_button")
+        .text("X").on(FVForm.button_event,function(event){
+            event.preventDefault();
+            remove_callback();
+            field.remove();
+        })
+    )
 }
 
 Field.prototype.init = function(){
@@ -384,13 +403,13 @@ Field.prototype.error = function(error) {
             )
         }
         if(field.container){
-            field.container.addClass("field_error");
+            field.container.addClass("fv_field_error");
         }
         field.show_error();
     } else {
         field.hide_error();
         if(field.container){
-            field.container.removeClass("field_error");
+            field.container.removeClass("fv_field_error");
         }
     }
 }
@@ -414,7 +433,7 @@ function TextField(name, options) {
 
     TextField.superConstructor.call(this, name);
 
-    field.element.addClass("text_field");
+    field.element.addClass("fv_text_field");
 
     if(field.input_type==='textarea'){
         field.input = $("<textarea />")
@@ -424,7 +443,7 @@ function TextField(name, options) {
         field.input = $("<input type='"+field.input_type+"' />")
     }
     
-    field.input.addClass("text_input")
+    field.input.addClass("fv_text_input")
     .attr("placeholder", name)
     .on("keyup",function(){
         field.did_change()
@@ -440,7 +459,7 @@ TextField.prototype.view_mode = function(){
         "disabled": "disabled"
     })
 
-    field.element.addClass("view_mode")
+    field.element.addClass("fv_view_mode")
 }
 
 TextField.prototype.edit_mode = function(){
@@ -451,7 +470,7 @@ TextField.prototype.edit_mode = function(){
         "disabled": null
     })
 
-    field.element.removeClass("view_mode")
+    field.element.removeClass("fv_view_mode")
 }
 
 TextField.prototype.icon = function(params) {
@@ -535,7 +554,7 @@ function DisplayField(name, input_type) {
 
     DisplayField.superConstructor.call(this, name);
 
-    field.element.addClass("display_field");
+    field.element.addClass("fv_display_field");
 
     field.input = $("<div />")
     .appendTo(field.input_holder);
@@ -600,10 +619,10 @@ function ChoiceField(name, properties) {
     field.choices = field.properties.choices || [];
     field.allow_empty = field.properties.allow_empty || false;
 
-    field.element.addClass("choice_field");
+    field.element.addClass("fv_choice_field");
 
     field.select = $("<select/>")
-    .addClass("choice_input")
+    .addClass("fv_choice_input")
     .appendTo(field.input_holder);
 
     setTimeout(function(){
@@ -692,25 +711,25 @@ function DateField(name, format) {//format is currently unused
 
     DateField.superConstructor.call(this, name);
 
-    field.element.addClass("date_field");
+    field.element.addClass("fv_date_field");
 
     field.input_holder.append(
         field.day_input = $("<input type='number' />")
-        .addClass("day_input date_input")
+        .addClass("fv_day_input fv_date_input")
         .attr("placeholder", "DD")
         .on("keyup",function(){
             field.did_change()
         }),
 
         field.month_input = $("<input type='number' />")
-        .addClass("month_input date_input")
+        .addClass("fv_month_input fv_date_input")
         .attr("placeholder", "MM")
         .on("keyup",function(){
             field.did_change()
         }),
         
         field.year_input = $("<input type='number' />")
-        .addClass("year_input date_input")
+        .addClass("fv_year_input fv_date_input")
         .attr("placeholder", "YYYY")
         .on("keyup",function(){
             field.did_change()
@@ -809,10 +828,10 @@ function BooleanField(name) {
 
     BooleanField.superConstructor.call(this, name);
 
-    field.element.addClass("choice_field");
+    field.element.addClass("fv_boolean_field");
 
     field.input = $("<input type='checkbox' />")
-    .addClass("boolean_input")
+    .addClass("fv_boolean_input")
     .on("change",function(){
         field.did_change()
     })
@@ -862,7 +881,7 @@ function ObjectField(name, options) {
 
     ObjectField.superConstructor.call(this, name);
 
-    field.element.addClass("object_field");
+    field.element.addClass("fv_object_field");
 
     field.fields_element = field.input_holder;
 
@@ -964,6 +983,182 @@ ObjectField.prototype.val = function(set_val) {
         		inner_field.val(set_val[i]);
             }
     	}
+        return field;
+    }
+}
+fieldval_ui_extend(ArrayField, Field);
+
+function ArrayField(name, options) {
+    var field = this;
+
+    field.options = options || {};
+
+    ArrayField.superConstructor.call(this, name);
+
+    field.element.addClass("fv_array_field");
+
+    field.input_holder.append(
+        field.fields_element = $("<div />").addClass("fv_nested_fields"),
+        field.create_add_field_button()
+    )
+
+    field.fields = [];
+
+    console.log(field.input_holder);
+}
+
+ArrayField.prototype.create_add_field_button = function(){
+    var field = this;
+
+    return $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
+        event.preventDefault();
+        field.new_field(field.fields.length);
+    })
+}
+
+ArrayField.prototype.new_field = function(index){
+    var field = this;
+    console.error("ArrayField.new_field must be overriden to create fields");
+}
+
+ArrayField.prototype.add_field = function(name, inner_field){
+    var field = this;
+
+    inner_field.in_array(function(){
+        field.remove_field(inner_field);
+    });
+    inner_field.container.appendTo(field.fields_element);
+    field.fields.push(inner_field);
+}
+
+ArrayField.prototype.remove_field = function(inner_field){
+    var field = this;
+
+    for(var i = 0; i < field.fields.length; i++){
+        if(field.fields[i]===inner_field){
+            field.fields.splice(i,1);
+        }
+    }
+}
+
+ArrayField.prototype.view_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].view_mode();
+    }
+}
+
+ArrayField.prototype.edit_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].edit_mode();
+    }
+}
+
+ArrayField.prototype.error = function(error){
+    var field = this;
+
+    ArrayField.superClass.error.call(this,error);
+}
+
+ArrayField.prototype.fields_error = function(error){
+    var field = this;
+
+    if(error){
+        var invalid_fields = error.invalid || {};
+        var missing_fields = error.missing || {};
+        var unrecognized_fields = error.unrecognized || {};
+        
+        for(var i = 0; i < field.fields.length; i++){
+            var inner_field = field.fields[i];
+
+            var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
+            inner_field.error(field_error);
+        }
+
+    } else {
+        for(var i in field.fields){
+            var inner_field = field.fields[i];
+            inner_field.error(null);
+        }
+    }
+}
+
+
+ArrayField.prototype.clear_errors = function(){
+	var field = this;
+
+
+}
+
+ArrayField.prototype.error = function(error) {
+    var field = this;
+
+    field.error_message.empty();
+
+    if(error){
+
+        if(error.error===undefined){
+            console.error("No error provided");
+            return;
+        }
+
+        if(error.error===0){
+            field.fields_error(error);
+            field.hide_error();
+        } else {
+            if(error.error===4){
+                var error_list = $("<ul />");
+                for(var i = 0; i < error.errors.length; i++){
+                    var sub_error = error.errors[i];
+                    if(sub_error.error===0){
+                        field.fields_error(sub_error);
+                    } else {
+                        error_list.append(
+                            $("<li />").text(sub_error.error_message)
+                        )
+                    }
+                }
+                field.error_message.append(
+                    error_list
+                );
+            } else {
+                field.error_message.append(
+                    $("<span />").text(error.error_message)
+                )
+            }
+            field.show_error();
+        }
+    } else {
+        //Clear error
+        field.fields_error(null);
+        field.hide_error();
+    }
+}
+
+ArrayField.prototype.val = function(set_val) {
+    var field = this;
+
+    if (arguments.length===0) {
+    	var compiled = [];
+    	for(var i=0; i<field.fields.length; i++){
+    		var inner_field = field.fields[i];
+            var value = inner_field.val();
+    		compiled.push(value);
+    	}
+        return compiled;
+    } else {
+        if(set_val){
+            for(var i=0; i<set_val.length; i++){
+        		var inner_field = field.fields[i];
+                if(!inner_field){
+                    inner_field = field.new_field(i);
+                }
+                inner_field.val(set_val[i]);
+        	}
+        }
         return field;
     }
 }

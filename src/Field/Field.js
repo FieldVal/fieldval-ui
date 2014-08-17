@@ -4,16 +4,34 @@ function Field(name) {
     field.name = name;
 
     field.show_on_form_flag = true;
+    field.is_in_array = false;
 
     field.on_change_callbacks = [];
 
-    field.container = $("<div />").addClass("field_container");
-    field.element = $("<div />").addClass("field");
-    field.title = $("<div />").addClass("field_title").text(field.name)
-    field.input_holder = $("<div />").addClass("input_holder")
-    field.error_message = $("<div />").addClass("error_message").hide()
+    field.container = $("<div />").addClass("fv_field_container");
+    field.element = $("<div />").addClass("fv_field");
+    field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    field.input_holder = $("<div />").addClass("fv_input_holder")
+    field.error_message = $("<div />").addClass("fv_error_message").hide()
 
     field.layout();
+}
+
+Field.prototype.in_array = function(remove_callback){
+    var field = this;
+
+    field.is_in_array = true;
+
+    field.element.addClass("fv_nested")
+    .append(
+        $("<button />")
+        .addClass("fv_field_remove_button")
+        .text("X").on(FVForm.button_event,function(event){
+            event.preventDefault();
+            remove_callback();
+            field.remove();
+        })
+    )
 }
 
 Field.prototype.init = function(){
@@ -141,13 +159,13 @@ Field.prototype.error = function(error) {
             )
         }
         if(field.container){
-            field.container.addClass("field_error");
+            field.container.addClass("fv_field_error");
         }
         field.show_error();
     } else {
         field.hide_error();
         if(field.container){
-            field.container.removeClass("field_error");
+            field.container.removeClass("fv_field_error");
         }
     }
 }

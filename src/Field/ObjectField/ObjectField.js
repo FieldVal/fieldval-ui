@@ -7,7 +7,7 @@ function ObjectField(name, options) {
 
     ObjectField.superConstructor.call(this, name);
 
-    field.element.addClass("object_field");
+    field.element.addClass("fv_object_field");
 
     field.fields_element = field.input_holder;
 

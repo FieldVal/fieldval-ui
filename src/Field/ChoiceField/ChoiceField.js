@@ -10,10 +10,10 @@ function ChoiceField(name, properties) {
     field.choices = field.properties.choices || [];
     field.allow_empty = field.properties.allow_empty || false;
 
-    field.element.addClass("choice_field");
+    field.element.addClass("fv_choice_field");
 
     field.select = $("<select/>")
-    .addClass("choice_input")
+    .addClass("fv_choice_input")
     .appendTo(field.input_holder);
 
     setTimeout(function(){

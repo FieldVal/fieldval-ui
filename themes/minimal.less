@@ -1,9 +1,9 @@
-.fieldval_ui_form{
+.fv_form{
 	width: auto;
 	display: block;
 	position: relative;
 
-	>.error_message{
+	>.fv_error_message{
 		background-color: #AA0000;
 		color: white;
 		font-size: 14px;
@@ -11,17 +11,18 @@
 		padding: 5px;
 	}
 
-	.field_container{
-		padding-top: 10px;
-		padding-bottom: 10px;
+	.fv_field_container{
+		position: relative;
+		padding-top: 5px;
+		padding-bottom: 5px;
 		box-sizing: border-box;
 
-		&.field_error{
-			>.field_title{
+		&.fv_field_error{
+			>.fv_field_title{
 				color: #AA0000;
 			}
-			>.field{
-				>.input_holder{
+			>.fv_field{
+				>.fv_input_holder{
 					>input{
 						border: 1px solid #AA0000;
 					}
@@ -32,16 +33,16 @@
 			}
 		}
 
-		>.field_title{
+		>.fv_field_title{
 			font-size: 16px;
 			display: inline-block;
 			padding-right: 5px;
 		}
 
-		>.field{
+		>.fv_field{
 			margin-top: 5px;
 
-			>.error_message{
+			>.fv_error_message{
 				background-color: #AA0000;
 				color: white;
 				font-size: 14px;
@@ -49,7 +50,7 @@
 				padding: 5px;
 			}
 
-			>.input_holder{
+			>.fv_input_holder{
 				box-sizing: border-box;
 				>input{
 					border-radius: 0px;
@@ -75,55 +76,114 @@
 	}
 }
 
-.display_field{
-	>.input_holder{
+.fv_display_field{
+	>.fv_input_holder{
 		>div{
 			font-size: 14px;
 		}
 	}
 }
 
-.text_field{
-	>.input_holder{
-		>textarea.text_input{
+.fv_text_field{
+	>.fv_input_holder{
+		>textarea.fv_text_input{
 			width: 100%;
 			font-size: 14px;
 		}
-		>input.text_input{
+		>input.fv_text_input{
 			width: 100%;
 			font-size: 14px;
 		}
 	}
-	&.view_mode{
-		>.input_holder{
-			>input.text_input{
+	&.fv_view_mode{
+		>.fv_input_holder{
+			>input.fv_text_input{
 				border: 1px solid #EEE;
 			}
-			>textarea.text_input{
+			>textarea.fv_text_input{
 				border: 1px solid #EEE;
 			}
 		}
 	}
 }
 
-.date_field{
-	>.input_holder{
-		>.date_input{
-			&.day_input{
+.fv_date_field{
+	>.fv_input_holder{
+		>.fv_date_input{
+			&.fv_day_input{
 				font-size: 14px;
 				width: 26%;
 				margin-right: 4%;
 			}
-			&.month_input{
+			&.fv_month_input{
 				font-size: 14px;
 				width: 26%;
 				margin-right: 4%;
 			}
-			&.year_input{
+			&.fv_year_input{
 				font-size: 14px;
 				width: 40%;
 			}
 			display: inline-block;
+		}
+	}
+}
+
+.fv_object_field{
+	>.fv_input_holder{
+		padding-left: 10px;
+	}
+}
+
+.fv_array_field{
+	>.fv_input_holder{
+		>.fv_nested_fields{
+			padding-left: 10px;
+			padding-bottom: 5px;
+
+			>.fv_field_container{
+				padding-top: 0px;
+				padding-bottom: 0px;
+				>.fv_field_title{
+					display: none;
+				}
+				>.fv_field{
+					&.fv_nested{
+						padding-left: 35px;
+					}
+
+					>.fv_field_remove_button{
+						-webkit-appearance: none;
+						cursor: pointer;
+						position: absolute;
+						top: 0px;
+						left: 0px;
+						background-color: #777;
+						color: white;
+						width: 30px;
+						height: 30px;
+						border: none;
+
+						&:active{
+							background-color: #AAA;
+							color: black;
+						}
+					}
+				}
+			}
+		}
+		>.fv_add_field_button{
+			-webkit-appearance: none;
+			cursor: pointer;
+			background-color: green;
+			color: white;
+			width: 30px;
+			height: 30px;
+			border: none;
+
+			&:active{
+				background-color: #0F0;
+			}
 		}
 	}
 }

@@ -5,7 +5,7 @@ function DisplayField(name, input_type) {
 
     DisplayField.superConstructor.call(this, name);
 
-    field.element.addClass("display_field");
+    field.element.addClass("fv_display_field");
 
     field.input = $("<div />")
     .appendTo(field.input_holder);

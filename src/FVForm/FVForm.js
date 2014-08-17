@@ -1,8 +1,8 @@
 function FVForm(fields){
 	var form = this;
 
-	form.element = $("<form />").addClass("fieldval_ui_form").append(
-		form.error_message = $("<div />").addClass("error_message").hide()
+	form.element = $("<form />").addClass("fv_form").append(
+		form.error_message = $("<div />").addClass("fv_error_message").hide()
 	).on("submit",function(event){
         event.preventDefault();
         form.submit();
@@ -15,6 +15,7 @@ function FVForm(fields){
 
 	form.submit_callbacks = [];
 }
+FVForm.button_event = 'click';
 
 FVForm.prototype.init = function(){
 	var form = this;

@@ -7,25 +7,25 @@ function DateField(name, format) {//format is currently unused
 
     DateField.superConstructor.call(this, name);
 
-    field.element.addClass("date_field");
+    field.element.addClass("fv_date_field");
 
     field.input_holder.append(
         field.day_input = $("<input type='number' />")
-        .addClass("day_input date_input")
+        .addClass("fv_day_input fv_date_input")
         .attr("placeholder", "DD")
         .on("keyup",function(){
             field.did_change()
         }),
 
         field.month_input = $("<input type='number' />")
-        .addClass("month_input date_input")
+        .addClass("fv_month_input fv_date_input")
         .attr("placeholder", "MM")
         .on("keyup",function(){
             field.did_change()
         }),
         
         field.year_input = $("<input type='number' />")
-        .addClass("year_input date_input")
+        .addClass("fv_year_input fv_date_input")
         .attr("placeholder", "YYYY")
         .on("keyup",function(){
             field.did_change()

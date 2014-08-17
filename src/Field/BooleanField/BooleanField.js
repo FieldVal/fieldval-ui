@@ -5,10 +5,10 @@ function BooleanField(name) {
 
     BooleanField.superConstructor.call(this, name);
 
-    field.element.addClass("choice_field");
+    field.element.addClass("fv_boolean_field");
 
     field.input = $("<input type='checkbox' />")
-    .addClass("boolean_input")
+    .addClass("fv_boolean_input")
     .on("change",function(){
         field.did_change()
     })
