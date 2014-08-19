@@ -3,9 +3,7 @@ fieldval_ui_extend(ArrayField, Field);
 function ArrayField(name, options) {
     var field = this;
 
-    field.options = options || {};
-
-    ArrayField.superConstructor.call(this, name);
+    ArrayField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_array_field");
 

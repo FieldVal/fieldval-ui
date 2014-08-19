@@ -3,9 +3,7 @@ fieldval_ui_extend(ObjectField, Field);
 function ObjectField(name, options) {
     var field = this;
 
-    field.options = options || {};
-
-    ObjectField.superConstructor.call(this, name);
+    ObjectField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_object_field");
 

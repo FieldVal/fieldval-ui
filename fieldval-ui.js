@@ -242,10 +242,12 @@ FVForm.prototype.val = function(set_val){
         return form;
     }
 }
-function Field(name) {
+function Field(name, options) {
     var field = this;
 
     field.name = name;
+    field.options = options || {};
+    console.log(field.options);
 
     field.show_on_form_flag = true;
     field.is_in_array = false;
@@ -255,6 +257,9 @@ function Field(name) {
     field.container = $("<div />").addClass("fv_field_container");
     field.element = $("<div />").addClass("fv_field");
     field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    if(field.options.description){
+        field.description_label = $("<div />").addClass("fv_field_description").text(field.options.description)
+    }
     field.input_holder = $("<div />").addClass("fv_input_holder")
     field.error_message = $("<div />").addClass("fv_error_message").hide()
 
@@ -307,6 +312,7 @@ Field.prototype.layout = function(){
 
     field.container.append(
         field.title,
+        field.description_label,
         field.element.append(
             field.input_holder,
             field.error_message
@@ -429,9 +435,7 @@ function TextField(name, options) {
         options = {};
     }
 
-    field.options = options;
-
-    TextField.superConstructor.call(this, name);
+    TextField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_text_field");
 
@@ -549,10 +553,10 @@ function PasswordField(name) {
 }
 fieldval_ui_extend(DisplayField, Field);
 
-function DisplayField(name, input_type) {
+function DisplayField(name, options) {
     var field = this;
 
-    DisplayField.superConstructor.call(this, name);
+    DisplayField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_display_field");
 
@@ -609,15 +613,13 @@ DisplayField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, properties) {
+function ChoiceField(name, options) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name, properties);
+    ChoiceField.superConstructor.call(this, name, options);
 
-    field.properties = properties;
-
-    field.choices = field.properties.choices || [];
-    field.allow_empty = field.properties.allow_empty || false;
+    field.choices = field.options.choices || [];
+    field.allow_empty = field.options.allow_empty || false;
 
     field.element.addClass("fv_choice_field");
 
@@ -634,8 +636,11 @@ function ChoiceField(name, properties) {
     field.choice_values = [];
 
     if(field.allow_empty){
-        var option = $("<option />").attr("value",null).text("")
-        field.select.append(option);
+        field.empty_option = $("<option />").attr({
+            "value": null
+        }).text(field.options.empty_message || "")
+
+        field.select.append(field.empty_option);
     }
 
     for(var i = 0; i < field.choices.length; i++){
@@ -697,19 +702,21 @@ ChoiceField.prototype.val = function(set_val) {
         if(set_val!=null){
             field.select.val(set_val);
         } else {
-            field.select.val(field.choice_values[0]);
+            if(field.allow_empty){
+                field.select.val(field.empty_option);
+            } else {
+                field.select.val(field.choice_values[0]);
+            }
         }
         return field;
     }
 }
 fieldval_ui_extend(DateField, Field);
 
-function DateField(name, format) {//format is currently unused
+function DateField(name, options) {//format is currently unused
     var field = this;
 
-    field.format = format;
-
-    DateField.superConstructor.call(this, name);
+    DateField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_date_field");
 
@@ -823,10 +830,10 @@ DateField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(BooleanField, Field);
 
-function BooleanField(name) {
+function BooleanField(name, options) {
     var field = this;
 
-    BooleanField.superConstructor.call(this, name);
+    BooleanField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_boolean_field");
 
@@ -877,9 +884,7 @@ fieldval_ui_extend(ObjectField, Field);
 function ObjectField(name, options) {
     var field = this;
 
-    field.options = options || {};
-
-    ObjectField.superConstructor.call(this, name);
+    ObjectField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_object_field");
 
@@ -991,9 +996,7 @@ fieldval_ui_extend(ArrayField, Field);
 function ArrayField(name, options) {
     var field = this;
 
-    field.options = options || {};
-
-    ArrayField.superConstructor.call(this, name);
+    ArrayField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_array_field");
 

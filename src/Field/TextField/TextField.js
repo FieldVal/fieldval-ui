@@ -14,9 +14,7 @@ function TextField(name, options) {
         options = {};
     }
 
-    field.options = options;
-
-    TextField.superConstructor.call(this, name);
+    TextField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_text_field");
 

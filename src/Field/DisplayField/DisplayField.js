@@ -1,9 +1,9 @@
 fieldval_ui_extend(DisplayField, Field);
 
-function DisplayField(name, input_type) {
+function DisplayField(name, options) {
     var field = this;
 
-    DisplayField.superConstructor.call(this, name);
+    DisplayField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_display_field");
 

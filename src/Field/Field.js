@@ -1,7 +1,9 @@
-function Field(name) {
+function Field(name, options) {
     var field = this;
 
     field.name = name;
+    field.options = options || {};
+    console.log(field.options);
 
     field.show_on_form_flag = true;
     field.is_in_array = false;
@@ -11,6 +13,9 @@ function Field(name) {
     field.container = $("<div />").addClass("fv_field_container");
     field.element = $("<div />").addClass("fv_field");
     field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    if(field.options.description){
+        field.description_label = $("<div />").addClass("fv_field_description").text(field.options.description)
+    }
     field.input_holder = $("<div />").addClass("fv_input_holder")
     field.error_message = $("<div />").addClass("fv_error_message").hide()
 
@@ -63,6 +68,7 @@ Field.prototype.layout = function(){
 
     field.container.append(
         field.title,
+        field.description_label,
         field.element.append(
             field.input_holder,
             field.error_message

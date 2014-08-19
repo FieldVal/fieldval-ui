@@ -30,6 +30,9 @@
   display: inline-block;
   padding-right: 5px;
 }
+.fv_form .fv_field_container > .fv_field_description {
+  font-size: 12px;
+}
 .fv_form .fv_field_container > .fv_field {
   margin-top: 5px;
 }

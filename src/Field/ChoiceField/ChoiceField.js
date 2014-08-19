@@ -1,14 +1,12 @@
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, properties) {
+function ChoiceField(name, options) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name, properties);
+    ChoiceField.superConstructor.call(this, name, options);
 
-    field.properties = properties;
-
-    field.choices = field.properties.choices || [];
-    field.allow_empty = field.properties.allow_empty || false;
+    field.choices = field.options.choices || [];
+    field.allow_empty = field.options.allow_empty || false;
 
     field.element.addClass("fv_choice_field");
 
@@ -25,8 +23,11 @@ function ChoiceField(name, properties) {
     field.choice_values = [];
 
     if(field.allow_empty){
-        var option = $("<option />").attr("value",null).text("")
-        field.select.append(option);
+        field.empty_option = $("<option />").attr({
+            "value": null
+        }).text(field.options.empty_message || "")
+
+        field.select.append(field.empty_option);
     }
 
     for(var i = 0; i < field.choices.length; i++){
@@ -88,7 +89,11 @@ ChoiceField.prototype.val = function(set_val) {
         if(set_val!=null){
             field.select.val(set_val);
         } else {
-            field.select.val(field.choice_values[0]);
+            if(field.allow_empty){
+                field.select.val(field.empty_option);
+            } else {
+                field.select.val(field.choice_values[0]);
+            }
         }
         return field;
     }
