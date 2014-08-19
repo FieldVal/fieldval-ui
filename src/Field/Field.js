@@ -3,7 +3,6 @@ function Field(name, options) {
 
     field.name = name;
     field.options = options || {};
-    console.log(field.options);
 
     field.show_on_form_flag = true;
     field.is_in_array = false;
