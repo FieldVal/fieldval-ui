@@ -1,8 +1,9 @@
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
-<script src="bower_components/fieldval/fieldval.min.js"></script>
-<script src="bower_components/fieldval-basicval/fieldval-basicval.min.js"></script>
-<script src="fieldval-ui.min.js"></script>
+<script src="bower_components/fieldval/fieldval.js"></script>
+<script src="bower_components/fieldval-basicval/fieldval-basicval.js"></script>
+<script src="bower_components/fieldval-dateval/fieldval-dateval.js"></script>
+<script src="fieldval-ui.js"></script>
 
 <!-- Apply the "minimal" theme to FieldVal-UI -->
 <link rel="stylesheet" type="text/css" href="themes/minimal.css">
@@ -24,6 +25,7 @@ $(document).ready(function(){
 		["m","Male"],
 		["f","Female"]
 	];
+	var date_format = "yyyy/MM/dd hh:mm:ss";
 
 	Field.prototype.show_error = function(){
 		var field = this;
@@ -32,7 +34,9 @@ $(document).ready(function(){
 
 	form.add_field("first_name", new TextField("First Name"));
 	form.add_field("last_name", new TextField("Last Name"));
-	form.add_field("date_of_birth", new DateField("Date of Birth"));
+	form.add_field("join_date", new DateField("Join Date", {
+		format: date_format
+	}));
 	form.add_field("gender", new ChoiceField("Gender",{
 		choices: gender_choices
 	}));
@@ -55,8 +59,8 @@ $(document).ready(function(){
 	form.val({
 		first_name: "Marcus",
 		last_name: "Longmuir",
-		date_of_birth: "1992-05-11",
-		gender: "f",
+		join_date: "2014/08/26 13:45:29",
+		gender: "m",
 		address: {
 			line_1: "Flat 47"
 		}
@@ -67,7 +71,9 @@ $(document).ready(function(){
 		var validator = new FieldVal(object);
 		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5));
 		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
-		var date_of_birth = validator.get("date_of_birth",BasicVal.string(true));
+		var join_date = validator.get("join_date",BasicVal.string(true), DateVal.date(date_format, {
+			emit: DateVal.EMIT_DATE//emits the value as a Date object
+		}));
 		var gender = validator.get("gender",BasicVal.one_of(gender_choices));
 		var email = validator.get("email",BasicVal.string(true), BasicVal.email());
 		var bio = validator.get("bio",BasicVal.string(true));
