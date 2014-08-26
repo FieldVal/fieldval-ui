@@ -1,5 +1,10 @@
 {
-  "name": "fieldval-ui",
-  "version": "0.0.1",
-  "private": true
+	"name": "fieldval-ui",
+	"version": "0.0.1",
+	"private": true,
+	"devDependencies": {
+		"fieldval": "FieldVal/fieldval-js",
+		"fieldval-basicval": "FieldVal/fieldval-basicval-js",
+		"fieldval-dateval": "FieldVal/fieldval-dateval-js"
+	}
 }

@@ -3,46 +3,72 @@ fieldval_ui_extend(DateField, Field);
 function DateField(name, options) {//format is currently unused
     var field = this;
 
+    if(typeof DateVal === 'undefined'){
+        console.error("DateField requires fieldval-dateval-js");
+        return;
+    }
+
     DateField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_date_field");
 
-    field.input_holder.append(
-        field.day_input = $("<input type='number' />")
-        .addClass("fv_day_input fv_date_input")
-        .attr("placeholder", "DD")
-        .on("keyup",function(){
-            field.did_change()
-        }),
+    field.format_string = field.options.format || "yyyy-MM-dd";
 
-        field.month_input = $("<input type='number' />")
-        .addClass("fv_month_input fv_date_input")
-        .attr("placeholder", "MM")
-        .on("keyup",function(){
-            field.did_change()
-        }),
-        
-        field.year_input = $("<input type='number' />")
-        .addClass("fv_year_input fv_date_input")
-        .attr("placeholder", "YYYY")
+    var format_error = DateVal.date_format().check(field.format_string, function(emit_format_array){
+        field.format_array = emit_format_array;
+    })
+    
+    if(format_error){
+        console.error(format_error.error_message);
+        return;
+    }
+
+    field.inputs = [];
+
+    for(var i = 0; i < field.format_array.length; i++){
+
+        var component = field.format_array[i];
+        var component_value = DateVal.date_components[component];
+
+        field.add_element_from_component(component, component_value);
+    }
+}
+
+DateField.prototype.add_element_from_component = function(component, component_value){
+    var field = this;
+
+    if(component_value===0){
+        var component_string = component;
+        field.inputs.push(null);
+        field.input_holder.append(
+            $("<div />").addClass("fv_date_separator").text(component_string)
+        )
+    } else {
+        var component_max_length = component_value[component_value.length-1];
+        var input = $("<input />").attr({
+            "placeholder": component,
+            "size": component_max_length,
+            "maxlength": component_max_length
+        })
+        .addClass("fv_date_input")
         .on("keyup",function(){
             field.did_change()
         })
-    )
 
+        input.blur(function(){
+            var input_val = input.val();
+            var padded = DateField.pad_to_valid(input_val, component_value);
+            input.val(padded);
+        })
+
+        field.inputs.push(input);
+        field.input_holder.append(input)
+    }
 }
 
 DateField.prototype.icon = function(params) {
     var field = this;
 
-    // var css_props = {
-    //     'background-image': "url(" + params.background + ")",
-    //     'background-position': params.position,
-    //     'background-repeat': "no-repeat",
-    //     'padding-left': params.width + "px"
-    // }
-
-    // field.input.css(css_props);
     return field;
 }
 
@@ -57,32 +83,64 @@ DateField.prototype.change_name = function(name) {
 
 DateField.prototype.disable = function() {
     var field = this;
-    field.day_input.attr("disabled", "disabled");
-    field.month_input.attr("disabled", "disabled");
-    field.year_input.attr("disabled", "disabled");
+    for(var i = 0; i < field.inputs; i++){
+        var input = field.inputs[i];
+        if(input){
+            input.attr("disabled", "disabled");
+        }
+    }
     return field;
 }
 
 DateField.prototype.enable = function() {
     var field = this;
-    field.day_input.attr("disabled", null);
-    field.month_input.attr("disabled", null);
-    field.year_input.attr("disabled", null);
+    for(var i = 0; i < field.inputs; i++){
+        var input = field.inputs[i];
+        if(input){
+            input.attr("disabled", null);
+        }
+    }
     return field;
 }
 
 DateField.prototype.focus = function() {
     var field = this;
-    field.day_input.focus();
+    
+    var input = field.inputs[0];
+    if(input){
+        input.blur();
+    }
+
     return field;
 }
 
 DateField.prototype.blur = function() {
     var field = this;
-    field.day_input.blur();
-    field.month_input.blur();
-    field.year_input.blur();
+    for(var i = 0; i < field.inputs; i++){
+        var input = field.inputs[i];
+        if(input){
+            input.blur();
+        }
+    }
     return field;
+}
+
+DateField.pad_to_valid = function(value, allowed){
+    var field = this;
+
+    var appended = false;
+    for(var k = 0; k < allowed.length; k++){
+        var allowed_length = allowed[k];
+
+        if(value.length <= allowed_length){
+            var diff = allowed_length - value.length;
+            for(var m = 0; m < diff; m++){
+                value = "0"+value;
+            }
+            return value;
+        }
+    }
+    return value;
 }
 
 DateField.prototype.val = function(set_val) {
@@ -90,26 +148,46 @@ DateField.prototype.val = function(set_val) {
 
     if (arguments.length===0) {
 
-        var day = field.day_input.val();
-        var month = field.month_input.val();
-        var year = field.year_input.val();
+        var date_string = "";
+        for(var i = 0; i < field.format_array.length; i++){
+            var component = field.format_array[i];
+            var component_value = DateVal.date_components[component];
+            if(component_value===0){
+                date_string+=component;
+            } else {
+                var input = field.inputs[i];
+                var input_val = input.val().toString();
 
-        //TODO Use field.format here
-        var date_string = year+"-"+month+"-"+day;
+                date_string += DateField.pad_to_valid(input_val, component_value);
+            }
+        }
 
         return date_string;
     } else {
 
         if(set_val!=null){
 
-            //TODO Use field.format here
-            var day = set_val.substring(8,10);
-            var month = set_val.substring(5,7);
-            var year = set_val.substring(0,4);
+            var as_components;
+            var validation = DateVal.date(field.format_string, {
+                "emit": DateVal.EMIT_COMPONENT_ARRAY
+            }).check(set_val, function(emitted){
+                as_components = emitted;
+            })
 
-            field.day_input.val(day);
-            field.month_input.val(month);
-            field.year_input.val(year);
+            if(validation){
+                console.error("Invalid format passed to .val of DateField");
+            }
+
+            for(var i = 0; i < field.format_array.length; i++){
+                var component = field.format_array[i];
+                var component_value = DateVal.date_components[component];
+                if(component_value===0){
+                    date_string+=component;
+                } else {
+                    var input = field.inputs[i];
+                    input.val(as_components[i]);
+                }
+            }
         }
 
         return field;
