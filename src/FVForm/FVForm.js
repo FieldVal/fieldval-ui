@@ -226,10 +226,12 @@ FVForm.prototype.val = function(set_val){
 		}
 		return output;
     } else {
-    	for(var i in form.fields){
-    		var field = form.fields[i];
-    		field.val(set_val[i]);
-    	}
+    	if(set_val){
+	    	for(var i in form.fields){
+	    		var field = form.fields[i];
+	    		field.val(set_val[i]);
+	    	}
+	    }
         return form;
     }
 }
