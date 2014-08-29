@@ -11,6 +11,18 @@
 		padding: 5px;
 	}
 
+	&.rows{
+		.fv_field_container{
+			>.fv_field_title{
+				width: 20%;
+			}
+			>.fv_field{
+				width: 80%;
+				display: inline-block;
+			}
+		}
+	}
+
 	.fv_field_container{
 		position: relative;
 		padding-top: 5px;
@@ -37,6 +49,7 @@
 			font-size: 16px;
 			display: inline-block;
 			padding-right: 5px;
+			box-sizing: border-box;
 		}
 
 		>.fv_field_description{
@@ -45,6 +58,7 @@
 
 		>.fv_field{
 			margin-top: 5px;
+			box-sizing: border-box;
 
 			>.fv_error_message{
 				background-color: #AA0000;

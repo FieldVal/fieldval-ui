@@ -5,14 +5,15 @@ function ArrayField(name, options) {
 
     ArrayField.superConstructor.call(this, name, options);
 
-    field.element.addClass("fv_array_field");
+    field.fields = [];
 
+    field.add_field_buttons = [];
+
+    field.element.addClass("fv_array_field");
     field.input_holder.append(
         field.fields_element = $("<div />").addClass("fv_nested_fields"),
         field.create_add_field_button()
     )
-
-    field.fields = [];
 
     console.log(field.input_holder);
 }
@@ -20,10 +21,14 @@ function ArrayField(name, options) {
 ArrayField.prototype.create_add_field_button = function(){
     var field = this;
 
-    return $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
+    var add_field_button = $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
         event.preventDefault();
         field.new_field(field.fields.length);
-    })
+    });
+
+    field.add_field_buttons.push(add_field_button);
+
+    return add_field_button;
 }
 
 ArrayField.prototype.new_field = function(index){
@@ -57,6 +62,11 @@ ArrayField.prototype.view_mode = function(){
     for(var i in field.fields){
         field.fields[i].view_mode();
     }
+
+    for(var i = 0; i < field.add_field_buttons.length; i++){
+        var add_field_button = field.add_field_buttons[i];
+        add_field_button.hide()
+    }
 }
 
 ArrayField.prototype.edit_mode = function(){
@@ -64,6 +74,11 @@ ArrayField.prototype.edit_mode = function(){
 
     for(var i in field.fields){
         field.fields[i].edit_mode();
+    }
+
+    for(var i = 0; i < field.add_field_buttons.length; i++){
+        var add_field_button = field.add_field_buttons[i];
+        add_field_button.show()
     }
 }
 
