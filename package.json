@@ -1,7 +1,9 @@
 {
     "name": "fieldval-ui",
     "depedencies" : {
-        "fieldval" : "*"
+        "fieldval": "FieldVal/fieldval-js",
+        "fieldval-basicval": "FieldVal/fieldval-basicval-js",
+        "fieldval-dateval": "FieldVal/fieldval-dateval-js"
     },
     "devDependencies": {
         "gulp-imports" : "git+ssh://git@github.com/MarcusLongmuir/gulp-imports.git",
@@ -11,6 +13,7 @@
         "gulp-watch": "^0.6.2",
         "gulp-rename": "*",
         "gulp-uglify": "^0.2.1",
-        "gulp-concat": "^2.2.0"
+        "gulp-concat": "^2.2.0",
+        "sa-docs-to-json": "SuperAwesomeLtd/sa-docs-to-json"
     }
 }

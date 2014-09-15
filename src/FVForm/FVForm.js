@@ -6,6 +6,7 @@ function FVForm(fields){
 	).on("submit",function(event){
         event.preventDefault();
         form.submit();
+        return false;
 	});
 
 	form.fields = fields || {};

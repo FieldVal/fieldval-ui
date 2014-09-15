@@ -57,7 +57,7 @@ DateField.prototype.add_element_from_component = function(component, component_v
 
         input.blur(function(){
             var input_val = input.val();
-            var padded = DateField.pad_to_valid(input_val, component_value);
+            var padded = DateVal.pad_to_valid(input_val, component_value);
             input.val(padded);
         })
 
@@ -125,24 +125,6 @@ DateField.prototype.blur = function() {
     return field;
 }
 
-DateField.pad_to_valid = function(value, allowed){
-    var field = this;
-
-    var appended = false;
-    for(var k = 0; k < allowed.length; k++){
-        var allowed_length = allowed[k];
-
-        if(value.length <= allowed_length){
-            var diff = allowed_length - value.length;
-            for(var m = 0; m < diff; m++){
-                value = "0"+value;
-            }
-            return value;
-        }
-    }
-    return value;
-}
-
 DateField.prototype.val = function(set_val) {
     var field = this;
 
@@ -158,7 +140,7 @@ DateField.prototype.val = function(set_val) {
                 var input = field.inputs[i];
                 var input_val = input.val().toString();
 
-                date_string += DateField.pad_to_valid(input_val, component_value);
+                date_string += DateVal.pad_to_valid(input_val, component_value);
             }
         }
 
@@ -167,7 +149,14 @@ DateField.prototype.val = function(set_val) {
 
         if(set_val!=null){
 
-            var as_components;
+            if(typeof set_val === 'number'){
+                //Allows using a timestamp as an input value
+                set_val = DateVal.date_with_format_array(new Date(set_val), field.format_array);
+            } else if(set_val instanceof Date){
+                //Allows using a Date as an input value
+                set_val = DateVal.date_with_format_array(set_val, field.format_array);
+            }
+
             var validation = DateVal.date(field.format_string, {
                 "emit": DateVal.EMIT_COMPONENT_ARRAY
             }).check(set_val, function(emitted){

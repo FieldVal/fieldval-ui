@@ -1,8 +1,8 @@
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
-<script src="bower_components/fieldval/fieldval.js"></script>
-<script src="bower_components/fieldval-basicval/fieldval-basicval.js"></script>
-<script src="bower_components/fieldval-dateval/fieldval-dateval.js"></script>
+<script src="node_modules/fieldval/fieldval.js"></script>
+<script src="node_modules/fieldval-basicval/fieldval-basicval.js"></script>
+<script src="node_modules/fieldval-dateval/fieldval-dateval.js"></script>
 <script src="fieldval-ui.js"></script>
 
 <!-- Apply the "minimal" theme to FieldVal-UI -->
@@ -59,7 +59,9 @@ $(document).ready(function(){
 	form.val({
 		first_name: "Marcus",
 		last_name: "Longmuir",
-		join_date: "2014/08/26 13:45:29",
+		// join_date: "2014/08/26 13:45:29",//Use a formatted string
+		// join_date: 1410358755277,//Use a timestamp
+		join_date: new Date(),//Use a Date object (current time)
 		gender: "m",
 		address: {
 			line_1: "Flat 47"
