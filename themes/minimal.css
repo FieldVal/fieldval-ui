@@ -12,6 +12,7 @@
 }
 .fv_form.rows .fv_field_container > .fv_field_title {
   width: 20%;
+  vertical-align: top;
 }
 .fv_form.rows .fv_field_container > .fv_field {
   width: 80%;

@@ -880,6 +880,7 @@ DateField.prototype.val = function(set_val) {
 
             if(validation){
                 console.error("Invalid format passed to .val of DateField");
+                return;
             }
 
             for(var i = 0; i < field.format_array.length; i++){
