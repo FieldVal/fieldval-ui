@@ -81,6 +81,7 @@
 }
 .fv_text_field > .fv_input_holder > textarea.fv_text_input {
   width: 100%;
+  box-sizing: border-box;
   font-size: 14px;
 }
 .fv_text_field > .fv_input_holder > input.fv_text_input {
