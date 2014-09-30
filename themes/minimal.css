@@ -3,13 +3,6 @@
   display: block;
   position: relative;
 }
-.fv_form > .fv_error_message {
-  background-color: #AA0000;
-  color: white;
-  font-size: 14px;
-  display: inline-block;
-  padding: 5px;
-}
 .fv_form.rows .fv_field_container > .fv_field_title {
   width: 20%;
   vertical-align: top;
@@ -18,45 +11,38 @@
   width: 80%;
   display: inline-block;
 }
-.fv_form .fv_field_container {
+.fv_field_container {
   position: relative;
   padding-top: 5px;
   padding-bottom: 5px;
   box-sizing: border-box;
 }
-.fv_form .fv_field_container.fv_field_error > .fv_field_title {
+.fv_field_container.fv_field_error > .fv_field_title {
   color: #AA0000;
 }
-.fv_form .fv_field_container.fv_field_error > .fv_field > .fv_input_holder > input {
+.fv_field_container.fv_field_error > .fv_field > .fv_input_holder > input {
   border: 1px solid #AA0000;
 }
-.fv_form .fv_field_container.fv_field_error > .fv_field > .fv_input_holder > textarea {
+.fv_field_container.fv_field_error > .fv_field > .fv_input_holder > textarea {
   border: 1px solid #AA0000;
 }
-.fv_form .fv_field_container > .fv_field_title {
+.fv_field_container > .fv_field_title {
   font-size: 16px;
   display: inline-block;
   padding-right: 5px;
   box-sizing: border-box;
 }
-.fv_form .fv_field_container > .fv_field_description {
+.fv_field_container > .fv_field_description {
   font-size: 12px;
 }
-.fv_form .fv_field_container > .fv_field {
+.fv_field {
   margin-top: 5px;
   box-sizing: border-box;
 }
-.fv_form .fv_field_container > .fv_field > .fv_error_message {
-  background-color: #AA0000;
-  color: white;
-  font-size: 14px;
-  display: inline-block;
-  padding: 5px;
-}
-.fv_form .fv_field_container > .fv_field > .fv_input_holder {
+.fv_field > .fv_input_holder {
   box-sizing: border-box;
 }
-.fv_form .fv_field_container > .fv_field > .fv_input_holder > input {
+.fv_field > .fv_input_holder > input {
   border-radius: 0px;
   -webkit-border-radius: 0px;
   padding-left: 5px;
@@ -67,7 +53,7 @@
   line-height: 30px;
   border: 1px solid #999;
 }
-.fv_form .fv_field_container > .fv_field > .fv_input_holder > textarea {
+.fv_field > .fv_input_holder > textarea {
   border-radius: 0px;
   -webkit-border-radius: 0px;
   margin: 0px;
@@ -76,12 +62,18 @@
   box-sizing: border-box;
   border: 1px solid #999;
 }
+.fv_error_message {
+  background-color: #AA0000;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+}
 .fv_display_field > .fv_input_holder > div {
   font-size: 14px;
 }
 .fv_text_field > .fv_input_holder > textarea.fv_text_input {
   width: 100%;
-  box-sizing: border-box;
   font-size: 14px;
 }
 .fv_text_field > .fv_input_holder > input.fv_text_input {

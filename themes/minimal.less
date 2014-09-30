@@ -3,14 +3,6 @@
 	display: block;
 	position: relative;
 
-	>.fv_error_message{
-		background-color: #AA0000;
-		color: white;
-		font-size: 14px;
-		display: inline-block;
-		padding: 5px;
-	}
-
 	&.rows{
 		.fv_field_container{
 			>.fv_field_title{
@@ -23,77 +15,77 @@
 			}
 		}
 	}
+}
 
-	.fv_field_container{
-		position: relative;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		box-sizing: border-box;
+.fv_field_container{
+	position: relative;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	box-sizing: border-box;
 
-		&.fv_field_error{
-			>.fv_field_title{
-				color: #AA0000;
-			}
-			>.fv_field{
-				>.fv_input_holder{
-					>input{
-						border: 1px solid #AA0000;
-					}
-					>textarea{
-						border: 1px solid #AA0000;
-					}
-				}
-			}
-		}
-
+	&.fv_field_error{
 		>.fv_field_title{
-			font-size: 16px;
-			display: inline-block;
-			padding-right: 5px;
-			box-sizing: border-box;
+			color: #AA0000;
 		}
-
-		>.fv_field_description{
-			font-size: 12px;
-		}
-
 		>.fv_field{
-			margin-top: 5px;
-			box-sizing: border-box;
-
-			>.fv_error_message{
-				background-color: #AA0000;
-				color: white;
-				font-size: 14px;
-				display: inline-block;
-				padding: 5px;
-			}
-
 			>.fv_input_holder{
-				box-sizing: border-box;
 				>input{
-					border-radius: 0px;
-					-webkit-border-radius: 0px;
-					padding-left: 5px;
-					padding-right: 5px;
-					box-sizing: border-box;
-					margin: 0px;
-					height: 30px;
-					line-height: 30px;
-					border: 1px solid #999;
+					border: 1px solid #AA0000;
 				}
 				>textarea{
-					border-radius: 0px;
-					-webkit-border-radius: 0px;
-					margin: 0px;
-					resize: none;
-					min-height: 100px;
-					box-sizing: border-box;
-					border: 1px solid #999;
+					border: 1px solid #AA0000;
 				}
 			}
 		}
 	}
+
+	>.fv_field_title{
+		font-size: 16px;
+		display: inline-block;
+		padding-right: 5px;
+		box-sizing: border-box;
+	}
+
+	>.fv_field_description{
+		font-size: 12px;
+	}
+}
+
+.fv_field{
+	margin-top: 5px;
+	box-sizing: border-box;
+
+	>.fv_input_holder{
+		box-sizing: border-box;
+		>input{
+			border-radius: 0px;
+			-webkit-border-radius: 0px;
+			padding-left: 5px;
+			padding-right: 5px;
+			box-sizing: border-box;
+			margin: 0px;
+			height: 30px;
+			line-height: 30px;
+			border: 1px solid #999;
+		}
+		>textarea{
+			border-radius: 0px;
+			-webkit-border-radius: 0px;
+			margin: 0px;
+			resize: none;
+			min-height: 100px;
+			box-sizing: border-box;
+			border: 1px solid #999;
+		}
+	}
+}
+
+.fv_error_message{
+	background-color: #AA0000;
+	color: white;
+	font-size: 14px;
+	display: inline-block;
+	padding: 5px;
 }
 
 .fv_display_field{
@@ -108,7 +100,6 @@
 	>.fv_input_holder{
 		>textarea.fv_text_input{
 			width: 100%;
-			box-sizing: border-box;
 			font-size: 14px;
 		}
 		>input.fv_text_input{
