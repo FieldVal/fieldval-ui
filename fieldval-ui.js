@@ -449,12 +449,29 @@ function TextField(name, options) {
         field.input = $("<input type='"+field.input_type+"' />")
     }
     
+    field.enter_callbacks = [];
+
     field.input.addClass("fv_text_input")
     .attr("placeholder", name)
+    .on("keydown",function(e){
+        if(e.keyCode===13){
+            for(var i = 0; i < field.enter_callbacks.length; i++){
+                field.enter_callbacks[i](e);
+            }
+        }
+    })
     .on("keyup",function(){
         field.did_change()
     })
     .appendTo(field.input_holder);
+}
+
+TextField.prototype.on_enter = function(callback){
+    var field = this;
+
+    field.enter_callbacks.push(callback);
+    
+    return field;
 }
 
 TextField.prototype.view_mode = function(){
