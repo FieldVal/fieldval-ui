@@ -45,6 +45,11 @@ BooleanField.prototype.val = function(set_val) {
     if (arguments.length===0) {
         return field.input.is(":checked")
     } else {
+        if(set_val==="true"){
+            set_val = true;
+        } else if(set_val==="false"){
+            set_val = false;
+        }
        	field.input.prop('checked', set_val);
         return field;
     }
