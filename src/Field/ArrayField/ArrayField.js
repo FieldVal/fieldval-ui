@@ -18,15 +18,14 @@ function ArrayField(name, options) {
 
     field.input_holder.nestable({
         rootClass: 'fv_input_holder',
-        itemClass: 'fv_field_container',
-        handleClass: 'fv_field_move_button',
-        itemNodeName: 'div.fv_field_container',
+        itemClass: 'fv_field',
+        handleClass: 'fv_field_move_handle',
+        itemNodeName: 'div.fv_field',
         listNodeName: 'div.fv_nested_fields',
         collapseBtnHTML: '',
         expandBtnHTML: '',
         maxDepth: 1
     }).on('change', function(e){
-        console.log("CHANGE CALLED ",e);
         field.reorder();
     });
 }
@@ -34,7 +33,6 @@ function ArrayField(name, options) {
 ArrayField.prototype.reorder = function(){
     var field = this;
 
-    console.log("ArrayField.reorder", field.fields_element);
     field.fields = [];
 
     var children = field.fields_element.children();
@@ -69,10 +67,8 @@ ArrayField.prototype.add_field = function(name, inner_field){
     inner_field.in_array(function(){
         field.remove_field(inner_field);
     });
-    inner_field.container.appendTo(field.fields_element);
-    console.log("pushing inner_field ",inner_field);
+    inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
-    console.log(field.fields);
 
     field.input_holder.nestable('init');
 }
@@ -197,11 +193,8 @@ ArrayField.prototype.error = function(error) {
 ArrayField.prototype.val = function(set_val) {
     var field = this;
 
-    console.log("ArrayField.val ",set_val);
-
     if (arguments.length===0) {
     	var compiled = [];
-        console.log(field.fields);
     	for(var i=0; i<field.fields.length; i++){
     		var inner_field = field.fields[i];
             var value = inner_field.val();

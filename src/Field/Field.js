@@ -9,8 +9,7 @@ function Field(name, options) {
 
     field.on_change_callbacks = [];
 
-    field.container = $("<div />").addClass("fv_field_container").data("field",field);
-    field.element = $("<div />").addClass("fv_field");
+    field.element = $("<div />").addClass("fv_field").data("field",field);
     field.title = $("<div />").addClass("fv_field_title").text(field.name)
     if(field.options.description){
         field.description_label = $("<div />").addClass("fv_field_description").text(field.options.description)
@@ -26,15 +25,15 @@ Field.prototype.in_array = function(remove_callback){
 
     field.is_in_array = true;
 
-    field.container.addClass("fv_nested")
+    field.element.addClass("fv_nested")
     .append(
-        field.move_button = $("<div />")
-        .addClass("fv_field_move_button")
+        field.move_handle = $("<div />")
+        .addClass("fv_field_move_handle")
         .html("&#8645;")
     ,
         field.remove_button = $("<button />")
         .addClass("fv_field_remove_button")
-        .html("&#10062;").on(FVForm.button_event,function(event){
+        .html("&#10060;").on(FVForm.button_event,function(event){
             event.preventDefault();
             remove_callback();
             field.remove();
@@ -49,7 +48,7 @@ Field.prototype.init = function(){
 Field.prototype.remove = function(){
     var field = this;
 
-    field.container.remove();
+    field.element.remove();
 }
 
 Field.prototype.view_mode = function(){
@@ -57,14 +56,11 @@ Field.prototype.view_mode = function(){
 
     if(field.is_in_array){
         field.remove_button.hide();
-        field.move_button.hide();
+        field.move_handle.hide();
     }
 
     field.element.addClass("fv_view_mode")
     field.element.removeClass("fv_edit_mode")
-
-    field.container.addClass("fv_view_mode")
-    field.container.removeClass("fv_edit_mode")
 
     console.log("view_mode ",field);
 }
@@ -74,14 +70,11 @@ Field.prototype.edit_mode = function(){
 
     if(field.is_in_array){
         field.remove_button.show();
-        field.move_button.show();
+        field.move_handle.show();
     }
 
     field.element.addClass("fv_edit_mode")
     field.element.removeClass("fv_view_mode")
-
-    field.container.addClass("fv_edit_mode")
-    field.container.removeClass("fv_view_mode")
 
     console.log("edit_mode ",field);
 }
@@ -95,13 +88,11 @@ Field.prototype.change_name = function(name) {
 Field.prototype.layout = function(){
     var field = this;
 
-    field.container.append(
+    field.element.append(
         field.title,
         field.description_label,
-        field.element.append(
-            field.input_holder,
-            field.error_message
-        )
+        field.input_holder,
+        field.error_message
     )
 }
 
@@ -193,14 +184,14 @@ Field.prototype.error = function(error) {
                 $("<span />").text(error.error_message)
             )
         }
-        if(field.container){
-            field.container.addClass("fv_field_error");
+        if(field.element){
+            field.element.addClass("fv_field_error");
         }
         field.show_error();
     } else {
         field.hide_error();
-        if(field.container){
-            field.container.removeClass("fv_field_error");
+        if(field.element){
+            field.element.removeClass("fv_field_error");
         }
     }
 }

@@ -4,20 +4,23 @@
 	position: relative;
 
 	&.rows{
-		.fv_field_container{
+		.fv_field{
 			>.fv_field_title{
 				width: 20%;
 				vertical-align: top;
 			}
-			>.fv_field{
+			>.fv_input_holder{
 				width: 80%;
 				display: inline-block;
+			}
+			>.fv_error_message{
+				margin-left: 20%;
 			}
 		}
 	}
 }
 
-.fv_field_container{
+.fv_field{
 	position: relative;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -27,14 +30,12 @@
 		>.fv_field_title{
 			color: #AA0000;
 		}
-		>.fv_field{
-			>.fv_input_holder{
-				>input{
-					border: 1px solid #AA0000;
-				}
-				>textarea{
-					border: 1px solid #AA0000;
-				}
+		>.fv_input_holder{
+			>input{
+				border: 1px solid #AA0000;
+			}
+			>textarea{
+				border: 1px solid #AA0000;
 			}
 		}
 	}
@@ -56,11 +57,14 @@
 		>.fv_field_title{
 			display: none;
 		}
-		>.fv_field{
+		>.fv_input_holder{
 			padding-right: 35px;
 			padding-left: 35px;
 		}
-		>.fv_field_move_button{
+		>.fv_error_message{
+			margin-left: 35px;
+		}
+		>.fv_field_move_handle{
 			cursor: pointer;
 			position: absolute;
 			top: 0px;
@@ -84,6 +88,7 @@
 			color: white;
 			font-size: 30px;
 			line-height: 30px;
+			text-align: center;
 			width: 30px;
 			height: 30px;
 			border: none;
@@ -123,32 +128,28 @@
 	z-index: 9999; 
 }
 
-.fv_field{
+.fv_input_holder{
 	margin-top: 5px;
 	box-sizing: border-box;
-
-	>.fv_input_holder{
+	>input{
+		border-radius: 0px;
+		-webkit-border-radius: 0px;
+		padding-left: 5px;
+		padding-right: 5px;
 		box-sizing: border-box;
-		>input{
-			border-radius: 0px;
-			-webkit-border-radius: 0px;
-			padding-left: 5px;
-			padding-right: 5px;
-			box-sizing: border-box;
-			margin: 0px;
-			height: 30px;
-			line-height: 30px;
-			border: 1px solid #999;
-		}
-		>textarea{
-			border-radius: 0px;
-			-webkit-border-radius: 0px;
-			margin: 0px;
-			resize: none;
-			min-height: 100px;
-			box-sizing: border-box;
-			border: 1px solid #999;
-		}
+		margin: 0px;
+		height: 30px;
+		line-height: 30px;
+		border: 1px solid #999;
+	}
+	>textarea{
+		border-radius: 0px;
+		-webkit-border-radius: 0px;
+		margin: 0px;
+		resize: none;
+		min-height: 100px;
+		box-sizing: border-box;
+		border: 1px solid #999;
 	}
 }
 

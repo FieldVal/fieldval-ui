@@ -45,7 +45,7 @@ $(document).ready(function(){
 
 	var array_field = new ArrayField("Tags");
 	array_field.new_field = function(index){
-		var tag_field = new ChoiceField("Gender",{
+		var tag_field = new TextField("Tag",{
 		choices: gender_choices
 	})
 		array_field.add_field(null,tag_field);
@@ -65,24 +65,6 @@ $(document).ready(function(){
 		),
 		output = $("<pre />")
 	)
-
-	form.val({
-		first_name: "Marcus",
-		last_name: "Longmuir",
-		tags: ["m","m","f"],
-		// join_date: "2014/08/26 13:45:29",//Use a formatted string
-		// join_date: 10000000000,//Use a timestamp
-		join_date: new Date(1412934996000),//Use a Date object (current time)
-		gender: "m",
-		bio: "This is the bio",
-		email: "john@example.com",
-		address: {
-			house_number: 35,
-			line_1: "A Building",
-			line_2: "Some Street",
-			line_3: "Somewhere"
-		}
-	})
 
 	form.on_submit(function(object){
 

@@ -93,7 +93,7 @@ FVForm.prototype.submit = function(){
 FVForm.prototype.add_field = function(name, field){
 	var form = this;
 
-    field.container.appendTo(form.fields_element);
+    field.element.appendTo(form.fields_element);
     form.fields[name] = field;
 
     return form;
@@ -104,7 +104,7 @@ FVForm.prototype.remove_field = function(name){
 
     var field = form.fields[name];
     if(field){
-    	field.remove();//Field class will perform field.container.remove()
+    	field.remove();//Field class will perform field.element.remove()
     	delete form.fields[name];
     }
 }
