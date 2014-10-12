@@ -1,4 +1,4 @@
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.js"></script>
 
 <script src="node_modules/fieldval/fieldval.js"></script>
 <script src="node_modules/fieldval-basicval/fieldval-basicval.js"></script>
@@ -43,8 +43,18 @@ $(document).ready(function(){
 	form.add_field("email", new TextField("Email"));
 	form.add_field("bio", new TextField("Bio","textarea"));
 
+	var array_field = new ArrayField("Tags");
+	array_field.new_field = function(index){
+		var tag_field = new ChoiceField("Gender",{
+		choices: gender_choices
+	})
+		array_field.add_field(null,tag_field);
+		return tag_field;
+	}
+	form.add_field("tags", array_field);
+
 	form.add_field("address", new ObjectField("Address"));
-	form.fields.address.add_field("house_number", new TextField("House Number","number"));
+	form.fields.address.add_field("house_number", new TextField("House Number",{type:"number"}));
 	form.fields.address.add_field("line_1", new TextField("Line 1"));
 	form.fields.address.add_field("line_2", new TextField("Line 2"));
 	form.fields.address.add_field("line_3", new TextField("Line 3"));
@@ -59,12 +69,18 @@ $(document).ready(function(){
 	form.val({
 		first_name: "Marcus",
 		last_name: "Longmuir",
+		tags: ["m","m","f"],
 		// join_date: "2014/08/26 13:45:29",//Use a formatted string
-		// join_date: 1410358755277,//Use a timestamp
-		join_date: new Date(),//Use a Date object (current time)
+		// join_date: 10000000000,//Use a timestamp
+		join_date: new Date(1412934996000),//Use a Date object (current time)
 		gender: "m",
+		bio: "This is the bio",
+		email: "john@example.com",
 		address: {
-			line_1: "Flat 47"
+			house_number: 35,
+			line_1: "A Building",
+			line_2: "Some Street",
+			line_3: "Somewhere"
 		}
 	})
 
@@ -80,12 +96,16 @@ $(document).ready(function(){
 		var email = validator.get("email",BasicVal.string(true), BasicVal.email());
 		var bio = validator.get("bio",BasicVal.string(true));
 		
+		var tags = validator.get("tags", BasicVal.array(true), BasicVal.min_length(1), BasicVal.each(function(value,i){
+			var error = BasicVal.string(true).check(value); 
+			if(error){return error};
+	    }));	
 
 		var address = validator.get("address",BasicVal.object(true));
 		if(address){
 
 			var address_validator = new FieldVal(address);
-			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(0));
+			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(10));
 			address_validator.get("line_1", BasicVal.string(true), BasicVal.min_length(5));
 			address_validator.get("line_2", BasicVal.string(true), BasicVal.min_length(5));
 			address_validator.get("line_3", BasicVal.string(true), BasicVal.min_length(5));

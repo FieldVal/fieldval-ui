@@ -59,7 +59,7 @@ TextField.prototype.view_mode = function(){
         "disabled": "disabled"
     })
 
-    field.element.addClass("fv_view_mode")
+    Field.prototype.view_mode.call(this);
 }
 
 TextField.prototype.edit_mode = function(){
@@ -70,7 +70,7 @@ TextField.prototype.edit_mode = function(){
         "disabled": null
     })
 
-    field.element.removeClass("fv_view_mode")
+    Field.prototype.edit_mode.call(this);
 }
 
 TextField.prototype.icon = function(params) {

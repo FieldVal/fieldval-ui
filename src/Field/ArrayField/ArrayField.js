@@ -1,5 +1,6 @@
-fieldval_ui_extend(ArrayField, Field);
+@import("../../../bower_components/nestable/jquery.nestable.js");
 
+fieldval_ui_extend(ArrayField, Field);
 function ArrayField(name, options) {
     var field = this;
 
@@ -15,7 +16,33 @@ function ArrayField(name, options) {
         field.create_add_field_button()
     )
 
-    console.log(field.input_holder);
+    field.input_holder.nestable({
+        rootClass: 'fv_input_holder',
+        itemClass: 'fv_field_container',
+        handleClass: 'fv_field_move_button',
+        itemNodeName: 'div.fv_field_container',
+        listNodeName: 'div.fv_nested_fields',
+        collapseBtnHTML: '',
+        expandBtnHTML: '',
+        maxDepth: 1
+    }).on('change', function(e){
+        console.log("CHANGE CALLED ",e);
+        field.reorder();
+    });
+}
+
+ArrayField.prototype.reorder = function(){
+    var field = this;
+
+    console.log("ArrayField.reorder", field.fields_element);
+    field.fields = [];
+
+    var children = field.fields_element.children();
+    for(var i = 0; i < children.length; i++){
+        var child = $(children[i]);
+        var child_field = child.data("field");
+        field.fields.push(child_field);
+    }
 }
 
 ArrayField.prototype.create_add_field_button = function(){
@@ -33,7 +60,7 @@ ArrayField.prototype.create_add_field_button = function(){
 
 ArrayField.prototype.new_field = function(index){
     var field = this;
-    console.error("ArrayField.new_field must be overriden to create fields");
+    throw new Error("ArrayField.new_field must be overriden to create fields");
 }
 
 ArrayField.prototype.add_field = function(name, inner_field){
@@ -43,7 +70,11 @@ ArrayField.prototype.add_field = function(name, inner_field){
         field.remove_field(inner_field);
     });
     inner_field.container.appendTo(field.fields_element);
+    console.log("pushing inner_field ",inner_field);
     field.fields.push(inner_field);
+    console.log(field.fields);
+
+    field.input_holder.nestable('init');
 }
 
 ArrayField.prototype.remove_field = function(inner_field){
@@ -166,8 +197,11 @@ ArrayField.prototype.error = function(error) {
 ArrayField.prototype.val = function(set_val) {
     var field = this;
 
+    console.log("ArrayField.val ",set_val);
+
     if (arguments.length===0) {
     	var compiled = [];
+        console.log(field.fields);
     	for(var i=0; i<field.fields.length; i++){
     		var inner_field = field.fields[i];
             var value = inner_field.val();

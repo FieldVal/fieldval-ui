@@ -35,6 +35,77 @@
 .fv_field_container > .fv_field_description {
   font-size: 12px;
 }
+.fv_field_container.fv_nested {
+  padding-top: 0px;
+  padding-bottom: 5px;
+}
+.fv_field_container.fv_nested > .fv_field_title {
+  display: none;
+}
+.fv_field_container.fv_nested > .fv_field {
+  padding-right: 35px;
+  padding-left: 35px;
+}
+.fv_field_container.fv_nested > .fv_field_move_button {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #AAA;
+  color: white;
+  width: 30px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  border: none;
+}
+.fv_field_container.fv_nested > .fv_field_remove_button {
+  -webkit-appearance: none;
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #777;
+  color: white;
+  font-size: 30px;
+  line-height: 30px;
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+.fv_field_container.fv_nested > .fv_field_remove_button:active {
+  background-color: #AAA;
+  color: black;
+}
+.dd-list .dd-list {
+  padding-left: 30px;
+}
+.dd-collapsed .dd-list {
+  display: none;
+}
+.dd-item,
+.dd-empty,
+.dd-placeholder {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 20px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.dd-placeholder,
+.dd-empty {
+  border: 1px dashed #bbb;
+  background-color: #e5e5e5;
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+.dd-dragel {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+}
 .fv_field {
   margin-top: 5px;
   box-sizing: border-box;
@@ -100,34 +171,7 @@
   padding-left: 10px;
 }
 .fv_array_field > .fv_input_holder > .fv_nested_fields {
-  padding-left: 10px;
   padding-bottom: 5px;
-}
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .fv_field_container {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .fv_field_container > .fv_field_title {
-  display: none;
-}
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .fv_field_container > .fv_field.fv_nested {
-  padding-left: 35px;
-}
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .fv_field_container > .fv_field > .fv_field_remove_button {
-  -webkit-appearance: none;
-  cursor: pointer;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  background-color: #777;
-  color: white;
-  width: 30px;
-  height: 30px;
-  border: none;
-}
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .fv_field_container > .fv_field > .fv_field_remove_button:active {
-  background-color: #AAA;
-  color: black;
 }
 .fv_array_field > .fv_input_holder > .fv_add_field_button {
   -webkit-appearance: none;

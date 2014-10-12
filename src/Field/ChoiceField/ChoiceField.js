@@ -86,7 +86,7 @@ ChoiceField.prototype.val = function(set_val) {
         }
         return field.choice_values[index];
     } else {
-        if(set_val!=null){
+        if(set_val!==undefined){
             field.select.val(set_val);
         } else {
             if(field.allow_empty){

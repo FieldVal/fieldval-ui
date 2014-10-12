@@ -38,6 +38,8 @@ ObjectField.prototype.view_mode = function(){
     for(var i in field.fields){
         field.fields[i].view_mode();
     }
+
+    Field.prototype.view_mode.call(this);
 }
 
 ObjectField.prototype.edit_mode = function(){
@@ -46,6 +48,8 @@ ObjectField.prototype.edit_mode = function(){
     for(var i in field.fields){
         field.fields[i].edit_mode();
     }
+
+    Field.prototype.edit_mode.call(this);
 }
 
 ObjectField.prototype.disable = function() {
