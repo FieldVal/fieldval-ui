@@ -114,7 +114,6 @@
   z-index: 9999;
 }
 .fv_input_holder {
-  margin-top: 5px;
   box-sizing: border-box;
 }
 .fv_input_holder > input {
