@@ -1,22 +1,73 @@
-function Form(fields){
+function FVForm(fields){
 	var form = this;
 
-	form.element = $("<form />").addClass("fieldval_ui_form").append(
-		form.error_message = $("<div />").addClass("error_message").hide()
+	form.element = $("<form />").addClass("fv_form").append(
+		form.error_message = $("<div />").addClass("fv_error_message").hide()
 	).on("submit",function(event){
         event.preventDefault();
         form.submit();
+        return false;
 	});
 
 	form.fields = fields || {};
 
-	//Used because ObjectField uses some Form.prototype functions
+	//Used because ObjectField uses some FVForm.prototype functions
 	form.fields_element = form.element;
 
 	form.submit_callbacks = [];
 }
+FVForm.button_event = 'click';
 
-Form.prototype.on_submit = function(callback){
+FVForm.prototype.init = function(){
+	var form = this;
+
+	for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.init();
+    }
+}
+
+FVForm.prototype.remove = function(){
+	var form = this;
+
+	for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.remove();
+    }
+}
+
+FVForm.prototype.blur = function() {
+    var form = this;
+
+    for(var i in form.fields){
+        var inner_field = form.fields[i];
+        inner_field.blur();
+    }
+
+    return form;
+}
+
+FVForm.prototype.edit_mode = function(callback){
+	var form = this;
+
+	for(var i in form.fields){
+		form.fields[i].edit_mode();
+	}
+
+	return form;
+}
+
+FVForm.prototype.view_mode = function(callback){
+	var form = this;
+
+	for(var i in form.fields){
+		form.fields[i].view_mode();
+	}
+
+	return form;
+}
+
+FVForm.prototype.on_submit = function(callback){
 	var form = this;
 
 	form.submit_callbacks.push(callback);
@@ -24,7 +75,7 @@ Form.prototype.on_submit = function(callback){
 	return form;
 }
 
-Form.prototype.submit = function(){
+FVForm.prototype.submit = function(){
 	var form = this;
 
 	var compiled = form.val();
@@ -39,20 +90,32 @@ Form.prototype.submit = function(){
 	return compiled;
 }
 
-Form.prototype.add_field = function(name, field){
+FVForm.prototype.add_field = function(name, field){
 	var form = this;
 
-    field.container.appendTo(form.fields_element);
+    field.element.appendTo(form.fields_element);
     form.fields[name] = field;
+
+    return form;
 }
 
-//Same as Form.error(null)
-Form.prototype.clear_errors = function(){
+FVForm.prototype.remove_field = function(name){
+	var form = this;
+
+    var field = form.fields[name];
+    if(field){
+    	field.remove();//Field class will perform field.element.remove()
+    	delete form.fields[name];
+    }
+}
+
+//Same as FVForm.error(null)
+FVForm.prototype.clear_errors = function(){
 	var form = this;
 	form.error(null);
 }
 
-Form.prototype.fields_error = function(error){
+FVForm.prototype.fields_error = function(error){
 	var form = this;
 
 	if(error){
@@ -75,17 +138,17 @@ Form.prototype.fields_error = function(error){
 	}
 }
 
-Form.prototype.show_error = function(){
+FVForm.prototype.show_error = function(){
     var form = this;
     form.error_message.show();
 }
 
-Form.prototype.hide_error = function(){
+FVForm.prototype.hide_error = function(){
     var form = this;
     form.error_message.hide();
 }
 
-Form.prototype.error = function(error) {
+FVForm.prototype.error = function(error) {
     var form = this;
 
     form.error_message.empty();
@@ -130,7 +193,7 @@ Form.prototype.error = function(error) {
     }
 }
 
-Form.prototype.disable = function(){
+FVForm.prototype.disable = function(){
 	var form = this;
 
 	for(var i in form.fields){
@@ -139,7 +202,7 @@ Form.prototype.disable = function(){
 	}
 }
 
-Form.prototype.enable = function(){
+FVForm.prototype.enable = function(){
 	var form = this;
 
 	for(var i in form.fields){
@@ -148,23 +211,28 @@ Form.prototype.enable = function(){
 	}	
 }
 
-Form.prototype.val = function(set_val){
+FVForm.prototype.val = function(set_val){
     var form = this;
 
     if (arguments.length===0) {
         var output = {};
 		for(var i in form.fields){
 			var field = form.fields[i];
-			if(field.show_on_form_flag){
-				output[i] = field.val();
+			if(field.show_on_form_flag!==false){
+				var value = field.val();
+				if(value!=null){
+					output[i] = value;
+				}
 			}
 		}
 		return output;
     } else {
-    	for(var i in form.fields){
-    		var field = form.fields[i];
-    		field.val(set_val[i]);
-    	}
+    	if(set_val){
+	    	for(var i in form.fields){
+	    		var field = form.fields[i];
+	    		field.val(set_val[i]);
+	    	}
+	    }
         return form;
     }
 }

@@ -17,7 +17,7 @@ gulp.task('js', function(){
     .pipe(gulpImports())
     .pipe(concat('fieldval-ui.js'))
     .pipe(gulp.dest('./'))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(concat('fieldval-ui.min.js'))
     .pipe(gulp.dest('./'))
     .on('error', gutil.log);
@@ -38,8 +38,8 @@ gulp.task('less', function(){
 
 
 gulp.task('default', function(){
-    gulp.watch(['src/**/*.js'], ['js']);
-    gulp.watch(['themes/**.less'], ['less']);
+    gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
+    gulp.watch(['themes/**.subless','themes/**/*.less'], ['less']);
 });
 
 

@@ -1,30 +1,76 @@
 fieldval_ui_extend(TextField, Field);
 
-function TextField(name, properties) {
+function TextField(name, options) {
     var field = this;
 
-    TextField.superConstructor.call(this, name, properties);
+    var options_type = typeof options;
 
-    if(!field.input_type){
-        field.input_type = field.properties.type || "text"
+    if(options_type === "string"){
+        field.input_type = options;
+        options = {};
+    } else if(options_type === "object"){
+        field.input_type = options.type || "text";
+    } else {
+        options = {};
     }
 
-    field.element.addClass("text_field");
+    TextField.superConstructor.call(this, name, options);
+
+    field.element.addClass("fv_text_field");
 
     if(field.input_type==='textarea'){
         field.input = $("<textarea />")
-    } else if(field.input_type==='text' || field.input_type==='number') {
+    } else if(field.input_type==='text' || field.input_type==='number' || !field.input_type) {
         field.input = $("<input type='text' />")
     } else {
         field.input = $("<input type='"+field.input_type+"' />")
     }
     
-    field.input.addClass("text_input")
+    field.enter_callbacks = [];
+
+    field.input.addClass("fv_text_input")
     .attr("placeholder", name)
+    .on("keydown",function(e){
+        if(e.keyCode===13){
+            for(var i = 0; i < field.enter_callbacks.length; i++){
+                field.enter_callbacks[i](e);
+            }
+        }
+    })
     .on("keyup",function(){
         field.did_change()
     })
     .appendTo(field.input_holder);
+}
+
+TextField.prototype.on_enter = function(callback){
+    var field = this;
+
+    field.enter_callbacks.push(callback);
+    
+    return field;
+}
+
+TextField.prototype.view_mode = function(){
+    var field = this;
+
+    field.input.prop({
+        "readonly": "readonly",
+        "disabled": "disabled"
+    })
+
+    Field.prototype.view_mode.call(this);
+}
+
+TextField.prototype.edit_mode = function(){
+    var field = this;
+
+    field.input.prop({
+        "readonly": null,
+        "disabled": null
+    })
+
+    Field.prototype.edit_mode.call(this);
 }
 
 TextField.prototype.icon = function(params) {
@@ -74,18 +120,18 @@ TextField.prototype.blur = function() {
     return field;
 }
 
-TextField.numeric_regex = /^-?\d+(\.\d+)?$/;
+TextField.numeric_regex = /^\d+(\.\d+)?$/;
 
 TextField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         var value = field.input.val();
-        if(value.length===0){
-            return null;
-        }
         if(field.input_type==="number" && TextField.numeric_regex.test(value)){
             return parseFloat(value);
+        }
+        if(value.length===0){
+            return null;
         }
         return value;
     } else {
@@ -99,7 +145,5 @@ fieldval_ui_extend(PasswordField, TextField);
 function PasswordField(name) {
     var field = this;
 
-    PasswordField.superConstructor.call(this, name, {
-        type: "password"
-    });
+    PasswordField.superConstructor.call(this, name, "password");
 }

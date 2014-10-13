@@ -4,12 +4,9 @@ Field.prototype.layout = function(){
     var field = this;
 
     if(field instanceof ObjectField){
-	    field.container.append(
-	        field.title,
-	        field.element.append(
-	            field.error_message,
-	            field.input_holder
-	        )
+    	field.element.append(
+	        field.title,field.error_message,
+            field.input_holder
 	    )
     } else {
 	    layout_function.call(field);

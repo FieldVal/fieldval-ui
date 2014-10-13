@@ -1,25 +1,55 @@
 fieldval_ui_extend(ObjectField, Field);
 
-function ObjectField(name, properties) {
+function ObjectField(name, options) {
     var field = this;
 
-    ObjectField.superConstructor.call(this, name, properties);
+    ObjectField.superConstructor.call(this, name, options);
 
-    field.element.addClass("object_field");
+    field.element.addClass("fv_object_field");
 
     field.fields_element = field.input_holder;
 
     field.fields = {};
 }
 
+ObjectField.prototype.init = function(){
+    FVForm.prototype.init.call(this);
+}
+
+ObjectField.prototype.remove = function(){
+    FVForm.prototype.remove.call(this);
+
+    Field.prototype.remove.call(this);
+}
+
 ObjectField.prototype.add_field = function(name, field){
-	Form.prototype.add_field.call(this,name,field);
+    FVForm.prototype.add_field.call(this,name,field);
 }
 
 ObjectField.prototype.change_name = function(name) {
     var field = this;
     ObjectField.superClass.change_name.call(this,name);
     return field;
+}
+
+ObjectField.prototype.view_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].view_mode();
+    }
+
+    Field.prototype.view_mode.call(this);
+}
+
+ObjectField.prototype.edit_mode = function(){
+    var field = this;
+
+    for(var i in field.fields){
+        field.fields[i].edit_mode();
+    }
+
+    Field.prototype.edit_mode.call(this);
 }
 
 ObjectField.prototype.disable = function() {
@@ -39,28 +69,29 @@ ObjectField.prototype.focus = function() {
 
 ObjectField.prototype.blur = function() {
     var field = this;
-    return field;
+
+    FVForm.prototype.blur.call(this);
 }
 
 ObjectField.prototype.error = function(error){
-	var field = this;
-
-	Form.prototype.fields_error.call(this,error);
+    var field = this;
 
     ObjectField.superClass.error.call(this,error);
+
+    FVForm.prototype.error.call(this,error);
 }
 
 ObjectField.prototype.fields_error = function(error){
     var field = this;
 
-    Form.prototype.fields_error.call(this,error);
+    FVForm.prototype.fields_error.call(this,error);
 }
 
 
 ObjectField.prototype.clear_errors = function(){
 	var field = this;
 
-	Form.prototype.clear_errors.call(this);
+	FVForm.prototype.clear_errors.call(this);
 }
 
 ObjectField.prototype.val = function(set_val) {
@@ -76,7 +107,9 @@ ObjectField.prototype.val = function(set_val) {
     } else {
     	for(var i in set_val){
     		var inner_field = field.fields[i];
-    		inner_field.val(set_val[i]);
+            if(inner_field){
+        		inner_field.val(set_val[i]);
+            }
     	}
         return field;
     }

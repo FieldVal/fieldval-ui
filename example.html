@@ -1,8 +1,9 @@
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.js"></script>
 
-<script src="bower_components/fieldval/fieldval.min.js"></script>
-<script src="bower_components/fieldval-basicval/fieldval-basicval.min.js"></script>
-<script src="fieldval-ui.min.js"></script>
+<script src="node_modules/fieldval/fieldval.js"></script>
+<script src="node_modules/fieldval-basicval/fieldval-basicval.js"></script>
+<script src="node_modules/fieldval-dateval/fieldval-dateval.js"></script>
+<script src="fieldval-ui.js"></script>
 
 <!-- Apply the "minimal" theme to FieldVal-UI -->
 <link rel="stylesheet" type="text/css" href="themes/minimal.css">
@@ -16,7 +17,7 @@
 
 <script>
 $(document).ready(function(){
-	var form = new Form();
+	var form = new FVForm();
 	var output;
 
 	//values and displayed names
@@ -24,34 +25,36 @@ $(document).ready(function(){
 		["m","Male"],
 		["f","Female"]
 	];
+	var date_format = "yyyy/MM/dd hh:mm:ss";
 
 	Field.prototype.show_error = function(){
 		var field = this;
 		field.error_message.slideDown();
 	}
 
-	form.add_field("first_name", new TextField("First Name",{
-		description: "Enter your first name"
-	}));
-	form.add_field("last_name", new TextField("Last Name",{
-		description: "Enter your last name"
-	}));
-	form.add_field("date_of_birth", new DateField("Date of Birth",{
-		description: "Enter your date of birth"
+	form.add_field("first_name", new TextField("First Name"));
+	form.add_field("last_name", new TextField("Last Name"));
+	form.add_field("join_date", new DateField("Join Date", {
+		format: date_format
 	}));
 	form.add_field("gender", new ChoiceField("Gender",{
-		description: "Select your gender",
 		choices: gender_choices
 	}));
 	form.add_field("email", new TextField("Email"));
-	form.add_field("bio", new TextField("Bio",{
-		type: "textarea"
-	}));
+	form.add_field("bio", new TextField("Bio","textarea"));
+
+	var array_field = new ArrayField("Tags");
+	array_field.new_field = function(index){
+		var tag_field = new TextField("Tag",{
+		choices: gender_choices
+	})
+		array_field.add_field(null,tag_field);
+		return tag_field;
+	}
+	form.add_field("tags", array_field);
 
 	form.add_field("address", new ObjectField("Address"));
-	form.fields.address.add_field("house_number", new TextField("House Number",{
-		type: "number"
-	}));
+	form.fields.address.add_field("house_number", new TextField("House Number",{type:"number"}));
 	form.fields.address.add_field("line_1", new TextField("Line 1"));
 	form.fields.address.add_field("line_2", new TextField("Line 2"));
 	form.fields.address.add_field("line_3", new TextField("Line 3"));
@@ -68,17 +71,23 @@ $(document).ready(function(){
 		var validator = new FieldVal(object);
 		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5));
 		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
-		var date_of_birth = validator.get("date_of_birth",BasicVal.string(true));
+		var join_date = validator.get("join_date",BasicVal.string(true), DateVal.date(date_format, {
+			emit: DateVal.EMIT_DATE//emits the value as a Date object
+		}));
 		var gender = validator.get("gender",BasicVal.one_of(gender_choices));
 		var email = validator.get("email",BasicVal.string(true), BasicVal.email());
 		var bio = validator.get("bio",BasicVal.string(true));
 		
+		var tags = validator.get("tags", BasicVal.array(true), BasicVal.min_length(1), BasicVal.each(function(value,i){
+			var error = BasicVal.string(true).check(value); 
+			if(error){return error};
+	    }));	
 
 		var address = validator.get("address",BasicVal.object(true));
 		if(address){
 
 			var address_validator = new FieldVal(address);
-			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(0));
+			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(10));
 			address_validator.get("line_1", BasicVal.string(true), BasicVal.min_length(5));
 			address_validator.get("line_2", BasicVal.string(true), BasicVal.min_length(5));
 			address_validator.get("line_3", BasicVal.string(true), BasicVal.min_length(5));

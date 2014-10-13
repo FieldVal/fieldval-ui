@@ -1,9 +1,19 @@
 {
-  "name": "fieldval-ui",
-  "version": "0.0.1",
-  "devDependencies": {
-  	"fieldval" : "*",
-  	"fieldval-basicval" : "*"
-  },
-  "private": true
+	"name": "fieldval-ui",
+	"version": "0.1.0",
+	"main": "fieldval-ui.js",
+	"ignore": [
+		"bower_components",
+		"docs",
+		"docs_src",
+		"examples",
+		"node_modules",
+		"src",
+		"gulpfile.js",
+		".gitignore"
+	],
+	"devDependencies": {
+		"jquery": "1.11.1",
+		"nestable": "FieldVal/Nestable"
+	}
 }

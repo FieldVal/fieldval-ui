@@ -1,27 +1,33 @@
 fieldval_ui_extend(ChoiceField, Field);
 
-function ChoiceField(name, properties) {
+function ChoiceField(name, options) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name, properties);
+    ChoiceField.superConstructor.call(this, name, options);
 
-    field.choices = field.properties.choices || [];
-    field.allow_empty = field.allow_empty || false;
+    field.choices = field.options.choices || [];
+    field.allow_empty = field.options.allow_empty || false;
 
-    field.element.addClass("choice_field");
+    field.element.addClass("fv_choice_field");
 
     field.select = $("<select/>")
-    .addClass("choice_input")
-    .on("change",function(){
-        field.did_change()
-    })
+    .addClass("fv_choice_input")
     .appendTo(field.input_holder);
+
+    setTimeout(function(){
+        field.select.on("change",function(){
+            field.did_change()
+        })
+    },100)
 
     field.choice_values = [];
 
     if(field.allow_empty){
-        var option = $("<option />").attr("value",null).text("")
-        field.select.append(option);
+        field.empty_option = $("<option />").attr({
+            "value": null
+        }).text(field.options.empty_message || "")
+
+        field.select.append(field.empty_option);
     }
 
     for(var i = 0; i < field.choices.length; i++){
@@ -37,7 +43,10 @@ function ChoiceField(name, properties) {
 
         field.choice_values.push(choice_value);
 
-        var option = $("<option />").attr("value",choice_value).text(choice_text)
+        var option = $("<option />")
+        .attr("value",choice_value)
+        .text(choice_text)
+
         field.select.append(option);
     }
 }
@@ -70,13 +79,21 @@ ChoiceField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
-        return field.select.find(":selected").attr("value")
+        var selected = field.select.find(":selected");
+        var index = selected.index() - (field.allow_empty ? 1 : 0);
+        if(field.allow_empty && index===-1){
+            return null;
+        }
+        return field.choice_values[index];
     } else {
-        if(set_val!=null){
+        if(set_val!==undefined){
             field.select.val(set_val);
         } else {
-            console.log(set_val);
-            field.select.val(field.choice_values[0]);
+            if(field.allow_empty){
+                field.select.val(field.empty_option);
+            } else {
+                field.select.val(field.choice_values[0]);
+            }
         }
         return field;
     }
