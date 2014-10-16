@@ -1364,6 +1364,8 @@ ObjectField.prototype.val = function(set_val) {
                 dragItem = target.closest(this.options.itemNodeName);
 
             this.placeEl.css('height', dragItem.height());
+            this.placeEl.css('width', dragItem.width());
+            this.placeEl.css('display', dragItem.css("display"));
 
             mouse.offsetX = e.offsetX !== undefined ? e.offsetX : e.pageX - target.offset().left;
             mouse.offsetY = e.offsetY !== undefined ? e.offsetY : e.pageY - target.offset().top;

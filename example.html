@@ -45,9 +45,7 @@ $(document).ready(function(){
 
 	var array_field = new ArrayField("Tags");
 	array_field.new_field = function(index){
-		var tag_field = new TextField("Tag",{
-		choices: gender_choices
-	})
+		var tag_field = new TextField("Tag")
 		array_field.add_field(null,tag_field);
 		return tag_field;
 	}
