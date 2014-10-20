@@ -836,10 +836,10 @@ DateField.prototype.change_name = function(name) {
 
 DateField.prototype.disable = function() {
     var field = this;
-    for(var i = 0; i < field.inputs; i++){
+    for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
         if(input){
-            input.attr("disabled", "disabled");
+            $(input).attr("disabled", "disabled");
         }
     }
     return field;
@@ -847,7 +847,7 @@ DateField.prototype.disable = function() {
 
 DateField.prototype.enable = function() {
     var field = this;
-    for(var i = 0; i < field.inputs; i++){
+    for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
         if(input){
             input.attr("disabled", null);
@@ -869,7 +869,7 @@ DateField.prototype.focus = function() {
 
 DateField.prototype.blur = function() {
     var field = this;
-    for(var i = 0; i < field.inputs; i++){
+    for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
         if(input){
             input.blur();
