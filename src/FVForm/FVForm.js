@@ -218,7 +218,7 @@ FVForm.prototype.val = function(set_val){
         var output = {};
 		for(var i in form.fields){
 			var field = form.fields[i];
-			if(field.show_on_form_flag!==false){
+			if(field.output_flag!==false){
 				var value = field.val();
 				if(value!=null){
 					output[i] = value;
