@@ -227,7 +227,7 @@ FVForm.prototype.val = function(set_val){
         var output = {};
 		for(var i in form.fields){
 			var field = form.fields[i];
-			if(field.show_on_form_flag!==false){
+			if(field.output_flag!==false){
 				var value = field.val();
 				if(value!=null){
 					output[i] = value;
@@ -251,7 +251,7 @@ function Field(name, options) {
     field.name = name;
     field.options = options || {};
 
-    field.show_on_form_flag = true;
+    field.output_flag = true;
     field.is_in_array = false;
 
     field.on_change_callbacks = [];
@@ -351,15 +351,9 @@ Field.prototype.on_change = function(callback){
     return field;
 }
 
-Field.prototype.hide_on_form = function(){
+Field.prototype.output = function(do_output){
     var field = this;
-    field.show_on_form_flag = false;
-    return field;
-}
-
-Field.prototype.show_on_form = function(){
-    var field = this;
-    field.show_on_form_flag = true;
+    field.output_flag = do_output;
     return field;
 }
 
