@@ -86,7 +86,7 @@ DateField.prototype.disable = function() {
     for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
         if(input){
-            $(input).attr("disabled", "disabled");
+            input.attr("disabled", "disabled");
         }
     }
     return field;
