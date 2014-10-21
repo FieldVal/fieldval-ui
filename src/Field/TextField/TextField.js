@@ -28,6 +28,8 @@ function TextField(name, options) {
     
     field.enter_callbacks = [];
 
+    field.previous_value = {};//Object to ensure invalid initial comparison
+    
     field.input.addClass("fv_text_input")
     .attr("placeholder", name)
     .on("keydown",function(e){
@@ -37,10 +39,22 @@ function TextField(name, options) {
             }
         }
     })
-    .on("keyup",function(){
-        field.did_change()
+    .on("keyup paste cut",function(){
+        setTimeout(function(){
+            field.check_changed();
+        },0);
     })
     .appendTo(field.input_holder);
+}
+
+TextField.prototype.check_changed = function(){
+    var field = this;
+
+    var this_value = field.val();
+    if(this_value!==field.previous_value){
+        field.previous_value = this_value;
+        field.did_change()
+    }
 }
 
 TextField.prototype.on_enter = function(callback){
