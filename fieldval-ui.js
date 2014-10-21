@@ -684,7 +684,7 @@ function ChoiceField(name, options) {
     field.choice_values = [];
 
     if(field.allow_empty){
-        field.empty_option = $("<option />").attr({
+        field.empty_option = $("<option />").prop({
             "value": null
         }).text(field.options.empty_message || "")
 
@@ -705,7 +705,7 @@ function ChoiceField(name, options) {
         field.choice_values.push(choice_value);
 
         var option = $("<option />")
-        .attr("value",choice_value)
+        .prop("value",choice_value)
         .text(choice_text)
 
         field.select.append(option);
@@ -714,14 +714,26 @@ function ChoiceField(name, options) {
 
 ChoiceField.prototype.disable = function() {
     var field = this;
-    field.select.attr("disabled", "disabled");
+    field.select.prop("disabled", "disabled");
     return field;
 }
 
 ChoiceField.prototype.enable = function() {
     var field = this;
-    field.select.attr("disabled", null);
+    field.select.prop("disabled", null);
     return field;
+}
+
+ChoiceField.prototype.view_mode = function(){
+    var field = this;
+    field.disable();
+    Field.prototype.view_mode.call(this);
+}
+
+ChoiceField.prototype.edit_mode = function(){
+    var field = this;
+    field.enable();
+    Field.prototype.edit_mode.call(this);
 }
 
 ChoiceField.prototype.focus = function() {
