@@ -65,28 +65,6 @@ TextField.prototype.on_enter = function(callback){
     return field;
 }
 
-TextField.prototype.view_mode = function(){
-    var field = this;
-
-    field.input.prop({
-        "readonly": "readonly",
-        "disabled": "disabled"
-    })
-
-    Field.prototype.view_mode.call(this);
-}
-
-TextField.prototype.edit_mode = function(){
-    var field = this;
-
-    field.input.prop({
-        "readonly": null,
-        "disabled": null
-    })
-
-    Field.prototype.edit_mode.call(this);
-}
-
 TextField.prototype.icon = function(params) {
     var field = this;
 
@@ -113,13 +91,13 @@ TextField.prototype.change_name = function(name) {
 TextField.prototype.disable = function() {
     var field = this;
     field.input.attr("disabled", "disabled");
-    return field;
+    return Field.prototype.disable.call(this);
 }
 
 TextField.prototype.enable = function() {
     var field = this;
     field.input.attr("disabled", null);
-    return field;
+    return Field.prototype.enable.call(this);
 }
 
 TextField.prototype.focus = function() {

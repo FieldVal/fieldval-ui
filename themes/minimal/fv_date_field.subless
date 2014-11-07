@@ -1,0 +1,14 @@
+.fv_date_field{
+	>.fv_input_holder{
+		>.fv_date_input{
+			font-size: 14px;
+			display: inline-block;
+		}
+		>.fv_date_separator{
+			display: inline-block;
+			width: 15px;
+			text-align: center;
+			font-weight: bold;
+		}
+	}
+}

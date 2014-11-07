@@ -17,6 +17,10 @@ function FVForm(fields){
 	form.submit_callbacks = [];
 }
 FVForm.button_event = 'click';
+FVForm.is_mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|nokia|series40|x11|opera mini/i.test(navigator.userAgent.toLowerCase());
+if($.tap){
+	FVForm.button_event = 'tap';
+}
 
 FVForm.prototype.init = function(){
 	var form = this;
@@ -45,26 +49,6 @@ FVForm.prototype.blur = function() {
     }
 
     return form;
-}
-
-FVForm.prototype.edit_mode = function(callback){
-	var form = this;
-
-	for(var i in form.fields){
-		form.fields[i].edit_mode();
-	}
-
-	return form;
-}
-
-FVForm.prototype.view_mode = function(callback){
-	var form = this;
-
-	for(var i in form.fields){
-		form.fields[i].view_mode();
-	}
-
-	return form;
 }
 
 FVForm.prototype.on_submit = function(callback){
@@ -200,6 +184,10 @@ FVForm.prototype.disable = function(){
 		var field = form.fields[i];
 		field.disable();
 	}
+
+	form.element.addClass("disable");
+
+	return form;
 }
 
 FVForm.prototype.enable = function(){
@@ -208,7 +196,11 @@ FVForm.prototype.enable = function(){
 	for(var i in form.fields){
 		var field = form.fields[i];
 		field.enable();
-	}	
+	}
+
+	form.element.removeClass("disable");
+
+	return form;
 }
 
 FVForm.prototype.val = function(set_val){

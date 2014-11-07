@@ -83,32 +83,6 @@ ArrayField.prototype.remove_field = function(inner_field){
     }
 }
 
-ArrayField.prototype.view_mode = function(){
-    var field = this;
-
-    for(var i in field.fields){
-        field.fields[i].view_mode();
-    }
-
-    for(var i = 0; i < field.add_field_buttons.length; i++){
-        var add_field_button = field.add_field_buttons[i];
-        add_field_button.hide()
-    }
-}
-
-ArrayField.prototype.edit_mode = function(){
-    var field = this;
-
-    for(var i in field.fields){
-        field.fields[i].edit_mode();
-    }
-
-    for(var i = 0; i < field.add_field_buttons.length; i++){
-        var add_field_button = field.add_field_buttons[i];
-        add_field_button.show()
-    }
-}
-
 ArrayField.prototype.error = function(error){
     var field = this;
 
@@ -140,9 +114,40 @@ ArrayField.prototype.fields_error = function(error){
 
 
 ArrayField.prototype.clear_errors = function(){
-	var field = this;
+    var field = this;
 
+    for(var i=0; i<field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.clear_errors();
+    }    
+}
 
+ArrayField.prototype.disable = function(){
+    var field = this;
+
+    for(var i=0; i<field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.disable();
+    }    
+    for(var i=0; i<field.add_field_buttons.length; i++){
+        var add_field_button = field.add_field_buttons[i];
+        add_field_button.hide();
+    }
+    return Field.prototype.disable.call(this);
+}
+
+ArrayField.prototype.enable = function(){
+    var field = this;
+
+    for(var i=0; i<field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.enable();
+    }
+    for(var i=0; i<field.add_field_buttons.length; i++){
+        var add_field_button = field.add_field_buttons[i];
+        add_field_button.show();
+    }
+    return Field.prototype.enable.call(this);
 }
 
 ArrayField.prototype.error = function(error) {

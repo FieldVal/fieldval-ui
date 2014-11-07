@@ -1,0 +1,114 @@
+.fv_choice_field{
+	>.fv_input_holder{
+		>.fv_choice_input{
+			font-size: 14px;
+			position: relative;
+			width: 200px;
+
+			>.filter_input{
+				position: absolute;
+				top: 0px;
+				width: 200px;
+				line-height: 14px;
+				padding: 5px;
+				margin: 0px;
+				outline: none;
+				border: none;
+				background-color: white;
+				z-index: 2;
+				border-radius: 0px;
+				box-sizing: border-box;
+				-webkit-border-radius: 0px;
+				border: 1px solid @fv_border_color;
+				font-size: 14px;
+			}
+
+			>.fv_current_choice{
+				position: relative;
+				background-color: white;
+				border: 1px solid @fv_border_color;
+				box-sizing: border-box;
+				padding: 5px;
+				padding-right: 24px;
+				line-height: 14px;
+				min-height: 24px;
+				cursor: pointer;
+
+				&:after{
+					position: absolute;
+					top: 50%;
+					right: 4px;
+					width: 0;
+					height: 0;
+					margin-top: -4px;
+					border-top: 8px solid @fv_border_color;
+					border-right: 8px solid transparent;
+					border-left: 8px solid transparent;
+					content: "";
+				};
+			}
+
+			>.fv_choice_list{
+				position: absolute;
+				z-index: 1;
+				top: 28px;
+				display: none;
+				max-height: 200px;
+				border: 1px solid @fv_border_color;
+				border-top: none;
+				width: 100%;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				>.fv_choice_option{
+					display: block;
+					cursor: pointer;
+					background-color: white;
+					border-top: 1px solid @fv_border_color;
+					line-height: 14px;
+					min-height: 24px;
+					padding: 5px;
+					width: 100%;
+					box-sizing: border-box;
+
+					-webkit-tap-highlight-color: rgba(0,0,0,0);
+				  	-webkit-touch-callout: none;
+					-webkit-user-select: none;
+					-khtml-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					-o-user-select: none;
+					user-select: none;
+
+					&.selected{
+						background-color: #5DB9FF;
+						color: white;
+					}
+
+					&.highlighted{
+						background-color: #2B86F3;
+						color: white;
+					}
+
+					&:active{
+						background-color: #2B86F3;
+						color: white;
+					}
+				}
+			}
+		}
+		>input.fv_text_input{
+			font-size: 14px;
+		}
+	}
+
+	&.fv_disabled{
+		>.fv_input_holder{
+			>.fv_choice_input{
+				>.fv_current_choice{
+					background-color: @fv_disabled_background;
+					color: @fv_disabled_color;
+				}
+			}
+		}
+	}
+}

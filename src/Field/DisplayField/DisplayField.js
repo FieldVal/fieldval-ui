@@ -10,7 +10,7 @@ function DisplayField(name, options) {
     field.input = $("<div />")
     .appendTo(field.input_holder);
 
-    field.hide_on_form();
+    field.output_flag = false;//Don't output the field
 }
 
 DisplayField.prototype.icon = function(params) {
@@ -24,14 +24,6 @@ DisplayField.prototype.icon = function(params) {
     }
 
     field.input.css(css_props);
-    return field;
-}
-
-DisplayField.prototype.change_name = function(name) {
-    var field = this;
-
-    DisplayField.superClass.change_name.call(this,name);
-
     return field;
 }
 

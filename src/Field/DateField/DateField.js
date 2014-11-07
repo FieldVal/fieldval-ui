@@ -89,7 +89,7 @@ DateField.prototype.disable = function() {
             input.attr("disabled", "disabled");
         }
     }
-    return field;
+    return Field.prototype.disable.call(this);
 }
 
 DateField.prototype.enable = function() {
@@ -100,7 +100,7 @@ DateField.prototype.enable = function() {
             input.attr("disabled", null);
         }
     }
-    return field;
+    return Field.prototype.enable.call(this);
 }
 
 DateField.prototype.focus = function() {

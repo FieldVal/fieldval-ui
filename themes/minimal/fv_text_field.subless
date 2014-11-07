@@ -1,0 +1,12 @@
+.fv_text_field{
+	>.fv_input_holder{
+		>textarea.fv_text_input{
+			width: 100%;
+			font-size: 14px;
+		}
+		>input.fv_text_input{
+			width: 100%;
+			font-size: 14px;
+		}
+	}
+}

@@ -39,7 +39,7 @@ gulp.task('less', function(){
 
 gulp.task('default', function(){
     gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
-    gulp.watch(['themes/**.subless','themes/**/*.less'], ['less']);
+    gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
 });
 
 

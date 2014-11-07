@@ -1,0 +1,21 @@
+.fv_form{
+	width: auto;
+	display: block;
+	position: relative;
+
+	&.rows{
+		.fv_field{
+			>.fv_field_title{
+				width: 20%;
+				vertical-align: top;
+			}
+			>.fv_input_holder{
+				width: 80%;
+				display: inline-block;
+			}
+			>.fv_error_message{
+				margin-left: 20%;
+			}
+		}
+	}
+}
