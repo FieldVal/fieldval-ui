@@ -23,7 +23,7 @@
 				font-size: 14px;
 			}
 
-			>.fv_current_choice{
+			>.fv_choice_display{
 				position: relative;
 				background-color: white;
 				border: 1px solid @fv_border_color;
@@ -33,6 +33,10 @@
 				line-height: 14px;
 				min-height: 24px;
 				cursor: pointer;
+
+				&.fv_choice_placeholder{
+					color: @fv_placeholder_color;
+				}
 
 				&:after{
 					position: absolute;
@@ -103,7 +107,7 @@
 
 	&.fv_disabled{
 		>.fv_input_holder{
-			>.fv_choice_input{
+			>.fv_choice_display{
 				>.fv_current_choice{
 					background-color: @fv_disabled_background;
 					color: @fv_disabled_color;
