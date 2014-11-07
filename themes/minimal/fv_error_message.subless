@@ -1,0 +1,7 @@
+.fv_error_message{
+	background-color: @fv_error_color;
+	color: white;
+	font-size: 14px;
+	display: inline-block;
+	padding: 5px;
+}

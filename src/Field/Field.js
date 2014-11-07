@@ -6,6 +6,7 @@ function Field(name, options) {
 
     field.output_flag = true;
     field.is_in_array = false;
+    field.is_disabled = false;
 
     field.on_change_callbacks = [];
 
@@ -29,11 +30,10 @@ Field.prototype.in_array = function(remove_callback){
     .append(
         field.move_handle = $("<div />")
         .addClass("fv_field_move_handle")
-        .html("&#8645;")
     ,
         field.remove_button = $("<button />")
         .addClass("fv_field_remove_button")
-        .html("&#10060;").on(FVForm.button_event,function(event){
+        .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
             remove_callback();
             field.remove();
@@ -49,34 +49,6 @@ Field.prototype.remove = function(){
     var field = this;
 
     field.element.remove();
-}
-
-Field.prototype.view_mode = function(){
-    var field = this;
-
-    if(field.is_in_array){
-        field.remove_button.hide();
-        field.move_handle.hide();
-    }
-
-    field.element.addClass("fv_view_mode")
-    field.element.removeClass("fv_edit_mode")
-
-    console.log("view_mode ",field);
-}
-
-Field.prototype.edit_mode = function(){
-    var field = this;    
-
-    if(field.is_in_array){
-        field.remove_button.show();
-        field.move_handle.show();
-    }
-
-    field.element.addClass("fv_edit_mode")
-    field.element.removeClass("fv_view_mode")
-
-    console.log("edit_mode ",field);
 }
 
 Field.prototype.change_name = function(name) {
@@ -133,10 +105,28 @@ Field.prototype.val = function(set_val) {
 
 Field.prototype.disable = function() {
     var field = this;
+    field.is_disabled = true;
+    field.element.addClass("fv_disabled");
+
+    if(field.is_in_array){
+        field.move_handle.hide();
+        field.remove_button.hide();
+    }
+
+    return field;
 }
 
 Field.prototype.enable = function() {
     var field = this;
+    field.is_disabled = false;
+    field.element.removeClass("fv_disabled");
+
+    if(field.is_in_array){
+        field.move_handle.show();
+        field.remove_button.show();
+    }
+
+    return field;
 }
 
 Field.prototype.blur = function() {

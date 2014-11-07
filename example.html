@@ -1,4 +1,7 @@
+<meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'/>
 <script src="bower_components/jquery/dist/jquery.js"></script>
+
+<script src="jquery.tap.js"></script>
 
 <script src="node_modules/fieldval/fieldval.js"></script>
 <script src="node_modules/fieldval-basicval/fieldval-basicval.js"></script>
@@ -20,6 +23,16 @@ $(document).ready(function(){
 	var form = new FVForm();
 	var output;
 
+	$("body").append(
+		$("<button />").text("Enable").on('click',function(){
+			form.enable();
+		})
+	,
+		$("<button />").text("Disable").on('click',function(){
+			form.disable();
+		})
+	)
+
 	//values and displayed names
 	var gender_choices = [
 		["m","Male"],
@@ -34,13 +47,17 @@ $(document).ready(function(){
 
 	form.add_field("first_name", new TextField("First Name"));
 	form.add_field("last_name", new TextField("Last Name"));
+	form.add_field("plan_type", new DisplayField("Plan Type"));
 	form.add_field("join_date", new DateField("Join Date", {
 		format: date_format
 	}));
 	form.add_field("gender", new ChoiceField("Gender",{
-		choices: gender_choices
+		choices: gender_choices,
+		allow_empty: true,
+		empty_text: "(Prefer not to say)"
 	}));
 	form.add_field("email", new TextField("Email"));
+	form.add_field("subscribe", new BooleanField("Subscribe"));
 	form.add_field("bio", new TextField("Bio","textarea"));
 
 	var array_field = new ArrayField("Tags");
@@ -64,6 +81,23 @@ $(document).ready(function(){
 		output = $("<pre />")
 	)
 
+	form.val({
+		"first_name": "Marcus",
+		"last_name": "Longmuir",
+		"plan_type": "Free",
+		"join_date": "2014/01/01 11:11:11",
+		"gender": "m",
+		"email": "t@t.com",
+		"bio":"Bio test",
+		"tags": ["test tag"],
+		"address": {
+			"house_number": 14,
+			"line_1": "This is line 1",
+			"line_2": "This is line 2",
+			"line_3": "This is line 3"
+		}
+	})
+
 	form.on_submit(function(object){
 
 		var validator = new FieldVal(object);
@@ -72,14 +106,16 @@ $(document).ready(function(){
 		var join_date = validator.get("join_date",BasicVal.string(true), DateVal.date(date_format, {
 			emit: DateVal.EMIT_DATE//emits the value as a Date object
 		}));
-		var gender = validator.get("gender",BasicVal.one_of(gender_choices));
+		var gender = validator.get("gender",BasicVal.string(false), BasicVal.one_of(gender_choices));
 		var email = validator.get("email",BasicVal.string(true), BasicVal.email());
 		var bio = validator.get("bio",BasicVal.string(true));
 		
 		var tags = validator.get("tags", BasicVal.array(true), BasicVal.min_length(1), BasicVal.each(function(value,i){
 			var error = BasicVal.string(true).check(value); 
 			if(error){return error};
-	    }));	
+	    }));
+
+	    var subscribe = validator.get("subscribe", BasicVal.boolean(true));
 
 		var address = validator.get("address",BasicVal.object(true));
 		if(address){

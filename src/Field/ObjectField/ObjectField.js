@@ -32,34 +32,16 @@ ObjectField.prototype.change_name = function(name) {
     return field;
 }
 
-ObjectField.prototype.view_mode = function(){
-    var field = this;
-
-    for(var i in field.fields){
-        field.fields[i].view_mode();
-    }
-
-    Field.prototype.view_mode.call(this);
-}
-
-ObjectField.prototype.edit_mode = function(){
-    var field = this;
-
-    for(var i in field.fields){
-        field.fields[i].edit_mode();
-    }
-
-    Field.prototype.edit_mode.call(this);
-}
-
 ObjectField.prototype.disable = function() {
     var field = this;
-    return field;
+    FVForm.prototype.disable.call(this);
+    return Field.prototype.disable.call(this);
 }
 
 ObjectField.prototype.enable = function() {
     var field = this;
-    return field;
+    FVForm.prototype.enable.call(this);
+    return Field.prototype.enable.call(this);
 }
 
 ObjectField.prototype.focus = function() {

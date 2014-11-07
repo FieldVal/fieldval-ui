@@ -21,13 +21,21 @@
   box-sizing: border-box;
 }
 .fv_field.fv_field_error > .fv_field_title {
-  color: #AA0000;
+  color: #aa0000;
 }
 .fv_field.fv_field_error > .fv_input_holder > input {
-  border: 1px solid #AA0000;
+  border: 1px solid #aa0000;
 }
 .fv_field.fv_field_error > .fv_input_holder > textarea {
-  border: 1px solid #AA0000;
+  border: 1px solid #aa0000;
+}
+.fv_field.fv_disabled > .fv_input_holder > input {
+  color: #a8a8a8;
+  background-color: #efefef;
+}
+.fv_field.fv_disabled > .fv_input_holder > textarea {
+  color: #a8a8a8;
+  background-color: #efefef;
 }
 .fv_field > .fv_field_title {
   font-size: 16px;
@@ -37,6 +45,29 @@
 }
 .fv_field > .fv_field_description {
   font-size: 12px;
+}
+.fv_field > .fv_input_holder {
+  box-sizing: border-box;
+}
+.fv_field > .fv_input_holder > input {
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-sizing: border-box;
+  margin: 0px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #999999;
+}
+.fv_field > .fv_input_holder > textarea {
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  margin: 0px;
+  resize: none;
+  min-height: 100px;
+  box-sizing: border-box;
+  border: 1px solid #999999;
 }
 .fv_field.fv_nested {
   padding-top: 0px;
@@ -48,7 +79,11 @@
 }
 .fv_field.fv_nested > .fv_input_holder {
   padding-right: 35px;
-  padding-left: 35px;
+  padding-left: 30px;
+}
+.fv_field.fv_nested.fv_disabled > .fv_input_holder {
+  padding-right: 0px;
+  padding-left: 0px;
 }
 .fv_field.fv_nested > .fv_error_message {
   margin-left: 35px;
@@ -66,87 +101,50 @@
   line-height: 30px;
   border: none;
 }
+.fv_field.fv_nested > .fv_field_move_handle:before {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 0;
+  height: 0;
+  margin-top: -7px;
+  margin-left: -5px;
+  border-bottom: 6px solid white;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  content: "";
+}
+.fv_field.fv_nested > .fv_field_move_handle:after {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 0;
+  height: 0;
+  margin-top: 1px;
+  margin-left: -5px;
+  border-top: 6px solid white;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  content: "";
+}
 .fv_field.fv_nested > .fv_field_remove_button {
   -webkit-appearance: none;
   cursor: pointer;
   position: absolute;
   top: 0px;
   right: 0px;
-  background-color: #777;
-  color: white;
-  font-size: 30px;
+  background-color: #aa0000;
+  color: #ffffff;
+  font-size: 20px;
   line-height: 30px;
   text-align: center;
   width: 30px;
   height: 30px;
   border: none;
+  padding: 0px;
 }
 .fv_field.fv_nested > .fv_field_remove_button:active {
-  background-color: #AAA;
-  color: black;
-}
-.dd-list .dd-list {
-  padding-left: 30px;
-}
-.dd-collapsed .dd-list {
-  display: none;
-}
-.dd-item,
-.dd-empty,
-.dd-placeholder {
-  display: block;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  min-height: 20px;
-  font-size: 13px;
-  line-height: 20px;
-}
-.dd-placeholder,
-.dd-empty {
-  border: 1px dashed #bbb;
-  min-width: 100px;
-  background-color: #e5e5e5;
-  background-size: 60px 60px;
-  background-position: 0 0, 30px 30px;
-}
-.dd-dragel {
-  position: absolute;
-  pointer-events: none;
-  z-index: 9999;
-}
-.fv_input_holder {
-  box-sizing: border-box;
-}
-.fv_input_holder > input {
-  border-radius: 0px;
-  -webkit-border-radius: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
-  box-sizing: border-box;
-  margin: 0px;
-  height: 30px;
-  line-height: 30px;
-  border: 1px solid #999;
-}
-.fv_input_holder > textarea {
-  border-radius: 0px;
-  -webkit-border-radius: 0px;
-  margin: 0px;
-  resize: none;
-  min-height: 100px;
-  box-sizing: border-box;
-  border: 1px solid #999;
-}
-.fv_error_message {
-  background-color: #AA0000;
-  color: white;
-  font-size: 14px;
-  display: inline-block;
-  padding: 5px;
-}
-.fv_display_field > .fv_input_holder > div {
-  font-size: 14px;
+  background-color: #770000;
 }
 .fv_text_field > .fv_input_holder > textarea.fv_text_input {
   width: 100%;
@@ -155,12 +153,6 @@
 .fv_text_field > .fv_input_holder > input.fv_text_input {
   width: 100%;
   font-size: 14px;
-}
-.fv_text_field.fv_view_mode > .fv_input_holder > input.fv_text_input {
-  border: 1px solid #EEE;
-}
-.fv_text_field.fv_view_mode > .fv_input_holder > textarea.fv_text_input {
-  border: 1px solid #EEE;
 }
 .fv_date_field > .fv_input_holder > .fv_date_input {
   font-size: 14px;
@@ -172,21 +164,138 @@
   text-align: center;
   font-weight: bold;
 }
+.fv_choice_field > .fv_input_holder > .fv_choice_input {
+  font-size: 14px;
+  position: relative;
+  width: 200px;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .filter_input {
+  position: absolute;
+  top: 0px;
+  width: 200px;
+  line-height: 14px;
+  padding: 5px;
+  margin: 0px;
+  outline: none;
+  border: none;
+  background-color: white;
+  z-index: 2;
+  border-radius: 0px;
+  box-sizing: border-box;
+  -webkit-border-radius: 0px;
+  border: 1px solid #999999;
+  font-size: 14px;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_current_choice {
+  position: relative;
+  background-color: white;
+  border: 1px solid #999999;
+  box-sizing: border-box;
+  padding: 5px;
+  padding-right: 24px;
+  line-height: 14px;
+  min-height: 24px;
+  cursor: pointer;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_current_choice:after {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 0;
+  height: 0;
+  margin-top: -4px;
+  border-top: 8px solid #999999;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+  content: "";
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list {
+  position: absolute;
+  z-index: 1;
+  top: 28px;
+  display: none;
+  max-height: 200px;
+  border: 1px solid #999999;
+  border-top: none;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option {
+  display: block;
+  cursor: pointer;
+  background-color: white;
+  border-top: 1px solid #999999;
+  line-height: 14px;
+  min-height: 24px;
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option.selected {
+  background-color: #5DB9FF;
+  color: white;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option.highlighted {
+  background-color: #2B86F3;
+  color: white;
+}
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option:active {
+  background-color: #2B86F3;
+  color: white;
+}
+.fv_choice_field > .fv_input_holder > input.fv_text_input {
+  font-size: 14px;
+}
+.fv_choice_field.fv_disabled > .fv_input_holder > .fv_choice_input > .fv_current_choice {
+  background-color: #efefef;
+  color: #a8a8a8;
+}
+.fv_display_field > .fv_input_holder > div {
+  font-size: 14px;
+}
 .fv_object_field > .fv_input_holder {
   padding-left: 10px;
 }
-.fv_array_field > .fv_input_holder > .fv_nested_fields {
-  padding-bottom: 5px;
+.fv_array_field > .fv_input_holder > .fv_nested_fields > .dd-placeholder {
+  display: block;
+  position: relative;
+  margin: 0px;
+  margin-bottom: 3px;
+  padding: 0px;
+  min-height: 20px;
+  font-size: 13px;
+  line-height: 20px;
+  border: 1px dashed #bbb;
+  min-width: 100px;
+  background-color: #e5e5e5;
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+.fv_array_field > .fv_input_holder > .dd-dragel {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
 }
 .fv_array_field > .fv_input_holder > .fv_add_field_button {
   -webkit-appearance: none;
   cursor: pointer;
-  background-color: green;
-  color: white;
+  background-color: #00aa00;
+  color: #ffffff;
   width: 30px;
   height: 30px;
   border: none;
+  font-size: 20px;
+  font-weight: bold;
 }
 .fv_array_field > .fv_input_holder > .fv_add_field_button:active {
-  background-color: #0F0;
+  background-color: #007700;
 }

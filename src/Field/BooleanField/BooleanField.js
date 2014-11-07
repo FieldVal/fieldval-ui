@@ -18,13 +18,13 @@ function BooleanField(name, options) {
 BooleanField.prototype.disable = function() {
     var field = this;
     field.input.attr("disabled", "disabled");
-    return field;
+    return Field.prototype.disable.call(this);
 }
 
 BooleanField.prototype.enable = function() {
     var field = this;
     field.input.attr("disabled", null);
-    return field;
+    return Field.prototype.enable.call(this);
 }
 
 BooleanField.prototype.focus = function() {
