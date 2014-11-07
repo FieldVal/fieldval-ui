@@ -650,11 +650,12 @@ function ChoiceField(name, options) {
 
     field.select = $("<div/>").append(
         field.filter_input = $("<input type='text' />")
+        .attr("placeholder", name)
         .addClass("filter_input")
     ,
-        field.current_display = $("<div />").addClass("fv_current_choice").on(FVForm.button_event,function(e){
+        field.current_display = $("<div />").addClass("fv_choice_display fv_choice_placeholder").on(FVForm.button_event,function(e){
             field.focus();
-        })
+        }).text(field.name)
     ,
         field.choice_list = $("<div />").addClass("fv_choice_list")
         .bind('mousewheel DOMMouseScroll', function(e) {
@@ -790,9 +791,11 @@ ChoiceField.prototype.select_option = function(value, ignore_change){
 
     field.selected_value = value;
     var text = field.value_to_text(value);
-    field.current_display.text(text);
+    field.current_display.removeClass("fv_choice_placeholder").text(text);
     field.hide_list();
+    
     field.filter_input.blur().hide().val("");
+    
     if(!ignore_change){
         field.did_change();
     }
@@ -920,7 +923,9 @@ ChoiceField.prototype.val = function(set_val) {
     if (arguments.length===0) {
         return field.selected_value;
     } else {
-        field.select_option(set_val,true);
+        if(set_val!==undefined){
+            field.select_option(set_val,true);
+        }
         return field;
     }
 }
