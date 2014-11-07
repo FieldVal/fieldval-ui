@@ -1,0 +1,14 @@
+$(document).ready(function(){
+	
+	var form = new FVForm()
+	.add_field("name", new TextField("Name"))
+	.add_field("email", new TextField("Email"))
+	.add_field("subscribe", new BooleanField("Subscribe?"))
+	.on_submit(function(value){
+		alert(JSON.stringify(value));
+	})
+  
+	form.element.append(
+		$("<button/>").text("Submit")
+	).appendTo("body");
+});
