@@ -172,7 +172,7 @@
 .fv_choice_field > .fv_input_holder > .fv_choice_input > .filter_input {
   position: absolute;
   top: 0px;
-  width: 200px;
+  width: 100%;
   line-height: 14px;
   padding: 5px;
   margin: 0px;
