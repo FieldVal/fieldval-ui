@@ -785,7 +785,7 @@ ChoiceField.prototype.value_to_text = function(value){
     return null;
 }
 
-ChoiceField.prototype.select_option = function(value){
+ChoiceField.prototype.select_option = function(value, ignore_change){
     var field = this;
 
     field.selected_value = value;
@@ -793,7 +793,9 @@ ChoiceField.prototype.select_option = function(value){
     field.current_display.text(text);
     field.hide_list();
     field.filter_input.blur().hide().val("");
-    field.did_change();
+    if(!ignore_change){
+        field.did_change();
+    }
 }
 
 ChoiceField.prototype.move_up = function(){
@@ -918,7 +920,7 @@ ChoiceField.prototype.val = function(set_val) {
     if (arguments.length===0) {
         return field.selected_value;
     } else {
-        field.select_option(set_val);
+        field.select_option(set_val,true);
         return field;
     }
 }
