@@ -43,6 +43,13 @@
   padding-right: 5px;
   box-sizing: border-box;
 }
+.fv_field > .fv_error_message {
+  background-color: #AA0000;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+}
 .fv_field > .fv_field_description {
   font-size: 12px;
 }
@@ -258,7 +265,7 @@
 .fv_choice_field > .fv_input_holder > input.fv_text_input {
   font-size: 14px;
 }
-.fv_choice_field.fv_disabled > .fv_input_holder > .fv_choice_display > .fv_current_choice {
+.fv_choice_field.fv_disabled > .fv_input_holder > .fv_choice_input > .fv_choice_display {
   background-color: #efefef;
   color: #a8a8a8;
 }
