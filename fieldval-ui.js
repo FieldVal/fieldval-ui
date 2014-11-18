@@ -1829,6 +1829,10 @@ ArrayField.prototype.add_field = function(name, inner_field){
     field.fields.push(inner_field);
 
     field.input_holder.nestable('init');
+
+    if(field.is_disabled){
+        inner_field.disable();
+    }
 }
 
 ArrayField.prototype.remove_field = function(inner_field){
