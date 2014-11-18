@@ -3,6 +3,7 @@
 		>textarea.fv_text_input{
 			width: 100%;
 			font-size: 14px;
+			vertical-align: top;
 		}
 		>input.fv_text_input{
 			width: 100%;
