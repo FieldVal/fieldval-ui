@@ -1,4 +1,4 @@
-fieldval_ui_extend(ChoiceField, Field);
+fieldval_ui_extend(ChoiceField, FVField);
 
 function ChoiceField(name, options) {
     var field = this;

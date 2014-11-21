@@ -1,6 +1,6 @@
 @import("../../../bower_components/nestable/jquery.nestable.js");
 
-fieldval_ui_extend(ArrayField, Field);
+fieldval_ui_extend(ArrayField, FVField);
 function ArrayField(name, options) {
     var field = this;
 

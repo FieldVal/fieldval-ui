@@ -1,4 +1,4 @@
-fieldval_ui_extend(BooleanField, Field);
+fieldval_ui_extend(BooleanField, FVField);
 
 function BooleanField(name, options) {
     var field = this;

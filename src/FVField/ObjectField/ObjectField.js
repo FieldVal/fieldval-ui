@@ -1,4 +1,4 @@
-fieldval_ui_extend(ObjectField, Field);
+fieldval_ui_extend(ObjectField, FVField);
 
 function ObjectField(name, options) {
     var field = this;

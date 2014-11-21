@@ -1,4 +1,4 @@
-fieldval_ui_extend(DisplayField, Field);
+fieldval_ui_extend(DisplayField, FVField);
 
 function DisplayField(name, options) {
     var field = this;

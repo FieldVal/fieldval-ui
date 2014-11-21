@@ -1,4 +1,4 @@
-fieldval_ui_extend(DateField, Field);
+fieldval_ui_extend(DateField, FVField);
 
 function DateField(name, options) {//format is currently unused
     var field = this;

@@ -1,4 +1,4 @@
-fieldval_ui_extend(TextField, Field);
+fieldval_ui_extend(TextField, FVField);
 
 function TextField(name, options) {
     var field = this;
