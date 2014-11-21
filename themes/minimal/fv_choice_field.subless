@@ -107,8 +107,8 @@
 
 	&.fv_disabled{
 		>.fv_input_holder{
-			>.fv_choice_display{
-				>.fv_current_choice{
+			>.fv_choice_input{
+				>.fv_choice_display{
 					background-color: @fv_disabled_background;
 					color: @fv_disabled_color;
 				}

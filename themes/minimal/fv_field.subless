@@ -38,6 +38,15 @@
 		box-sizing: border-box;
 	}
 
+	>.fv_error_message{
+		background-color: #AA0000;
+		color: white;
+		font-size: 14px;
+		display: inline-block;
+		box-sizing: border-box;
+		padding: 5px;
+	}
+
 	>.fv_field_description{
 		font-size: 12px;
 	}
