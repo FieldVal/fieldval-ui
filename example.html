@@ -45,34 +45,34 @@ $(document).ready(function(){
 		field.error_message.slideDown();
 	}
 
-	form.add_field("first_name", new TextField("First Name"));
-	form.add_field("last_name", new TextField("Last Name"));
-	form.add_field("plan_type", new DisplayField("Plan Type"));
-	form.add_field("join_date", new DateField("Join Date", {
+	form.add_field("first_name", new FVTextField("First Name"));
+	form.add_field("last_name", new FVTextField("Last Name"));
+	form.add_field("plan_type", new FVDisplayField("Plan Type"));
+	form.add_field("join_date", new FVDateField("Join Date", {
 		format: date_format
 	}));
-	form.add_field("gender", new ChoiceField("Gender",{
+	form.add_field("gender", new FVChoiceField("Gender",{
 		choices: gender_choices,
 		allow_empty: true,
 		empty_text: "(Prefer not to say)"
 	}));
-	form.add_field("email", new TextField("Email"));
-	form.add_field("subscribe", new BooleanField("Subscribe"));
-	form.add_field("bio", new TextField("Bio","textarea"));
+	form.add_field("email", new FVTextField("Email"));
+	form.add_field("subscribe", new FVBooleanField("Subscribe"));
+	form.add_field("bio", new FVTextField("Bio","textarea"));
 
-	var array_field = new ArrayField("Tags");
+	var array_field = new FVArrayField("Tags");
 	array_field.new_field = function(index){
-		var tag_field = new TextField("Tag")
+		var tag_field = new FVTextField("Tag")
 		array_field.add_field(null,tag_field);
 		return tag_field;
 	}
 	form.add_field("tags", array_field);
 
-	form.add_field("address", new ObjectField("Address"));
-	form.fields.address.add_field("house_number", new TextField("House Number",{type:"number"}));
-	form.fields.address.add_field("line_1", new TextField("Line 1"));
-	form.fields.address.add_field("line_2", new TextField("Line 2"));
-	form.fields.address.add_field("line_3", new TextField("Line 3"));
+	form.add_field("address", new FVObjectField("Address"));
+	form.fields.address.add_field("house_number", new FVTextField("House Number",{type:"number"}));
+	form.fields.address.add_field("line_1", new FVTextField("Line 1"));
+	form.fields.address.add_field("line_2", new FVTextField("Line 2"));
+	form.fields.address.add_field("line_3", new FVTextField("Line 3"));
 
 	$("body").append(
 		form.element.append(

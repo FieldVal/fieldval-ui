@@ -1,7 +1,7 @@
-@import("TextField/TextField.js");
-@import("DisplayField/DisplayField.js");
-@import("ChoiceField/ChoiceField.js");
-@import("DateField/DateField.js");
-@import("BooleanField/BooleanField.js");
-@import("ObjectField/ObjectField.js");
-@import("ArrayField/ArrayField.js");
+@import("FVTextField/FVTextField.js");
+@import("FVDisplayField/FVDisplayField.js");
+@import("FVChoiceField/FVChoiceField.js");
+@import("FVDateField/FVDateField.js");
+@import("FVBooleanField/FVBooleanField.js");
+@import("FVObjectField/FVObjectField.js");
+@import("FVArrayField/FVArrayField.js");

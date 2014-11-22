@@ -1,10 +1,10 @@
 @import("../../../bower_components/nestable/jquery.nestable.js");
 
-fieldval_ui_extend(ArrayField, FVField);
-function ArrayField(name, options) {
+fieldval_ui_extend(FVArrayField, FVField);
+function FVArrayField(name, options) {
     var field = this;
 
-    ArrayField.superConstructor.call(this, name, options);
+    FVArrayField.superConstructor.call(this, name, options);
 
     field.fields = [];
 
@@ -29,8 +29,9 @@ function ArrayField(name, options) {
         field.reorder();
     });
 }
+var ArrayField = FVArrayField;
 
-ArrayField.prototype.reorder = function(){
+FVArrayField.prototype.reorder = function(){
     var field = this;
 
     field.fields = [];
@@ -43,7 +44,7 @@ ArrayField.prototype.reorder = function(){
     }
 }
 
-ArrayField.prototype.create_add_field_button = function(){
+FVArrayField.prototype.create_add_field_button = function(){
     var field = this;
 
     var add_field_button = $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
@@ -56,12 +57,12 @@ ArrayField.prototype.create_add_field_button = function(){
     return add_field_button;
 }
 
-ArrayField.prototype.new_field = function(index){
+FVArrayField.prototype.new_field = function(index){
     var field = this;
-    throw new Error("ArrayField.new_field must be overriden to create fields");
+    throw new Error("FVArrayField.new_field must be overriden to create fields");
 }
 
-ArrayField.prototype.add_field = function(name, inner_field){
+FVArrayField.prototype.add_field = function(name, inner_field){
     var field = this;
 
     inner_field.in_array(function(){
@@ -77,7 +78,7 @@ ArrayField.prototype.add_field = function(name, inner_field){
     }
 }
 
-ArrayField.prototype.remove_field = function(inner_field){
+FVArrayField.prototype.remove_field = function(inner_field){
     var field = this;
 
     for(var i = 0; i < field.fields.length; i++){
@@ -87,13 +88,13 @@ ArrayField.prototype.remove_field = function(inner_field){
     }
 }
 
-ArrayField.prototype.error = function(error){
+FVArrayField.prototype.error = function(error){
     var field = this;
 
-    ArrayField.superClass.error.call(this,error);
+    FVArrayField.superClass.error.call(this,error);
 }
 
-ArrayField.prototype.fields_error = function(error){
+FVArrayField.prototype.fields_error = function(error){
     var field = this;
 
     if(error){
@@ -117,7 +118,7 @@ ArrayField.prototype.fields_error = function(error){
 }
 
 
-ArrayField.prototype.clear_errors = function(){
+FVArrayField.prototype.clear_errors = function(){
     var field = this;
 
     for(var i=0; i<field.fields.length; i++){
@@ -126,7 +127,7 @@ ArrayField.prototype.clear_errors = function(){
     }    
 }
 
-ArrayField.prototype.disable = function(){
+FVArrayField.prototype.disable = function(){
     var field = this;
 
     for(var i=0; i<field.fields.length; i++){
@@ -137,10 +138,10 @@ ArrayField.prototype.disable = function(){
         var add_field_button = field.add_field_buttons[i];
         add_field_button.hide();
     }
-    return Field.prototype.disable.call(this);
+    return FVField.prototype.disable.call(this);
 }
 
-ArrayField.prototype.enable = function(){
+FVArrayField.prototype.enable = function(){
     var field = this;
 
     for(var i=0; i<field.fields.length; i++){
@@ -151,10 +152,10 @@ ArrayField.prototype.enable = function(){
         var add_field_button = field.add_field_buttons[i];
         add_field_button.show();
     }
-    return Field.prototype.enable.call(this);
+    return FVField.prototype.enable.call(this);
 }
 
-ArrayField.prototype.error = function(error) {
+FVArrayField.prototype.error = function(error) {
     var field = this;
 
     field.error_message.empty();
@@ -199,7 +200,7 @@ ArrayField.prototype.error = function(error) {
     }
 }
 
-ArrayField.prototype.val = function(set_val) {
+FVArrayField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {

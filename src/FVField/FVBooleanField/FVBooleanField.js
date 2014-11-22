@@ -1,9 +1,9 @@
-fieldval_ui_extend(BooleanField, FVField);
+fieldval_ui_extend(FVBooleanField, FVField);
 
-function BooleanField(name, options) {
+function FVBooleanField(name, options) {
     var field = this;
 
-    BooleanField.superConstructor.call(this, name, options);
+    FVBooleanField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_boolean_field");
 
@@ -14,32 +14,33 @@ function BooleanField(name, options) {
     })
     .appendTo(field.input_holder);
 }
+var BooleanField = FVBooleanField;
 
-BooleanField.prototype.disable = function() {
+FVBooleanField.prototype.disable = function() {
     var field = this;
     field.input.attr("disabled", "disabled");
-    return Field.prototype.disable.call(this);
+    return FVField.prototype.disable.call(this);
 }
 
-BooleanField.prototype.enable = function() {
+FVBooleanField.prototype.enable = function() {
     var field = this;
     field.input.attr("disabled", null);
-    return Field.prototype.enable.call(this);
+    return FVField.prototype.enable.call(this);
 }
 
-BooleanField.prototype.focus = function() {
+FVBooleanField.prototype.focus = function() {
     var field = this;
     field.input.focus();
     return field;
 }
 
-BooleanField.prototype.blur = function() {
+FVBooleanField.prototype.blur = function() {
     var field = this;
     field.input.blur();
     return field;
 }
 
-BooleanField.prototype.val = function(set_val) {
+FVBooleanField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
