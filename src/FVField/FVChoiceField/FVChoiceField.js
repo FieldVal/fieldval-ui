@@ -102,7 +102,6 @@ function FVChoiceField(name, options) {
 
     field.filter("");
 }
-var ChoiceField = FVChoiceField;
 
 FVChoiceField.prototype.show_list = function(){
     var field = this;

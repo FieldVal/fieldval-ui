@@ -14,7 +14,6 @@ function FVBooleanField(name, options) {
     })
     .appendTo(field.input_holder);
 }
-var BooleanField = FVBooleanField;
 
 FVBooleanField.prototype.disable = function() {
     var field = this;

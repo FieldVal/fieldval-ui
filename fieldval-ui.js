@@ -236,7 +236,6 @@ function FVTextField(name, options) {
     })
     .appendTo(field.input_holder);
 }
-var TextField = FVTextField;
 
 FVTextField.prototype.check_changed = function(){
     var field = this;
@@ -345,7 +344,6 @@ function FVDisplayField(name, options) {
 
     field.output_flag = false;//Don't output the field
 }
-var DisplayField = FVDisplayField;
 
 FVDisplayField.prototype.icon = function(params) {
     var field = this;
@@ -488,7 +486,6 @@ function FVChoiceField(name, options) {
 
     field.filter("");
 }
-var ChoiceField = FVChoiceField;
 
 FVChoiceField.prototype.show_list = function(){
     var field = this;
@@ -738,7 +735,6 @@ function FVDateField(name, options) {//format is currently unused
         field.add_element_from_component(component, component_value);
     }
 }
-var DateField = FVDateField;
 
 FVDateField.prototype.add_element_from_component = function(component, component_value){
     var field = this;
@@ -905,7 +901,6 @@ function FVBooleanField(name, options) {
     })
     .appendTo(field.input_holder);
 }
-var BooleanField = FVBooleanField;
 
 FVBooleanField.prototype.disable = function() {
     var field = this;
@@ -959,7 +954,6 @@ function FVObjectField(name, options) {
 
     field.fields = {};
 }
-var ObjectField = FVObjectField;
 
 FVObjectField.prototype.init = function(){
     var field = this;
@@ -1662,7 +1656,6 @@ function FVArrayField(name, options) {
         field.reorder();
     });
 }
-var ArrayField = FVArrayField;
 
 FVArrayField.prototype.reorder = function(){
     var field = this;

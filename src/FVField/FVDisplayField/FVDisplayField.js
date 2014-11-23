@@ -12,7 +12,6 @@ function FVDisplayField(name, options) {
 
     field.output_flag = false;//Don't output the field
 }
-var DisplayField = FVDisplayField;
 
 FVDisplayField.prototype.icon = function(params) {
     var field = this;

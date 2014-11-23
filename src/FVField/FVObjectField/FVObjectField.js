@@ -11,7 +11,6 @@ function FVObjectField(name, options) {
 
     field.fields = {};
 }
-var ObjectField = FVObjectField;
 
 FVObjectField.prototype.init = function(){
     var field = this;

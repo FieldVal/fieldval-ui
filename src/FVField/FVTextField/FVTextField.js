@@ -46,7 +46,6 @@ function FVTextField(name, options) {
     })
     .appendTo(field.input_holder);
 }
-var TextField = FVTextField;
 
 FVTextField.prototype.check_changed = function(){
     var field = this;

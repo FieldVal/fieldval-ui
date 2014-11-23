@@ -33,7 +33,6 @@ function FVDateField(name, options) {//format is currently unused
         field.add_element_from_component(component, component_value);
     }
 }
-var DateField = FVDateField;
 
 FVDateField.prototype.add_element_from_component = function(component, component_value){
     var field = this;

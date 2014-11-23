@@ -29,7 +29,6 @@ function FVArrayField(name, options) {
         field.reorder();
     });
 }
-var ArrayField = FVArrayField;
 
 FVArrayField.prototype.reorder = function(){
     var field = this;
