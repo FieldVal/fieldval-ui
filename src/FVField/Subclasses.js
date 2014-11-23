@@ -1,4 +1,5 @@
 @import("FVTextField/FVTextField.js");
+@import("FVPasswordField/FVPasswordField.js");
 @import("FVDisplayField/FVDisplayField.js");
 @import("FVChoiceField/FVChoiceField.js");
 @import("FVDateField/FVDateField.js");

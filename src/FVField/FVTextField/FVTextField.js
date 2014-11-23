@@ -132,11 +132,3 @@ FVTextField.prototype.val = function(set_val) {
         return field;
     }
 }
-
-fieldval_ui_extend(PasswordField, FVTextField);
-
-function PasswordField(name) {
-    var field = this;
-
-    PasswordField.superConstructor.call(this, name, "password");
-}
