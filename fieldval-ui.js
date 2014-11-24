@@ -1123,7 +1123,10 @@ FVObjectField.prototype.val = function(set_val) {
     	for(var i in field.fields){
     		var inner_field = field.fields[i];
             if(inner_field.output_flag!==false){
-        		compiled[i] = inner_field.val();
+                var value = inner_field.val();
+                if(value!=null){
+            		compiled[i] = value;
+                }
             }
     	}
         return compiled;
