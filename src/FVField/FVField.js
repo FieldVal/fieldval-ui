@@ -1,4 +1,4 @@
-function Field(name, options) {
+function FVField(name, options) {
     var field = this;
 
     field.name = name;
@@ -21,7 +21,7 @@ function Field(name, options) {
     field.layout();
 }
 
-Field.prototype.in_array = function(remove_callback){
+FVField.prototype.in_array = function(remove_callback){
     var field = this;
 
     field.is_in_array = true;
@@ -41,23 +41,23 @@ Field.prototype.in_array = function(remove_callback){
     )
 }
 
-Field.prototype.init = function(){
+FVField.prototype.init = function(){
     var field = this;
 }
 
-Field.prototype.remove = function(){
+FVField.prototype.remove = function(){
     var field = this;
 
     field.element.remove();
 }
 
-Field.prototype.change_name = function(name) {
+FVField.prototype.change_name = function(name) {
     var field = this;
     field.name = name;
     return field;
 }
 
-Field.prototype.layout = function(){
+FVField.prototype.layout = function(){
     var field = this;
 
     field.element.append(
@@ -68,7 +68,7 @@ Field.prototype.layout = function(){
     )
 }
 
-Field.prototype.on_change = function(callback){
+FVField.prototype.on_change = function(callback){
     var field = this;
 
     field.on_change_callbacks.push(callback);
@@ -76,13 +76,13 @@ Field.prototype.on_change = function(callback){
     return field;
 }
 
-Field.prototype.output = function(do_output){
+FVField.prototype.output = function(do_output){
     var field = this;
     field.output_flag = do_output;
     return field;
 }
 
-Field.prototype.did_change = function(){
+FVField.prototype.did_change = function(){
     var field = this;
 
     var val = field.val();
@@ -95,15 +95,15 @@ Field.prototype.did_change = function(){
     return field;
 }
 
-Field.prototype.icon = function(params) {
+FVField.prototype.icon = function(params) {
     var field = this;
 }
 
-Field.prototype.val = function(set_val) {
-    console.error("Did not override Field.val()")
+FVField.prototype.val = function(set_val) {
+    console.error("Did not override FVField.val()")
 }
 
-Field.prototype.disable = function() {
+FVField.prototype.disable = function() {
     var field = this;
     field.is_disabled = true;
     field.element.addClass("fv_disabled");
@@ -116,7 +116,7 @@ Field.prototype.disable = function() {
     return field;
 }
 
-Field.prototype.enable = function() {
+FVField.prototype.enable = function() {
     var field = this;
     field.is_disabled = false;
     field.element.removeClass("fv_disabled");
@@ -129,25 +129,25 @@ Field.prototype.enable = function() {
     return field;
 }
 
-Field.prototype.blur = function() {
+FVField.prototype.blur = function() {
     var field = this;
 }
 
-Field.prototype.focus = function() {
+FVField.prototype.focus = function() {
     var field = this;
 }
 
-Field.prototype.show_error = function(){
+FVField.prototype.show_error = function(){
     var field = this;
     field.error_message.show();
 }
 
-Field.prototype.hide_error = function(){
+FVField.prototype.hide_error = function(){
     var field = this;
     field.error_message.hide();
 }
 
-Field.prototype.error = function(error) {
+FVField.prototype.error = function(error) {
     var field = this;
 
     if (error) {

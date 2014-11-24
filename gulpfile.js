@@ -4,10 +4,12 @@ var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
-var rename = require('gulp-rename');
 var gulpImports = require('gulp-imports');
+var rename = require('gulp-rename');
 var less = require('gulp-less');
 var path = require('path');
+
+var docs_to_json = require('sa-docs-to-json');
 
 gulp.task('js', function(){
 
@@ -40,6 +42,7 @@ gulp.task('less', function(){
 gulp.task('default', function(){
     gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
     gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
+    gulp.watch(['docs_src/**/*'], ['docs']);
 });
 
 
@@ -49,3 +52,9 @@ gulp.task('nodemon', function () {
       console.log('restarted!')
     })
 })
+
+gulp.task('docs', function() {
+    return gulp.src('./docs_src/*.json')
+    .pipe(docs_to_json())
+    .pipe(gulp.dest('./docs/'))
+});

@@ -1,9 +1,9 @@
-fieldval_ui_extend(DisplayField, Field);
+fieldval_ui_extend(FVDisplayField, FVField);
 
-function DisplayField(name, options) {
+function FVDisplayField(name, options) {
     var field = this;
 
-    DisplayField.superConstructor.call(this, name, options);
+    FVDisplayField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_display_field");
 
@@ -13,7 +13,7 @@ function DisplayField(name, options) {
     field.output_flag = false;//Don't output the field
 }
 
-DisplayField.prototype.icon = function(params) {
+FVDisplayField.prototype.icon = function(params) {
     var field = this;
 
     var css_props = {
@@ -27,7 +27,7 @@ DisplayField.prototype.icon = function(params) {
     return field;
 }
 
-DisplayField.replace_line_breaks = function(string){
+FVDisplayField.replace_line_breaks = function(string){
     if(typeof string !== 'string'){
         return string;
     }
@@ -40,13 +40,13 @@ DisplayField.replace_line_breaks = function(string){
     return htmls.join("<br>");
 }
 
-DisplayField.prototype.val = function(set_val) {
+FVDisplayField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         return field.input.text();
     } else {
-        field.input.html(DisplayField.replace_line_breaks(set_val));
+        field.input.html(FVDisplayField.replace_line_breaks(set_val));
         return field;
     }
 }

@@ -1,9 +1,9 @@
-fieldval_ui_extend(ChoiceField, Field);
+fieldval_ui_extend(FVChoiceField, FVField);
 
-function ChoiceField(name, options) {
+function FVChoiceField(name, options) {
     var field = this;
 
-    ChoiceField.superConstructor.call(this, name, options);
+    FVChoiceField.superConstructor.call(this, name, options);
 
     field.choices = field.options.choices || [];
     field.allow_empty = field.options.allow_empty || false;
@@ -103,7 +103,7 @@ function ChoiceField(name, options) {
     field.filter("");
 }
 
-ChoiceField.prototype.show_list = function(){
+FVChoiceField.prototype.show_list = function(){
     var field = this;
 
     if(!field.is_disabled){
@@ -121,7 +121,7 @@ ChoiceField.prototype.show_list = function(){
     }
 }
 
-ChoiceField.prototype.hide_list = function(){
+FVChoiceField.prototype.hide_list = function(){
     var field = this;
 
     field.input_holder.css("min-height","");
@@ -131,7 +131,7 @@ ChoiceField.prototype.hide_list = function(){
     field.choice_list.hide();
 }
 
-ChoiceField.prototype.filter = function(text, initial){
+FVChoiceField.prototype.filter = function(text, initial){
     var field = this;
 
     var text_lower = text.toLowerCase();
@@ -159,7 +159,7 @@ ChoiceField.prototype.filter = function(text, initial){
     }
 }
 
-ChoiceField.prototype.value_to_text = function(value){
+FVChoiceField.prototype.value_to_text = function(value){
     var field = this;
 
     for(var i = 0; i < field.choice_values.length; i++){
@@ -173,7 +173,7 @@ ChoiceField.prototype.value_to_text = function(value){
     return null;
 }
 
-ChoiceField.prototype.select_option = function(value, ignore_change){
+FVChoiceField.prototype.select_option = function(value, ignore_change){
     var field = this;
 
     field.selected_value = value;
@@ -188,7 +188,7 @@ ChoiceField.prototype.select_option = function(value, ignore_change){
     }
 }
 
-ChoiceField.prototype.move_up = function(){
+FVChoiceField.prototype.move_up = function(){
     var field = this;
 
     if(field.current_highlight){
@@ -204,7 +204,7 @@ ChoiceField.prototype.move_up = function(){
     }
 }
 
-ChoiceField.prototype.move_down = function(){
+FVChoiceField.prototype.move_down = function(){
     var field = this;
 
     if(!field.current_highlight){
@@ -223,7 +223,7 @@ ChoiceField.prototype.move_down = function(){
     }
 }
 
-ChoiceField.prototype.move_into_view = function(target){
+FVChoiceField.prototype.move_into_view = function(target){
     var field = this;
 
     if(target===undefined){
@@ -240,7 +240,7 @@ ChoiceField.prototype.move_into_view = function(target){
     },1);
 }
 
-ChoiceField.prototype.add_option = function(choice_value, display_name, initial){
+FVChoiceField.prototype.add_option = function(choice_value, display_name, initial){
     var field = this;
 
     var option_element = $("<div />").addClass("fv_choice_option").data("value",choice_value).text(display_name).on(FVForm.button_event,function(e){
@@ -250,7 +250,7 @@ ChoiceField.prototype.add_option = function(choice_value, display_name, initial)
     field.finalize_option(option_element, choice_value, initial);
 }
 
-ChoiceField.prototype.default_click = function(e, value){
+FVChoiceField.prototype.default_click = function(e, value){
     var field = this;
 
     e.preventDefault();
@@ -262,7 +262,7 @@ ChoiceField.prototype.default_click = function(e, value){
     field.select_option(value);
 }
 
-ChoiceField.prototype.finalize_option = function(option_element, choice_value, initial){
+FVChoiceField.prototype.finalize_option = function(option_element, choice_value, initial){
     var field = this;
 
     if(field.selected_value===choice_value){
@@ -277,7 +277,7 @@ ChoiceField.prototype.finalize_option = function(option_element, choice_value, i
     option_element.appendTo(field.choice_list)
 }
 
-ChoiceField.prototype.select_highlighted = function(){
+FVChoiceField.prototype.select_highlighted = function(){
     var field = this;
 
     if(field.current_highlight && field.current_highlight[0]){
@@ -285,7 +285,7 @@ ChoiceField.prototype.select_highlighted = function(){
     }
 }
 
-ChoiceField.prototype.focus = function() {
+FVChoiceField.prototype.focus = function() {
     var field = this;
     
     field.filter_input.val("");
@@ -296,7 +296,7 @@ ChoiceField.prototype.focus = function() {
     return field;
 }
 
-ChoiceField.prototype.blur = function() {
+FVChoiceField.prototype.blur = function() {
     var field = this;
     
     field.hide_list();
@@ -304,7 +304,7 @@ ChoiceField.prototype.blur = function() {
     return field;
 }
 
-ChoiceField.prototype.val = function(set_val) {
+FVChoiceField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {

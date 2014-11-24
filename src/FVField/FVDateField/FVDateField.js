@@ -1,14 +1,14 @@
-fieldval_ui_extend(DateField, Field);
+fieldval_ui_extend(FVDateField, FVField);
 
-function DateField(name, options) {//format is currently unused
+function FVDateField(name, options) {//format is currently unused
     var field = this;
 
     if(typeof DateVal === 'undefined'){
-        console.error("DateField requires fieldval-dateval-js");
+        console.error("FVDateField requires fieldval-dateval-js");
         return;
     }
 
-    DateField.superConstructor.call(this, name, options);
+    FVDateField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_date_field");
 
@@ -34,7 +34,7 @@ function DateField(name, options) {//format is currently unused
     }
 }
 
-DateField.prototype.add_element_from_component = function(component, component_value){
+FVDateField.prototype.add_element_from_component = function(component, component_value){
     var field = this;
 
     if(component_value===0){
@@ -66,22 +66,22 @@ DateField.prototype.add_element_from_component = function(component, component_v
     }
 }
 
-DateField.prototype.icon = function(params) {
+FVDateField.prototype.icon = function(params) {
     var field = this;
 
     return field;
 }
 
-DateField.prototype.change_name = function(name) {
+FVDateField.prototype.change_name = function(name) {
     var field = this;
 
-    DateField.superClass.change_name.call(this,name);
+    FVDateField.superClass.change_name.call(this,name);
 
     field.input.attr("placeholder", name);
     return field;
 }
 
-DateField.prototype.disable = function() {
+FVDateField.prototype.disable = function() {
     var field = this;
     for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
@@ -89,10 +89,10 @@ DateField.prototype.disable = function() {
             input.attr("disabled", "disabled");
         }
     }
-    return Field.prototype.disable.call(this);
+    return FVField.prototype.disable.call(this);
 }
 
-DateField.prototype.enable = function() {
+FVDateField.prototype.enable = function() {
     var field = this;
     for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
@@ -100,10 +100,10 @@ DateField.prototype.enable = function() {
             input.attr("disabled", null);
         }
     }
-    return Field.prototype.enable.call(this);
+    return FVField.prototype.enable.call(this);
 }
 
-DateField.prototype.focus = function() {
+FVDateField.prototype.focus = function() {
     var field = this;
     
     var input = field.inputs[0];
@@ -114,7 +114,7 @@ DateField.prototype.focus = function() {
     return field;
 }
 
-DateField.prototype.blur = function() {
+FVDateField.prototype.blur = function() {
     var field = this;
     for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
@@ -125,7 +125,7 @@ DateField.prototype.blur = function() {
     return field;
 }
 
-DateField.prototype.val = function(set_val) {
+FVDateField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
@@ -164,7 +164,7 @@ DateField.prototype.val = function(set_val) {
             })
 
             if(validation){
-                console.error("Invalid format passed to .val of DateField");
+                console.error("Invalid format passed to .val of FVDateField");
                 return;
             }
 

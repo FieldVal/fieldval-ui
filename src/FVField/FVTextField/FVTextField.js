@@ -1,6 +1,6 @@
-fieldval_ui_extend(TextField, Field);
+fieldval_ui_extend(FVTextField, FVField);
 
-function TextField(name, options) {
+function FVTextField(name, options) {
     var field = this;
 
     var options_type = typeof options;
@@ -14,7 +14,7 @@ function TextField(name, options) {
         options = {};
     }
 
-    TextField.superConstructor.call(this, name, options);
+    FVTextField.superConstructor.call(this, name, options);
 
     field.element.addClass("fv_text_field");
 
@@ -47,7 +47,7 @@ function TextField(name, options) {
     .appendTo(field.input_holder);
 }
 
-TextField.prototype.check_changed = function(){
+FVTextField.prototype.check_changed = function(){
     var field = this;
 
     var this_value = field.val();
@@ -57,7 +57,7 @@ TextField.prototype.check_changed = function(){
     }
 }
 
-TextField.prototype.on_enter = function(callback){
+FVTextField.prototype.on_enter = function(callback){
     var field = this;
 
     field.enter_callbacks.push(callback);
@@ -65,7 +65,7 @@ TextField.prototype.on_enter = function(callback){
     return field;
 }
 
-TextField.prototype.icon = function(params) {
+FVTextField.prototype.icon = function(params) {
     var field = this;
 
     var css_props = {
@@ -79,47 +79,47 @@ TextField.prototype.icon = function(params) {
     return field;
 }
 
-TextField.prototype.change_name = function(name) {
+FVTextField.prototype.change_name = function(name) {
     var field = this;
 
-    TextField.superClass.change_name.call(this,name);
+    FVTextField.superClass.change_name.call(this,name);
 
     field.input.attr("placeholder", name);
     return field;
 }
 
-TextField.prototype.disable = function() {
+FVTextField.prototype.disable = function() {
     var field = this;
     field.input.attr("disabled", "disabled");
-    return Field.prototype.disable.call(this);
+    return FVField.prototype.disable.call(this);
 }
 
-TextField.prototype.enable = function() {
+FVTextField.prototype.enable = function() {
     var field = this;
     field.input.attr("disabled", null);
-    return Field.prototype.enable.call(this);
+    return FVField.prototype.enable.call(this);
 }
 
-TextField.prototype.focus = function() {
+FVTextField.prototype.focus = function() {
     var field = this;
     field.input.focus();
     return field;
 }
 
-TextField.prototype.blur = function() {
+FVTextField.prototype.blur = function() {
     var field = this;
     field.input.blur();
     return field;
 }
 
-TextField.numeric_regex = /^\d+(\.\d+)?$/;
+FVTextField.numeric_regex = /^\d+(\.\d+)?$/;
 
-TextField.prototype.val = function(set_val) {
+FVTextField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
         var value = field.input.val();
-        if(field.input_type==="number" && TextField.numeric_regex.test(value)){
+        if(field.input_type==="number" && FVTextField.numeric_regex.test(value)){
             return parseFloat(value);
         }
         if(value.length===0){
@@ -130,12 +130,4 @@ TextField.prototype.val = function(set_val) {
         field.input.val(set_val);
         return field;
     }
-}
-
-fieldval_ui_extend(PasswordField, TextField);
-
-function PasswordField(name) {
-    var field = this;
-
-    PasswordField.superConstructor.call(this, name, "password");
 }

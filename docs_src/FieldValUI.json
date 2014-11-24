@@ -1,0 +1,18 @@
+{
+    "name": "FieldVal UI",
+    "text": "FieldValUI.md",
+    "sections": [
+        {
+            "name": "Example",
+            "text": "Example/Example.md",
+            "code": [{
+                "path": "Example/Example.code",
+                "runnable_path": "Example/Example_runnable.code",
+                "type": "js",
+                "runnable": true,
+                "js_library": "jquery",
+                "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+            }]
+        }
+    ]
+}
