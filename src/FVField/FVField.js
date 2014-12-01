@@ -6,12 +6,18 @@ function FVField(name, options) {
 
     field.output_flag = true;
     field.is_in_array = false;
+    field.key_value_parent = null;
+    field.is_in_key_value = false;
     field.is_disabled = false;
 
     field.on_change_callbacks = [];
 
     field.element = $("<div />").addClass("fv_field").data("field",field);
     field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    if(!field.name){
+        //Field name is empty
+        field.title.hide();
+    }
     if(field.options.description){
         field.description_label = $("<div />").addClass("fv_field_description").text(field.options.description)
     }
@@ -26,11 +32,35 @@ FVField.prototype.in_array = function(remove_callback){
 
     field.is_in_array = true;
 
-    field.element.addClass("fv_nested")
+    field.element.addClass("fv_in_array")
     .append(
         field.move_handle = $("<div />")
         .addClass("fv_field_move_handle")
     ,
+        field.remove_button = $("<button />")
+        .addClass("fv_field_remove_button")
+        .html("&#10006;").on(FVForm.button_event,function(event){
+            event.preventDefault();
+            remove_callback();
+            field.remove();
+        })
+    )
+}
+
+FVField.prototype.in_key_value = function(parent, remove_callback){
+    var field = this;
+
+    field.key_value_parent = parent;
+    field.is_in_key_value = true;
+
+    field.name_input = new FVTextField("Key").on_change(function(name_val){
+        field.key_name = field.key_value_parent.change_key_name(field.key_name, name_val, field);
+    });
+    field.name_input.element.addClass("fv_key_value_name_input")
+    field.title.replaceWith(field.name_input.element);
+
+    field.element.addClass("fv_in_key_value")
+    .append(
         field.remove_button = $("<button />")
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
@@ -145,6 +175,15 @@ FVField.prototype.show_error = function(){
 FVField.prototype.hide_error = function(){
     var field = this;
     field.error_message.hide();
+}
+
+//Used in key_value fields
+FVField.prototype.name_val = function(){
+    var field = this;
+
+    var response = field.name_input.val.apply(field.name_input,arguments);
+    field.key_name = field.key_value_parent.change_key_name(field.key_name, field.name_input.val(), field);
+    return response;
 }
 
 FVField.prototype.error = function(error) {

@@ -6,3 +6,4 @@
 @import("FVBooleanField/FVBooleanField.js");
 @import("FVObjectField/FVObjectField.js");
 @import("FVArrayField/FVArrayField.js");
+@import("FVKeyValueField/FVKeyValueField.js");
