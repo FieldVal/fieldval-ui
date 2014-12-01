@@ -1,0 +1,20 @@
+.fv_key_value_field{
+	>.fv_input_holder{
+
+		>.fv_add_field_button{
+			-webkit-appearance: none;
+			cursor: pointer;
+			background-color: @fv_add_button_background_color;
+			color: @fv_add_button_color;
+			width: 30px;
+			height: 30px;
+			border: none;
+			font-size: 20px;
+			font-weight: bold;
+
+			&:active{
+				background-color: @fv_add_button_active_background_color;
+			}
+		}
+	}
+}

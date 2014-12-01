@@ -77,26 +77,61 @@
   box-sizing: border-box;
   border: 1px solid #999999;
 }
-.fv_field.fv_nested {
+.fv_field.fv_in_array,
+.fv_field .fv_in_key_value {
   padding-top: 0px;
   padding-bottom: 5px;
   min-height: 35px;
 }
-.fv_field.fv_nested > .fv_field_title {
+.fv_field.fv_in_array > .fv_input_holder,
+.fv_field .fv_in_key_value > .fv_input_holder {
+  padding-right: 35px;
+}
+.fv_field.fv_in_array.fv_in_array > .fv_field_title,
+.fv_field .fv_in_key_value.fv_in_array > .fv_field_title {
   display: none;
 }
-.fv_field.fv_nested > .fv_input_holder {
-  padding-right: 35px;
+.fv_field.fv_in_array.fv_in_array > .fv_input_holder,
+.fv_field .fv_in_key_value.fv_in_array > .fv_input_holder {
   padding-left: 30px;
 }
-.fv_field.fv_nested.fv_disabled > .fv_input_holder {
+.fv_field.fv_in_array.fv_in_key_value .fv_key_value_name_input,
+.fv_field .fv_in_key_value.fv_in_key_value .fv_key_value_name_input {
+  width: 20%;
+  display: inline-block;
+  padding-right: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.fv_field.fv_in_array.fv_in_key_value .fv_key_value_name_input > .fv_field_title,
+.fv_field .fv_in_key_value.fv_in_key_value .fv_key_value_name_input > .fv_field_title {
+  display: none;
+}
+.fv_field.fv_in_array.fv_in_key_value > .fv_field_title,
+.fv_field .fv_in_key_value.fv_in_key_value > .fv_field_title {
+  width: 20%;
+  vertical-align: top;
+}
+.fv_field.fv_in_array.fv_in_key_value > .fv_input_holder,
+.fv_field .fv_in_key_value.fv_in_key_value > .fv_input_holder {
+  width: 80%;
+  display: inline-block;
+}
+.fv_field.fv_in_array.fv_in_key_value > .fv_error_message,
+.fv_field .fv_in_key_value.fv_in_key_value > .fv_error_message {
+  margin-left: 20%;
+}
+.fv_field.fv_in_array.fv_disabled > .fv_input_holder,
+.fv_field .fv_in_key_value.fv_disabled > .fv_input_holder {
   padding-right: 0px;
   padding-left: 0px;
 }
-.fv_field.fv_nested > .fv_error_message {
-  margin-left: 35px;
+.fv_field.fv_in_array > .fv_error_message,
+.fv_field .fv_in_key_value > .fv_error_message {
+  margin-left: 30px;
 }
-.fv_field.fv_nested > .fv_field_move_handle {
+.fv_field.fv_in_array > .fv_field_move_handle,
+.fv_field .fv_in_key_value > .fv_field_move_handle {
   cursor: pointer;
   position: absolute;
   top: 0px;
@@ -109,7 +144,8 @@
   line-height: 30px;
   border: none;
 }
-.fv_field.fv_nested > .fv_field_move_handle:before {
+.fv_field.fv_in_array > .fv_field_move_handle:before,
+.fv_field .fv_in_key_value > .fv_field_move_handle:before {
   position: absolute;
   top: 50%;
   left: 14px;
@@ -122,7 +158,8 @@
   border-left: 6px solid transparent;
   content: "";
 }
-.fv_field.fv_nested > .fv_field_move_handle:after {
+.fv_field.fv_in_array > .fv_field_move_handle:after,
+.fv_field .fv_in_key_value > .fv_field_move_handle:after {
   position: absolute;
   top: 50%;
   left: 14px;
@@ -135,7 +172,8 @@
   border-left: 6px solid transparent;
   content: "";
 }
-.fv_field.fv_nested > .fv_field_remove_button {
+.fv_field.fv_in_array > .fv_field_remove_button,
+.fv_field .fv_in_key_value > .fv_field_remove_button {
   -webkit-appearance: none;
   cursor: pointer;
   position: absolute;
@@ -151,7 +189,8 @@
   border: none;
   padding: 0px;
 }
-.fv_field.fv_nested > .fv_field_remove_button:active {
+.fv_field.fv_in_array > .fv_field_remove_button:active,
+.fv_field .fv_in_key_value > .fv_field_remove_button:active {
   background-color: #770000;
 }
 .fv_text_field > .fv_input_holder > textarea.fv_text_input {
@@ -309,5 +348,19 @@
   font-weight: bold;
 }
 .fv_array_field > .fv_input_holder > .fv_add_field_button:active {
+  background-color: #007700;
+}
+.fv_key_value_field > .fv_input_holder > .fv_add_field_button {
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-color: #00aa00;
+  color: #ffffff;
+  width: 30px;
+  height: 30px;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+}
+.fv_key_value_field > .fv_input_holder > .fv_add_field_button:active {
   background-color: #007700;
 }

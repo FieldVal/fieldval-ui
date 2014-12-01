@@ -101,7 +101,7 @@ $(document).ready(function(){
 	form.on_submit(function(object){
 
 		var validator = new FieldVal(object);
-		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5));
+		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5),BasicVal.max_length(10));
 		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
 		var join_date = validator.get("join_date",BasicVal.string(true), DateVal.date(date_format, {
 			emit: DateVal.EMIT_DATE//emits the value as a Date object

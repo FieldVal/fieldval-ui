@@ -75,17 +75,45 @@
 		}
 	}
 
-	&.fv_nested{
+	&.fv_in_array,.fv_in_key_value{
 		padding-top: 0px;
 		padding-bottom: 5px;
 		min-height: 35px;
 		
-		>.fv_field_title{
-			display: none;
-		}
 		>.fv_input_holder{
 			padding-right: 35px;
-			padding-left: 30px;
+		}
+		&.fv_in_array{
+			>.fv_field_title{
+				display: none;
+			}
+			>.fv_input_holder{
+				padding-left: 30px;
+			}
+		}
+		&.fv_in_key_value{
+			.fv_key_value_name_input{
+				>.fv_field_title{
+					display: none;
+				}
+				width: 20%;
+				display: inline-block;
+				padding-right: 5px;
+				padding-top: 0px;
+				padding-bottom: 0px;
+			}
+
+			>.fv_field_title{
+				width: 20%;
+				vertical-align: top;
+			}
+			>.fv_input_holder{
+				width: 80%;
+				display: inline-block;
+			}
+			>.fv_error_message{
+				margin-left: 20%;
+			}
 		}
 		&.fv_disabled{
 			>.fv_input_holder{
@@ -94,7 +122,7 @@
 			}
 		}
 		>.fv_error_message{
-			margin-left: 35px;
+			margin-left: 30px;
 		}
 		>.fv_field_move_handle{
 			cursor: pointer;
