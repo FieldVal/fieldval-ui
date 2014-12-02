@@ -178,7 +178,11 @@ FVChoiceField.prototype.select_option = function(value, ignore_change){
 
     field.selected_value = value;
     var text = field.value_to_text(value);
-    field.current_display.removeClass("fv_choice_placeholder").text(text);
+    if(value===null && text===null){
+        field.current_display.addClass("fv_choice_placeholder").text(field.name);
+    } else {
+        field.current_display.removeClass("fv_choice_placeholder").text(text); 
+    }
     field.hide_list();
     
     field.filter_input.blur().hide().val("");
