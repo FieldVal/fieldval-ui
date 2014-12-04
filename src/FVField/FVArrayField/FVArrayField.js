@@ -8,6 +8,7 @@ function FVArrayField(name, options) {
 
     field.fields = [];
 
+    field.add_button_text = field.options.add_button_text!==undefined ? field.options.add_button_text : "+";
     field.add_field_buttons = [];
 
     field.element.addClass("fv_array_field");
@@ -16,15 +17,13 @@ function FVArrayField(name, options) {
         field.create_add_field_button()
     )
 
-    field.input_holder.nestable({
-        rootClass: 'fv_input_holder',
+    field.fields_element.nestable({
+        rootClass: 'fv_nested_fields',
         itemClass: 'fv_field',
         handleClass: 'fv_field_move_handle',
         itemNodeName: 'div.fv_field',
         listNodeName: 'div.fv_nested_fields',
-        collapseBtnHTML: '',
-        expandBtnHTML: '',
-        maxDepth: 1
+        threshold: 40
     }).on('change', function(e){
         field.reorder();
     });
@@ -46,7 +45,7 @@ FVArrayField.prototype.reorder = function(){
 FVArrayField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
+    var add_field_button = $("<button />").addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
         field.new_field(field.fields.length);
     });
