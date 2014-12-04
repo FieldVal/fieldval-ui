@@ -16,22 +16,20 @@
 			    background-size: 60px 60px;
 			    background-position: 0 0, 30px 30px;
 			}
-		}
-		>.dd-dragel {
-			position: absolute;
-			pointer-events: none;
-			z-index: 9999; 
+			>.dd-dragel {
+				position: absolute;
+				pointer-events: none;
+				z-index: 9999;
+			}
 		}
 		>.fv_add_field_button{
 			-webkit-appearance: none;
 			cursor: pointer;
 			background-color: @fv_add_button_background_color;
 			color: @fv_add_button_color;
-			width: 30px;
-			height: 30px;
+			margin: 0px;
 			border: none;
-			font-size: 20px;
-			font-weight: bold;
+			font-size: 14px;
 
 			&:active{
 				background-color: @fv_add_button_active_background_color;
