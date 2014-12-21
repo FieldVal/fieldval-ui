@@ -138,7 +138,7 @@ FVChoiceField.prototype.show_list = function(){
         }
         field.choice_list.show();
         field.current_highlight = null;
-        field.filter("", true);
+        field.filter(field.filter_input.val(), true);
     }
 }
 
