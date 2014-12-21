@@ -65,31 +65,9 @@ function FVChoiceField(name, options) {
     .appendTo(field.input_holder);
 
     field.filter_input.hide().on('keydown',function(e){
-        if(e.keyCode===38 || e.keyCode===40 || e.keyCode===13){
-            e.preventDefault();
-        }
+        field.filter_key_down(e);
     }).on('keyup',function(e){
-        if(e.keyCode===40){
-            //Move down
-            field.move_down();
-            e.preventDefault();
-            return;
-        } else if(e.keyCode===38){
-            //Move up
-            field.move_up();
-            e.preventDefault();
-            return;
-        } else if(e.keyCode===13){
-            //Enter press
-            field.select_highlighted();
-            e.preventDefault();
-            return;
-        } else if(e.keyCode===27){
-            //Esc
-            field.hide_list();
-            e.preventDefault();
-        }
-        field.filter(field.filter_input.val());
+        field.filter_key_up(e);
     })
 
     $('html').on(FVForm.button_event, function(e){
@@ -101,6 +79,49 @@ function FVChoiceField(name, options) {
     });
 
     field.filter("");
+}
+
+FVChoiceField.prototype.filter_enter_up = function() {
+    var field = this;
+    console.log("clicked enter first");
+    field.select_highlighted();
+}
+
+FVChoiceField.prototype.filter_esc_up = function() {
+    var field = this;
+    field.hide_list();
+}
+
+FVChoiceField.prototype.filter_key_up = function(e) {
+    var field = this;
+    if(e.keyCode===40){
+        //Move down
+        field.move_down();
+        e.preventDefault();
+        return;
+    } else if(e.keyCode===38){
+        //Move up
+        field.move_up();
+        e.preventDefault();
+        return;
+    } else if(e.keyCode===13){
+        //Enter press
+        field.filter_enter_up();
+        e.preventDefault();
+        return;
+    } else if(e.keyCode===27){
+        //Esc
+        field.filter_esc_up();
+        e.preventDefault();
+    }
+    field.filter(field.filter_input.val());
+}
+
+FVChoiceField.prototype.filter_key_down = function(e) {
+    var field = this;
+    if(e.keyCode===38 || e.keyCode===40 || e.keyCode===13){
+        e.preventDefault();
+    }
 }
 
 FVChoiceField.prototype.show_list = function(){
