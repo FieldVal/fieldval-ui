@@ -68,6 +68,7 @@ FVArrayField.prototype.add_field = function(name, inner_field){
     });
     inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
+    inner_field.parent = field;
 
     field.input_holder.nestable('init');
 
@@ -76,13 +77,30 @@ FVArrayField.prototype.add_field = function(name, inner_field){
     }
 }
 
-FVArrayField.prototype.remove_field = function(inner_field){
+FVArrayField.prototype.remove_field = function(target){
     var field = this;
 
-    for(var i = 0; i < field.fields.length; i++){
-        if(field.fields[i]===inner_field){
-            field.fields.splice(i,1);
+    var inner_field,index;
+    if(typeof target === "number" && (target%1)===0 && target>=0){
+        index = target;
+        inner_field = field.fields[target];
+    } else if(target instanceof FVField){
+        for(var i in field.fields){
+            if(field.fields.hasOwnProperty(i)){
+                if(field.fields[i]===target){
+                    index = i;
+                    inner_field = field.fields[i];
+                    break;
+                }
+            }
         }
+    } else {
+        throw new Error("FVArrayField.remove_field only accepts non-negative integers or FVField instances");
+    }
+
+    if(inner_field){
+        inner_field.remove(true);
+        field.fields.splice(index, 1);
     }
 }
 

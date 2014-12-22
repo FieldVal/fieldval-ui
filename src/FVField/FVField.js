@@ -75,10 +75,14 @@ FVField.prototype.init = function(){
     var field = this;
 }
 
-FVField.prototype.remove = function(){
+FVField.prototype.remove = function(from_parent){
     var field = this;
 
     field.element.remove();
+    if(field.parent && !from_parent){//from_parent prevents cycling
+        field.parent.remove_field(field);
+        field.parent = null;
+    }
 }
 
 FVField.prototype.change_name = function(name) {

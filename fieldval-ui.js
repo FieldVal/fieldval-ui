@@ -84,10 +84,14 @@ FVField.prototype.init = function(){
     var field = this;
 }
 
-FVField.prototype.remove = function(){
+FVField.prototype.remove = function(from_parent){
     var field = this;
 
     field.element.remove();
+    if(field.parent && !from_parent){//from_parent prevents cycling
+        field.parent.remove_field(field);
+        field.parent = null;
+    }
 }
 
 FVField.prototype.change_name = function(name) {
@@ -1023,17 +1027,33 @@ FVObjectField.prototype.add_field = function(name, inner_field){
 
     inner_field.element.appendTo(field.fields_element);
     field.fields[name] = inner_field;
+    inner_field.parent = field;
 
     return field;
 }
 
-FVObjectField.prototype.remove_field = function(name){
+FVObjectField.prototype.remove_field = function(target){
     var field = this;
 
-    var inner_field = field.fields[name];
+    var inner_field,key;
+    if(typeof target === "string"){
+        inner_field = field.fields[target];
+        key = target;
+    } else if(target instanceof FVField){
+        for(var i in field.fields){
+            if(field.fields.hasOwnProperty(i)){
+                if(field.fields[i]===target){
+                    inner_field = field.fields[i];
+                    key = i;
+                }
+            }
+        }
+    } else {
+        throw new Error("FVObjectField.remove_field only accepts strings or FVField instances");
+    }
     if(inner_field){
-        inner_field.remove();//Field class will perform inner_field.element.remove()
-        delete field.fields[name];
+        inner_field.remove(true);//Field class will perform inner_field.element.remove()
+        delete field.fields[key];
     }
 }
 
@@ -1583,6 +1603,7 @@ FVArrayField.prototype.add_field = function(name, inner_field){
     });
     inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
+    inner_field.parent = field;
 
     field.input_holder.nestable('init');
 
@@ -1591,13 +1612,30 @@ FVArrayField.prototype.add_field = function(name, inner_field){
     }
 }
 
-FVArrayField.prototype.remove_field = function(inner_field){
+FVArrayField.prototype.remove_field = function(target){
     var field = this;
 
-    for(var i = 0; i < field.fields.length; i++){
-        if(field.fields[i]===inner_field){
-            field.fields.splice(i,1);
+    var inner_field,index;
+    if(typeof target === "number" && (target%1)===0 && target>=0){
+        index = target;
+        inner_field = field.fields[target];
+    } else if(target instanceof FVField){
+        for(var i in field.fields){
+            if(field.fields.hasOwnProperty(i)){
+                if(field.fields[i]===target){
+                    index = i;
+                    inner_field = field.fields[i];
+                    break;
+                }
+            }
         }
+    } else {
+        throw new Error("FVArrayField.remove_field only accepts non-negative integers or FVField instances");
+    }
+
+    if(inner_field){
+        inner_field.remove(true);
+        field.fields.splice(index, 1);
     }
 }
 
@@ -2113,6 +2151,7 @@ FVKeyValueField.prototype.add_field = function(name, inner_field){
     });
     inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
+    inner_field.parent = field;
 
     field.input_holder.nestable('init');
     inner_field.name_val("");
@@ -2147,13 +2186,36 @@ FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_fie
     return final_name_val;
 }
 
-FVKeyValueField.prototype.remove_field = function(inner_field){
+FVKeyValueField.prototype.remove_field = function(target){
     var field = this;
 
-    for(var i = 0; i < field.fields.length; i++){
-        if(field.fields[i]===inner_field){
-            field.fields.splice(i,1);
+    var inner_field;
+    var index;
+    if(typeof target === "string"){
+        for(var i = 0; i < field.fields.length; i++){
+            if(field.fields[i].name_val()===target){
+                inner_field = field.fields[i];
+                index = i;
+                break;
+            }
         }
+    } else if(target instanceof FVField){
+        for(var i in field.fields){
+            if(field.fields.hasOwnProperty(i)){
+                if(field.fields[i]===target){
+                    inner_field = field.fields[i];
+                    index = i;
+                    break;
+                }
+            }
+        }
+    } else {
+        throw new Error("FVKeyValueField.remove_field only accepts strings or FVField instances");
+    }
+
+    if(inner_field){
+        inner_field.remove(true);
+        field.fields.splice(index, 1);
     }
 }
 
