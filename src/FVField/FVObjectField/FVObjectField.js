@@ -37,17 +37,33 @@ FVObjectField.prototype.add_field = function(name, inner_field){
 
     inner_field.element.appendTo(field.fields_element);
     field.fields[name] = inner_field;
+    inner_field.parent = field;
 
     return field;
 }
 
-FVObjectField.prototype.remove_field = function(name){
+FVObjectField.prototype.remove_field = function(target){
     var field = this;
 
-    var inner_field = field.fields[name];
+    var inner_field,key;
+    if(typeof target === "string"){
+        inner_field = field.fields[target];
+        key = target;
+    } else if(target instanceof FVField){
+        for(var i in field.fields){
+            if(field.fields.hasOwnProperty(i)){
+                if(field.fields[i]===target){
+                    inner_field = field.fields[i];
+                    key = i;
+                }
+            }
+        }
+    } else {
+        throw new Error("FVObjectField.remove_field only accepts strings or FVField instances");
+    }
     if(inner_field){
-        inner_field.remove();//Field class will perform inner_field.element.remove()
-        delete field.fields[name];
+        inner_field.remove(true);//Field class will perform inner_field.element.remove()
+        delete field.fields[key];
     }
 }
 
