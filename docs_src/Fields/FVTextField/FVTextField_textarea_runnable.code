@@ -1,0 +1,7 @@
+$(document).ready(function(){
+	
+	var form = new FVForm()
+	.add_field("textarea", new FVTextField("Simple textarea", "textarea"));
+  
+  	form.element.appendTo("body");
+});

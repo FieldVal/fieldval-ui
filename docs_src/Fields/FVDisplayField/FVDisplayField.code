@@ -1,0 +1,6 @@
+var form = new FVForm()
+.add_field("display", new FVDateField("Display"));
+
+form.val({
+	display: "Some display value"
+})

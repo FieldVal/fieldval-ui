@@ -1,0 +1,7 @@
+$(document).ready(function(){
+	
+	var form = new FVForm()
+	.add_field("boolean", new FVBooleanField("Boolean"));
+  
+  	form.element.appendTo("body");
+});

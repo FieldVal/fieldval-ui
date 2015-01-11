@@ -2,7 +2,7 @@ This simple example shows how to build a form that contains 3 fields and a submi
 
 The form is an instance of the ```FVForm``` class.
 
-Fields are individual instances of classes such TextField. BooleanField (full list [here](/docs/fieldvalui/Fields/Types)). The first argument in a field constructor is usually its display name.
+Fields are individual instances of classes such as TextField, BooleanField (full list [here](/docs/fieldvalui/Fields)). The first argument in a field constructor is usually its display name.
 
 Fields are added to the form using ```form.add_field()```. The first argument is the key for the field in the form; the second is the field instance.
 

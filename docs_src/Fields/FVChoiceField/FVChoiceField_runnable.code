@@ -1,0 +1,13 @@
+$(document).ready(function(){
+	
+	var options = {
+		choices: ["one", "two", "three"],
+		allow_empty: true,
+		empty_text: "empty_value"
+	}
+
+	var form = new FVForm()
+	.add_field("choice", new FVChoiceField("Choice field", options));
+  
+  	form.element.appendTo("body");
+});

@@ -1,9 +1,9 @@
 $(document).ready(function(){
 	
 	var form = new FVForm()
-	.add_field("name", new TextField("Name"))
-	.add_field("email", new TextField("Email"))
-	.add_field("subscribe", new BooleanField("Subscribe?"))
+	.add_field("name", new FVTextField("Name"))
+	.add_field("email", new FVTextField("Email"))
+	.add_field("subscribe", new FVBooleanField("Subscribe?"))
 	.on_submit(function(value){
 		alert(JSON.stringify(value));
 	})

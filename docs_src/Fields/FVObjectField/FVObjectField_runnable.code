@@ -1,0 +1,17 @@
+$(document).ready(function(){
+	
+	var object_field = new FVObjectField("User")
+	.add_field("username", new FVTextField("Username"))
+	.add_field("email", new FVTextField("Email", "email"))
+	.add_field("password", new FVPasswordField("Password"));
+
+	var form = new FVForm()
+	.add_field("user", object_field)
+	.on_submit(function(value) {
+		alert(JSON.stringify(value));
+	});
+  
+  	form.element.append(
+		$("<button/>").text("Submit")
+	).appendTo("body");
+});

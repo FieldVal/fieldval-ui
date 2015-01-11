@@ -1,0 +1,10 @@
+var key_value_field = new FVKeyValueField("KeyValue");
+key_value_field.new_field = function() {
+	key_value_field.add_field("value", new FVTextField("Value"));
+}
+
+var form = new FVForm()
+.add_field("key_value", key_value_field)
+.on_submit(function(value) {
+	alert(JSON.stringify(value));
+});
