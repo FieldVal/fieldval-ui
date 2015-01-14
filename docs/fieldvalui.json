@@ -9,6 +9,7 @@
                     "type": "js",
                     "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                     "runnable": true,
+                    "demo": true,
                     "js_library": "jquery",
                     "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
                     "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"name\", new FVTextField(\"Name\"))\n\t.add_field(\"email\", new FVTextField(\"Email\"))\n\t.add_field(\"subscribe\", new FVBooleanField(\"Subscribe?\"))\n\t.on_submit(function(value){\n\t\talert(JSON.stringify(value));\n\t})\n  \n\tform.element.append(\n\t\t$(\"<button/>\").text(\"Submit\")\n\t).appendTo(\"body\");\n});",
@@ -37,11 +38,12 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
-                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"name\", new FVTextField(\"Name\"))\n\t.add_field(\"email\", new FVTextField(\"Email\"))\n\n\tform.val({\n\t\tname: \"Some name\",\n\t\temail: \"Some email\"\n\t})\n\n\tform.element.appendTo(\"body\");\n\t\n\talert(JSON.stringify(form.val()));\n});",
-                            "contents": "var form = new FVForm()\n.add_field(\"name\", new FVTextField(\"Name\"))\n.add_field(\"email\", new FVTextField(\"Email\"))\n\nform.val({\n\tname: \"Some name\",\n\temail: \"Some email\"\n})\n\nform.element.appendTo(\"body\");\n\nalert(JSON.stringify(form.val()));"
+                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"name\", new FVTextField(\"Name\"))\n\t.add_field(\"email\", new FVTextField(\"Email\"))\n\n\tform.val({\n\t\tname: \"Some name\",\n\t\temail: \"Some email\"\n\t})\n\n\tform.element.appendTo(\"body\");\n\t\n\t$(\"<pre/>\").text(JSON.stringify(form.val(),null,4)).appendTo(\"body\");\n});",
+                            "contents": "var form = new FVForm()\n.add_field(\"name\", new FVTextField(\"Name\"))\n.add_field(\"email\", new FVTextField(\"Email\"))\n\nform.val({\n\tname: \"Some name\",\n\temail: \"Some email\"\n})\n\nform.element.appendTo(\"body\");\n\n$(\"<pre/>\").text(JSON.stringify(form.val(),null,4)).appendTo(\"body\");"
                         }
                     ],
                     "text": "<p><code>val([data])</code></p>\n<p>Sets form values if data object is specified. Otherwise, returns all form values.</p>\n"
@@ -52,6 +54,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -71,6 +74,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -96,6 +100,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -106,6 +111,7 @@
                             "type": "js",
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "runnable": true,
+                            "demo": true,
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
                             "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"textarea\", new FVTextField(\"Simple textarea\", \"textarea\"));\n  \n  \tform.element.appendTo(\"body\");\n});",
@@ -121,6 +127,7 @@
                             "type": "js",
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "runnable": true,
+                            "demo": true,
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
                             "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"password\", new FVPasswordField(\"Password\"));\n  \n  \tform.element.appendTo(\"body\");\n});",
@@ -136,6 +143,7 @@
                             "type": "js",
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "runnable": true,
+                            "demo": true,
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
                             "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"boolean\", new FVBooleanField(\"Boolean\"));\n  \n  \tform.element.appendTo(\"body\");\n});",
@@ -150,6 +158,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -165,6 +174,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -180,6 +190,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -195,6 +206,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -210,6 +222,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -225,6 +238,7 @@
                         {
                             "type": "js",
                             "runnable": true,
+                            "demo": true,
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
@@ -242,6 +256,7 @@
                 {
                     "type": "js",
                     "runnable": true,
+                    "demo": true,
                     "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                     "js_library": "jquery",
                     "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",

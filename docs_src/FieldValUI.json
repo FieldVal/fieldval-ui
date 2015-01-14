@@ -10,7 +10,8 @@
                 "runnable_path": "GetBrowser/GetBrowser_runnable.code",
                 "type": "js",
                 "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
-                "runnable": true,
+                "runnable": true, "demo": true,
+                "demo": true,
                 "js_library": "jquery",
                 "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
             }],
@@ -36,7 +37,7 @@
                         "path": "Form/val/val.code",
                         "runnable_path": "Form/val/val_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -49,7 +50,7 @@
                         "path": "Form/error/error.code",
                         "runnable_path": "Form/error/error_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -66,7 +67,7 @@
                         "path": "Form/disable/disable.code",
                         "runnable_path": "Form/disable/disable_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -89,7 +90,7 @@
                         "path": "Fields/FVTextField/FVTextField.code",
                         "runnable_path": "Fields/FVTextField/FVTextField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -99,7 +100,7 @@
                         "runnable_path": "Fields/FVTextField/FVTextField_textarea_runnable.code",
                         "type": "js",
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
                     }]
@@ -112,7 +113,7 @@
                         "runnable_path": "Fields/FVPasswordField/FVPasswordField_runnable.code",
                         "type": "js",
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
                     }]
@@ -125,7 +126,7 @@
                         "runnable_path": "Fields/FVBooleanField/FVBooleanField_runnable.code",
                         "type": "js",
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
                     }]
@@ -137,7 +138,7 @@
                         "path": "Fields/FVDateField/FVDateField.code",
                         "runnable_path": "Fields/FVDateField/FVDateField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -150,7 +151,7 @@
                         "path": "Fields/FVChoiceField/FVChoiceField.code",
                         "runnable_path": "Fields/FVChoiceField/FVChoiceField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -163,7 +164,7 @@
                         "path": "Fields/FVArrayField/FVArrayField.code",
                         "runnable_path": "Fields/FVArrayField/FVArrayField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -176,7 +177,7 @@
                         "path": "Fields/FVDisplayField/FVDisplayField.code",
                         "runnable_path": "Fields/FVDisplayField/FVDisplayField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -189,7 +190,7 @@
                         "path": "Fields/FVObjectField/FVObjectField.code",
                         "runnable_path": "Fields/FVObjectField/FVObjectField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -202,7 +203,7 @@
                         "path": "Fields/FVKeyValueField/FVKeyValueField.code",
                         "runnable_path": "Fields/FVKeyValueField/FVKeyValueField_runnable.code",
                         "type": "js",
-                        "runnable": true,
+                        "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
@@ -217,7 +218,7 @@
                 "path": "Validating/Validating.code",
                 "runnable_path": "Validating/Validating_runnable.code",
                 "type": "js",
-                "runnable": true,
+                "runnable": true, "demo": true,
                 "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                 "js_library": "jquery",
                 "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"

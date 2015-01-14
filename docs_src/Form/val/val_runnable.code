@@ -11,5 +11,5 @@ $(document).ready(function(){
 
 	form.element.appendTo("body");
 	
-	alert(JSON.stringify(form.val()));
+	$("<pre/>").text(JSON.stringify(form.val(),null,4)).appendTo("body");
 });
