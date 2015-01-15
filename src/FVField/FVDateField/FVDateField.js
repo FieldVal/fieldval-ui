@@ -57,8 +57,10 @@ FVDateField.prototype.add_element_from_component = function(component, component
 
         input.blur(function(){
             var input_val = input.val();
-            var padded = DateVal.pad_to_valid(input_val, component_value);
-            input.val(padded);
+            if (!isNaN(parseInt(input_val))) {
+                var padded = DateVal.pad_to_valid(input_val, component_value);
+                input.val(padded);    
+            }
         })
 
         field.inputs.push(input);
