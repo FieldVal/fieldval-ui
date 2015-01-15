@@ -1,5 +1,10 @@
 $(document).ready(function(){
 	
+	var output = $("<pre/>");
+	var display_output = function(value) {
+		output.text("Form output:\n" + JSON.stringify(value, null, 4));
+	}
+
 	var object_field = new FVObjectField("User")
 	.add_field("username", new FVTextField("Username"))
 	.add_field("email", new FVTextField("Email", "email"))
@@ -8,10 +13,21 @@ $(document).ready(function(){
 	var form = new FVForm()
 	.add_field("user", object_field)
 	.on_submit(function(value) {
-		alert(JSON.stringify(value));
+		display_output(value);
 	});
   
   	form.element.append(
 		$("<button/>").text("Submit")
 	).appendTo("body");
+
+	var value = {
+		user: {
+			username: "username",
+			email: "email@example.com",
+			password: "password"
+		}
+	}
+	form.val(value);
+	display_output(value);
+	output.appendTo("body");
 });

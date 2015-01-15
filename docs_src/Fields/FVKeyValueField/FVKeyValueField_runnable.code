@@ -1,17 +1,33 @@
 $(document).ready(function(){
+
+	var output = $("<pre/>");
+	var display_output = function(value) {
+		output.text("Form output:\n" + JSON.stringify(value, null, 4));
+	}
 	
 	var key_value_field = new FVKeyValueField("KeyValue");
 	key_value_field.new_field = function() {
-		key_value_field.add_field("value", new FVTextField("Value"));
+		var text_field = new FVTextField("Value");
+		key_value_field.add_field("value", text_field);
+		return text_field;
 	}
 
 	var form = new FVForm()
 	.add_field("key_value", key_value_field)
 	.on_submit(function(value) {
-		alert(JSON.stringify(value));
+		display_output(value);
 	});
   
   	form.element.append(
 		$("<button/>").text("Submit")
 	).appendTo("body");
+
+	var value = {
+		key_value: {
+			key: "some_value"
+		}
+	}
+	form.val(value);
+	output.appendTo("body");
+	display_output(value);
 });

@@ -44,6 +44,10 @@
                     }]
                 },
                 {
+                    "name": "on_submit",
+                    "text": "Form/on_submit/on_submit.md"
+                },
+                {
                     "name": "error",
                     "text": "Form/error/error.md",
                     "code": [{

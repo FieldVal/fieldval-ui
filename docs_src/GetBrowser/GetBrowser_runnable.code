@@ -1,14 +1,28 @@
 $(document).ready(function(){
 	
+	var output = $("<pre/>");
+	var display_output = function(value) {
+		output.text("Form output:\n" + JSON.stringify(value, null, 4));
+	}
+
 	var form = new FVForm()
 	.add_field("name", new FVTextField("Name"))
 	.add_field("email", new FVTextField("Email"))
 	.add_field("subscribe", new FVBooleanField("Subscribe?"))
 	.on_submit(function(value){
-		alert(JSON.stringify(value));
+		display_output(value);
 	})
-  
+
 	form.element.append(
 		$("<button/>").text("Submit")
 	).appendTo("body");
+
+	var value = {
+		name: "Name",
+		email: "Email",
+		subscribe: true
+	}
+	form.val(value);
+	display_output(value);
+	output.appendTo("body");
 });

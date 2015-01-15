@@ -3,7 +3,7 @@ var form = new FVForm()
 .add_field("email", new FVTextField("Email"))
 .add_field("subscribe", new FVBooleanField("Subscribe?"))
 .on_submit(function(value){
-	alert(JSON.stringify(value));
+	console.log(value);
 })
 
 form.element.append(

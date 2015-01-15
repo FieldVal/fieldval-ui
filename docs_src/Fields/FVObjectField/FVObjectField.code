@@ -6,5 +6,5 @@ var object_field = new FVObjectField("User")
 var form = new FVForm()
 .add_field("user", object_field)
 .on_submit(function(value) {
-	alert(JSON.stringify(value));
+	console.log(value);
 });
