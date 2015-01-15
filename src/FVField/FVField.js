@@ -65,7 +65,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
-            remove_callback();
+            remove_callback(field.key_name);
             field.remove();
         })
     )

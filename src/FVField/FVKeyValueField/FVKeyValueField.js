@@ -39,8 +39,8 @@ FVKeyValueField.prototype.new_field = function(){
 FVKeyValueField.prototype.add_field = function(name, inner_field){
     var field = this;
 
-    inner_field.in_key_value(field,function(){
-        field.remove_field(inner_field);
+    inner_field.in_key_value(field,function(key_name){
+        field.remove_field(inner_field, key_name);
     });
     inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
@@ -82,6 +82,9 @@ FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_fie
 FVKeyValueField.prototype.remove_field = function(target){
     var field = this;
 
+    console.log(arguments);
+    console.trace();
+
     var inner_field;
     var index;
     if(typeof target === "string"){
@@ -93,9 +96,10 @@ FVKeyValueField.prototype.remove_field = function(target){
             }
         }
     } else if(target instanceof FVField){
-        for(var i in field.fields){
+        for(var i = 0; i < field.fields.length; i++){
             if(field.fields.hasOwnProperty(i)){
                 if(field.fields[i]===target){
+                    console.log(i,target);
                     inner_field = field.fields[i];
                     index = i;
                     break;
@@ -109,6 +113,7 @@ FVKeyValueField.prototype.remove_field = function(target){
     if(inner_field){
         inner_field.remove(true);
         field.fields.splice(index, 1);
+        delete field.keys[inner_field.key_name];
     }
 }
 
@@ -127,16 +132,20 @@ FVKeyValueField.prototype.fields_error = function(error){
         var unrecognized_fields = error.unrecognized || {};
         
         for(var i in field.keys){
-            var inner_field = field.keys[i];
+            if(field.keys.hasOwnProperty(i)){
+                var inner_field = field.keys[i];
 
-            var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
-            inner_field.error(field_error);
+                var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
+                inner_field.error(field_error);
+            }
         }
 
     } else {
         for(var i in field.keys){
-            var inner_field = field.keys[i];
-            inner_field.error(null);
+            if(field.keys.hasOwnProperty(i)){
+                var inner_field = field.keys[i];
+                inner_field.error(null);
+            }
         }
     }
 }
@@ -230,10 +239,12 @@ FVKeyValueField.prototype.val = function(set_val) {
     if (arguments.length===0) {
     	var compiled = {};
     	for(var i in field.keys){
-            var inner_field = field.keys[i];
-            if(inner_field.output_flag!==false){
-                var value = inner_field.val();
-                compiled[i] = value;
+            if(field.keys.hasOwnProperty(i)){
+                var inner_field = field.keys[i];
+                if(inner_field.output_flag!==false){
+                    var value = inner_field.val();
+                    compiled[i] = value;
+                }
             }
         }
         return compiled;
