@@ -132,6 +132,7 @@ FVDateField.prototype.val = function(set_val) {
 
     if (arguments.length===0) {
 
+        var is_empty = true;
         var date_string = "";
         for(var i = 0; i < field.format_array.length; i++){
             var component = field.format_array[i];
@@ -141,12 +142,15 @@ FVDateField.prototype.val = function(set_val) {
             } else {
                 var input = field.inputs[i];
                 var input_val = input.val().toString();
+                if (input_val != '') {
+                    is_empty = false;
+                }
 
                 date_string += DateVal.pad_to_valid(input_val, component_value);
             }
         }
 
-        return date_string;
+        return is_empty? undefined : date_string;
     } else {
 
         if(set_val!=null){
