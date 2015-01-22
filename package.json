@@ -5,7 +5,6 @@
     "main": "fieldval-ui.js",
     "dependencies": {
         "fieldval" : "^0.1.0",
-        "fieldval-basicval" : "^0.1.0",
         "fieldval-dateval" : "^0.1.0"
     },
     "devDependencies": {
@@ -13,11 +12,6 @@
         "gulp": "^3.6.1",
         "gulp-util": "^2.2.14",
         "gulp-concat": "^2.2.0",
-        "gulp-istanbul": "^0.2.2",
-        "gulp-jshint": "^1.8.4",
-        "gulp-nodemon" : "*",
-        "gulp-mocha": "^1.0.0",
-        "gulp-watch": "^0.6.2",
         "gulp-uglify": "^0.2.1",
         "gulp-concat": "^2.2.0",
         "gulp-rename": "1.2.0",

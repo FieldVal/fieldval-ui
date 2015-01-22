@@ -3,7 +3,6 @@ var gutil = require('gulp-util');
 
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-var watch = require('gulp-watch');
 var gulpImports = require('gulp-imports');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
@@ -44,14 +43,6 @@ gulp.task('default', function(){
     gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
     gulp.watch(['docs_src/**/*'], ['docs']);
 });
-
-
-gulp.task('nodemon', function () {
-  nodemon({ script: 'mocha test/test.js', watch: "src/", ext: 'js', ignore: ['src/'] })
-    .on('restart', function () {
-      console.log('restarted!')
-    })
-})
 
 gulp.task('docs', function() {
     return gulp.src('./docs_src/*.json')

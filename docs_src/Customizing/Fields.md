@@ -9,7 +9,7 @@ Override following methods:
 ```
 disable()
 ```
-Disables field the input.
+Disables field input.
 
 <br>
 
