@@ -27,16 +27,22 @@ function FVField(name, options) {
     field.layout();
 }
 
-FVField.prototype.in_array = function(remove_callback){
+FVField.prototype.in_array = function(parent, remove_callback){
     var field = this;
 
+    field.array_parent = parent;
     field.is_in_array = true;
 
-    field.element.addClass("fv_in_array")
-    .append(
-        field.move_handle = $("<div />")
-        .addClass("fv_field_move_handle")
-    ,
+    field.element.addClass("fv_in_array");
+
+    if(field.array_parent.sortable){
+        field.element.append(
+            field.move_handle = $("<div />")
+            .addClass("fv_field_move_handle")
+        );
+    }
+
+    field.element.append(
         field.remove_button = $("<button />")
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
@@ -65,7 +71,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
-            remove_callback();
+            remove_callback(field.key_name);
             field.remove();
         })
     )
@@ -142,8 +148,11 @@ FVField.prototype.disable = function() {
     field.is_disabled = true;
     field.element.addClass("fv_disabled");
 
-    if(field.is_in_array){
+    if(field.move_handle){
         field.move_handle.hide();
+    }
+
+    if(field.remove_button){
         field.remove_button.hide();
     }
 
@@ -155,8 +164,11 @@ FVField.prototype.enable = function() {
     field.is_disabled = false;
     field.element.removeClass("fv_disabled");
 
-    if(field.is_in_array){
+    if(field.move_handle){
         field.move_handle.show();
+    }
+
+    if(field.remove_button){
         field.remove_button.show();
     }
 

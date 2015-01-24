@@ -4,7 +4,7 @@ function FVDateField(name, options) {//format is currently unused
     var field = this;
 
     if(typeof DateVal === 'undefined'){
-        console.error("FVDateField requires fieldval-dateval-js");
+        console.error("FVDateField requires the FieldVal package");
         return;
     }
 

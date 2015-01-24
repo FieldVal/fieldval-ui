@@ -1,0 +1,16 @@
+$(document).ready(function(){
+	
+	var options = {
+		add_button_text: "Add"
+	}
+
+	var array_field = new FVArrayField("Array", options);
+	array_field.new_field = function() {
+		array_field.add_field("element", new FVTextField("element"));
+	}
+
+	var form = new FVForm()
+	.add_field("array", array_field);
+	
+  	form.element.appendTo("body");
+});

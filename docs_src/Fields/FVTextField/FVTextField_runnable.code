@@ -1,0 +1,7 @@
+$(document).ready(function(){
+	
+	var form = new FVForm()
+	.add_field("text_field", new FVTextField("Simple text field"));
+  
+  	form.element.appendTo("body");
+});

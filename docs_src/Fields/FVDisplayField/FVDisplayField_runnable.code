@@ -1,0 +1,11 @@
+$(document).ready(function(){
+	
+	var form = new FVForm()
+	.add_field("display", new FVDisplayField("Display"));
+  
+	form.val({
+		display: "Some display value"
+	})
+
+  	form.element.appendTo("body");
+});

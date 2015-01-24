@@ -21,6 +21,12 @@
 				-webkit-border-radius: 0px;
 				border: 1px solid @fv_border_color;
 				font-size: 14px;
+
+				&.fv_filter_hidden{
+					width: 1px;
+					height: 1px;
+					opacity: 0;
+				}
 			}
 
 			>.fv_choice_display{
@@ -83,12 +89,12 @@
 					-o-user-select: none;
 					user-select: none;
 
-					&.selected{
+					&.fv_selected{
 						background-color: #5DB9FF;
 						color: white;
 					}
 
-					&.highlighted{
+					&.fv_highlighted{
 						background-color: #2B86F3;
 						color: white;
 					}

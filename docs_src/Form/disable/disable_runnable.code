@@ -1,0 +1,15 @@
+$(document).ready(function(){
+	
+	var form = new FVForm()
+	.add_field("name", new FVTextField("Name"))
+	.add_field("email", new FVTextField("Email"))
+
+	form.val({
+		name: "Some name",
+		email: "Some email"
+	})
+
+	form.disable();
+
+	form.element.appendTo("body");
+});

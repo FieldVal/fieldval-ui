@@ -1,0 +1,1 @@
+Enables all fields in the form.

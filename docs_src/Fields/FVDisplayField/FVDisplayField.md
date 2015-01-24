@@ -1,0 +1,1 @@
+FVDisplayField is a field that cannot be modifeid by the user. It is mostly used for display purposes.
