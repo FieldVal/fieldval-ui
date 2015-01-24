@@ -18,7 +18,7 @@ var error = {
         }
     },
     "error_message": "One or more errors.",
-    "error": 0
+    "error": 5
 }
 
 form.error(error);

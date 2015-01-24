@@ -36,16 +36,22 @@ function FVField(name, options) {
     field.layout();
 }
 
-FVField.prototype.in_array = function(remove_callback){
+FVField.prototype.in_array = function(parent, remove_callback){
     var field = this;
 
+    field.array_parent = parent;
     field.is_in_array = true;
 
-    field.element.addClass("fv_in_array")
-    .append(
-        field.move_handle = $("<div />")
-        .addClass("fv_field_move_handle")
-    ,
+    field.element.addClass("fv_in_array");
+
+    if(field.array_parent.sortable){
+        field.element.append(
+            field.move_handle = $("<div />")
+            .addClass("fv_field_move_handle")
+        );
+    }
+
+    field.element.append(
         field.remove_button = $("<button />")
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
@@ -151,8 +157,11 @@ FVField.prototype.disable = function() {
     field.is_disabled = true;
     field.element.addClass("fv_disabled");
 
-    if(field.is_in_array){
+    if(field.move_handle){
         field.move_handle.hide();
+    }
+
+    if(field.remove_button){
         field.remove_button.hide();
     }
 
@@ -164,8 +173,11 @@ FVField.prototype.enable = function() {
     field.is_disabled = false;
     field.element.removeClass("fv_disabled");
 
-    if(field.is_in_array){
+    if(field.move_handle){
         field.move_handle.show();
+    }
+
+    if(field.remove_button){
         field.remove_button.show();
     }
 
@@ -427,47 +439,112 @@ FVDisplayField.prototype.val = function(set_val) {
 }
 fieldval_ui_extend(FVChoiceField, FVField);
 
+function FVChoiceOption(choice, parent){
+    var choice_option = this;
+
+    choice_option.parent = parent;
+
+    if(choice===null){
+        choice_option.choice_text = parent.empty_text;
+        choice_option.choice_value = null;
+    } else if((typeof choice)==="object"){
+        choice_option.choice_value = choice[0];
+        choice_option.choice_text = choice[1];
+    } else {
+        choice_option.choice_value = option.choice_text = choice;
+    }
+
+    choice_option.element = $("<div />").addClass("fv_choice_option")
+    .text(choice_option.choice_text)
+    .on(FVForm.button_event,function(e){
+        parent.default_click(e, choice_option);
+    })
+}
+
+FVChoiceOption.prototype.matches_filter = function(filter){
+    var choice_option = this;
+
+    if(choice_option.choice_value===null){
+        if(filter.length===0){
+            return true;
+        }
+    } else if(choice_option.choice_text.toLowerCase().indexOf(filter.toLowerCase())===0) {
+        return true;
+    }
+}
+
+FVChoiceOption.prototype.get_value = function(){
+    var choice_option = this;
+
+    return choice_option.choice_value;
+}
+
+FVChoiceOption.prototype.add_highlight = function(){
+    var choice_option = this;
+    choice_option.element.addClass("fv_highlighted");
+}
+
+FVChoiceOption.prototype.remove_highlight = function(){
+    var choice_option = this;
+    choice_option.element.removeClass("fv_highlighted");
+}
+
+FVChoiceOption.prototype.add_selected = function(){
+    var choice_option = this;
+    choice_option.element.addClass("fv_selected");
+}
+
+FVChoiceOption.prototype.remove_selected = function(){
+    var choice_option = this;
+    choice_option.element.removeClass("fv_selected");
+}
+
+FVChoiceOption.prototype.hide = function(){
+    var choice_option = this;
+    choice_option.element.hide();
+}
+
+FVChoiceOption.prototype.show = function(){
+    var choice_option = this;
+    choice_option.element.show()
+}
+
+FVChoiceOption.prototype.get_display = function(){
+    var choice_option = this;
+
+    return $("<div />").text(choice_option.choice_text);
+}
+
 function FVChoiceField(name, options) {
     var field = this;
 
     FVChoiceField.superConstructor.call(this, name, options);
+    field.element.addClass("fv_choice_field");
 
     field.choices = field.options.choices || [];
     field.allow_empty = field.options.allow_empty || false;
     field.empty_text = field.options.empty_text || "";
 
-    field.choice_values = [];
-    field.choice_texts = [];
+    field.option_array = [];
     field.selected_value = null;
 
-    if(field.allow_empty){
-        field.choice_values.push(null);
-        field.choice_texts.push(field.empty_text);
-    }
+    field.option_class = options.option_class || FVChoiceOption;
 
-    for(var i = 0; i < field.choices.length; i++){
-        var choice = field.choices[i];
-
-        var choice_value,choice_text;
-        if((typeof choice)=="object"){
-            choice_value = choice[0];
-            choice_text = choice[1];
-        } else {
-            choice_value = choice_text = choice;
-        }
-
-        field.choice_values.push(choice_value);
-        field.choice_texts.push(choice_text);
-    }
-
-    field.element.addClass("fv_choice_field");
-
-    field.select = $("<div/>").append(
+    field.select = $("<div/>")
+    .addClass("fv_choice_input")
+    .append(
         field.filter_input = $("<input type='text' />")
+        .on('focus',function(e){
+            field.focus();
+        })
         .attr("placeholder", name)
-        .addClass("filter_input")
+        .addClass("filter_input").on('blur',function(){
+            field.blur();
+        })
     ,
-        field.current_display = $("<div />").addClass("fv_choice_display fv_choice_placeholder").on(FVForm.button_event,function(e){
+        field.current_display = $("<div />")
+        .addClass("fv_choice_display fv_choice_placeholder")
+        .on(FVForm.button_event, function(e){
             field.focus();
         }).text(field.name)
     ,
@@ -488,10 +565,9 @@ function FVChoiceField(name, options) {
             }
         })
     )
-    .addClass("fv_choice_input")
     .appendTo(field.input_holder);
 
-    field.filter_input.hide().on('keydown',function(e){
+    field.filter_input.addClass("fv_filter_hidden").on('keydown',function(e){
         field.filter_key_down(e);
     }).on('keyup',function(e){
         field.filter_key_up(e);
@@ -505,12 +581,27 @@ function FVChoiceField(name, options) {
         }
     });
 
+
+    if(field.allow_empty){
+        var choice_option = new field.option_class(null, field);
+        field.option_array.push(choice_option);
+        field.add_option(choice_option);
+    }
+
+    for(var i = 0; i < field.choices.length; i++){
+        var choice = field.choices[i];
+
+        var choice_option = new field.option_class(choice, field);
+        field.option_array.push(choice_option);
+        field.add_option(choice_option);
+    }
+
+
     field.filter("");
 }
 
 FVChoiceField.prototype.filter_enter_up = function() {
     var field = this;
-    console.log("clicked enter first");
     field.select_highlighted();
 }
 
@@ -521,7 +612,12 @@ FVChoiceField.prototype.filter_esc_up = function() {
 
 FVChoiceField.prototype.filter_key_up = function(e) {
     var field = this;
-    if(e.keyCode===40){
+
+    if(e.keyCode===9){
+        //Tab
+        e.preventDefault();
+        return;
+    }if(e.keyCode===40){
         //Move down
         field.move_down();
         e.preventDefault();
@@ -541,6 +637,7 @@ FVChoiceField.prototype.filter_key_up = function(e) {
         field.filter_esc_up();
         e.preventDefault();
     }
+
     field.filter(field.filter_input.val());
 }
 
@@ -558,13 +655,15 @@ FVChoiceField.prototype.show_list = function(){
 
         field.input_holder.css("min-height", field.current_display.outerHeight()+"px");
 
-        field.filter_input.show();
+        field.filter_input.removeClass("fv_filter_hidden");
         field.current_display.hide();
         if(!FVForm.is_mobile){
-            field.filter_input.focus();
+            if(!field.filter_input.is(":focus")){
+                field.filter_input.focus();
+            }
         }
         field.choice_list.show();
-        field.current_highlight = null;
+        field.current_highlight = field.selected_value;
         field.filter(field.filter_input.val(), true);
     }
 }
@@ -572,9 +671,14 @@ FVChoiceField.prototype.show_list = function(){
 FVChoiceField.prototype.hide_list = function(){
     var field = this;
 
+    if(field.current_highlight){
+        field.current_highlight.remove_highlight();
+        field.current_highlight = null;
+    }
+
     field.input_holder.css("min-height","");
 
-    field.filter_input.hide();
+    field.filter_input.addClass("fv_filter_hidden")
     field.current_display.show();
     field.choice_list.hide();
 }
@@ -582,36 +686,37 @@ FVChoiceField.prototype.hide_list = function(){
 FVChoiceField.prototype.filter = function(text, initial){
     var field = this;
 
-    var text_lower = text.toLowerCase();
+    if(field.current_highlight){
+        field.current_highlight.remove_highlight();
+    }
 
-    field.choice_list.empty();
+    var first = null;
+    for(var i = 0; i < field.option_array.length; i++){
+        var choice_option = field.option_array[i];
 
-    for(var i = 0; i < field.choice_values.length; i++){
-        var choice_value = field.choice_values[i];
-        var choice_text = field.choice_texts[i];
-
-        if(
-            choice_text==="" && text_lower===""
-            ||
-            choice_text.toLowerCase().indexOf(text_lower)==0
-        ){
-            field.add_option(choice_value, choice_text, initial);
+        if(choice_option.matches_filter(text)){
+            choice_option.show();
+            if(!first){
+                first = choice_option;
+            }
+        } else {
+            choice_option.hide();
         }
     }
 
     if(!initial || !field.current_highlight){
-        field.current_highlight = $(field.choice_list.children()[0]);
+        field.current_highlight = first;
     }
     if(field.current_highlight){
-        field.current_highlight.addClass("highlighted");
+        field.current_highlight.add_highlight();
     }
 }
 
 FVChoiceField.prototype.value_to_text = function(value){
     var field = this;
 
-    for(var i = 0; i < field.choice_values.length; i++){
-        var this_value = field.choice_values[i];
+    for(var i = 0; i < field.option_array.length; i++){
+        var this_value = field.option_array[i];
 
         if(this_value===value){
             return field.choice_texts[i];
@@ -621,19 +726,24 @@ FVChoiceField.prototype.value_to_text = function(value){
     return null;
 }
 
-FVChoiceField.prototype.select_option = function(value, ignore_change){
+FVChoiceField.prototype.select_option = function(choice_option, ignore_change){
     var field = this;
 
-    field.selected_value = value;
-    var text = field.value_to_text(value);
-    if(value===null && text===null){
-        field.current_display.addClass("fv_choice_placeholder").text(field.name);
+    if(field.selected_value){
+        field.selected_value.remove_selected();
+    }
+    field.selected_value = choice_option;
+    field.selected_value.add_selected();
+    if(choice_option===null){
+        field.current_display.addClass("fv_choice_placeholder").empty().text(field.name);
     } else {
-        field.current_display.removeClass("fv_choice_placeholder").text(text); 
+        field.current_display.removeClass("fv_choice_placeholder").empty().append(
+            choice_option.get_display()
+        )
     }
     field.hide_list();
     
-    field.filter_input.blur().hide().val("");
+    field.filter_input.blur().val("");
     
     if(!ignore_change){
         field.did_change();
@@ -644,11 +754,11 @@ FVChoiceField.prototype.move_up = function(){
     var field = this;
 
     if(field.current_highlight){
-        field.current_highlight.removeClass("highlighted");
-        var previous = field.current_highlight.prev();
-        if(previous[0]){
-            field.current_highlight = previous;
-            field.current_highlight.addClass("highlighted");
+        field.current_highlight.remove_highlight();
+        var index = field.option_array.indexOf(field.current_highlight);
+        if(index>0){
+            field.current_highlight = field.option_array[index-1];
+            field.current_highlight.add_highlight();
             field.move_into_view();
         } else {
             field.current_highlight = null;
@@ -660,16 +770,18 @@ FVChoiceField.prototype.move_down = function(){
     var field = this;
 
     if(!field.current_highlight){
-        field.current_highlight = $(field.choice_list.children()[0]);
+        field.current_highlight = field.option_array[0];
         if(field.current_highlight){
-            field.current_highlight.addClass("highlighted");
+            field.current_highlight.add_highlight();
         }
     } else {
-        var next = field.current_highlight.next();
-        if(next[0]){
-            field.current_highlight.removeClass("highlighted");
-            field.current_highlight = next;
-            field.current_highlight.addClass("highlighted");
+        var index = field.option_array.indexOf(field.current_highlight);
+        if(index<field.option_array.length-1){
+            
+            field.current_highlight.remove_highlight();
+
+            field.current_highlight = field.option_array[index+1];
+            field.current_highlight.add_highlight();
             field.move_into_view();
         }
     }
@@ -682,7 +794,12 @@ FVChoiceField.prototype.move_into_view = function(target){
         target = field.current_highlight;
     }
     setTimeout(function(){
-        var offset = target.offset().top;
+        var offset;
+        if(target){
+            offset = target.element.offset().top;
+        } else {
+            offset = 0;
+        }
 
         field.choice_list.scrollTop(
             field.choice_list.scrollTop() - 
@@ -692,17 +809,13 @@ FVChoiceField.prototype.move_into_view = function(target){
     },1);
 }
 
-FVChoiceField.prototype.add_option = function(choice_value, display_name, initial){
+FVChoiceField.prototype.add_option = function(option_element, initial){
     var field = this;
 
-    var option_element = $("<div />").addClass("fv_choice_option").data("value",choice_value).text(display_name).on(FVForm.button_event,function(e){
-        field.default_click(e, choice_value);
-    })
-
-    field.finalize_option(option_element, choice_value, initial);
+    field.choice_list.append(option_element.element);
 }
 
-FVChoiceField.prototype.default_click = function(e, value){
+FVChoiceField.prototype.default_click = function(e, choice_option){
     var field = this;
 
     e.preventDefault();
@@ -711,20 +824,11 @@ FVChoiceField.prototype.default_click = function(e, value){
         e.originalEvent.preventDefault();
         e.originalEvent.stopPropagation();
     }
-    field.select_option(value);
+    field.select_option(choice_option);
 }
 
-FVChoiceField.prototype.finalize_option = function(option_element, choice_value, initial){
+FVChoiceField.prototype.finalize_option = function(option_element, initial){
     var field = this;
-
-    if(field.selected_value===choice_value){
-        option_element.addClass("selected");
-        field.move_into_view(option_element);
-
-        if(initial){
-            field.current_highlight = option_element;
-        }
-    }
 
     option_element.appendTo(field.choice_list)
 }
@@ -732,8 +836,8 @@ FVChoiceField.prototype.finalize_option = function(option_element, choice_value,
 FVChoiceField.prototype.select_highlighted = function(){
     var field = this;
 
-    if(field.current_highlight && field.current_highlight[0]){
-        field.select_option(field.current_highlight.data("value"));
+    if(field.current_highlight){
+        field.select_option(field.current_highlight);
     }
 }
 
@@ -760,10 +864,19 @@ FVChoiceField.prototype.val = function(set_val) {
     var field = this;
 
     if (arguments.length===0) {
-        return field.selected_value;
+        if(field.selected_value){
+            return field.selected_value.get_value();
+        }
+        return null;
     } else {
         if(set_val!==undefined){
-            field.select_option(set_val,true);
+            for(var i = 0; i < field.option_array.length; i++){
+                var choice_option = field.option_array[i];
+                if(set_val === choice_option.get_value()){
+                    field.select_option(choice_option,true);
+                    break;
+                }
+            }
         }
         return field;
     }
@@ -774,7 +887,7 @@ function FVDateField(name, options) {//format is currently unused
     var field = this;
 
     if(typeof DateVal === 'undefined'){
-        console.error("FVDateField requires fieldval-dateval-js");
+        console.error("FVDateField requires the FieldVal package");
         return;
     }
 
@@ -1027,8 +1140,10 @@ FVObjectField.prototype.init = function(){
     var field = this;
 
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.init();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.init();
+        }
     }
 }
 
@@ -1036,8 +1151,10 @@ FVObjectField.prototype.remove = function(){
     var field = this;
 
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.remove();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.remove();
+        }
     }
 
     FVField.prototype.remove.call(this);
@@ -1088,8 +1205,11 @@ FVObjectField.prototype.disable = function() {
     var field = this;
     
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.disable();
+        console.log(i);
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.disable();
+        }
     }
 
     return FVField.prototype.disable.call(this);
@@ -1099,8 +1219,10 @@ FVObjectField.prototype.enable = function() {
     var field = this;
     
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.enable();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.enable();
+        }
     }
 
     return FVField.prototype.enable.call(this);
@@ -1115,8 +1237,10 @@ FVObjectField.prototype.blur = function() {
     var field = this;
 
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.blur();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.blur();
+        }
     }
 
     return field;
@@ -1136,7 +1260,7 @@ FVObjectField.prototype.error = function(error){
             return;
         }
 
-        if(error.error===0){
+        if(error.error===5){
             field.fields_error(error);
             field.hide_error();
         } else {
@@ -1144,7 +1268,7 @@ FVObjectField.prototype.error = function(error){
                 var error_list = $("<ul />");
                 for(var i = 0; i < error.errors.length; i++){
                     var sub_error = error.errors[i];
-                    if(sub_error.error===0){
+                    if(sub_error.error===5){
                         field.fields_error(sub_error);
                     } else {
                         error_list.append(
@@ -1178,16 +1302,20 @@ FVObjectField.prototype.fields_error = function(error){
         var unrecognized_fields = error.unrecognized || {};
         
         for(var i in field.fields){
-            var inner_field = field.fields[i];
+            if(field.fields.hasOwnProperty(i)){
+                var inner_field = field.fields[i];
 
-            var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
-            inner_field.error(field_error);
+                var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
+                inner_field.error(field_error);
+            }
         }
 
     } else {
         for(var i in field.fields){
-            var inner_field = field.fields[i];
-            inner_field.error(null);
+            if(field.fields.hasOwnProperty(i)){
+                var inner_field = field.fields[i];
+                inner_field.error(null);
+            }
         }
     }
 }
@@ -1205,11 +1333,13 @@ FVObjectField.prototype.val = function(set_val) {
     if (arguments.length===0) {
     	var compiled = {};
     	for(var i in field.fields){
-    		var inner_field = field.fields[i];
-            if(inner_field.output_flag!==false){
-                var value = inner_field.val();
-                if(value!=null){
-            		compiled[i] = value;
+            if(field.fields.hasOwnProperty(i)){
+        		var inner_field = field.fields[i];
+                if(inner_field.output_flag!==false){
+                    var value = inner_field.val();
+                    if(value!=null){
+                		compiled[i] = value;
+                    }
                 }
             }
     	}
@@ -1569,20 +1699,24 @@ function FVArrayField(name, options) {
 
     field.element.addClass("fv_array_field");
     field.input_holder.append(
-        field.fields_element = $("<div />").addClass("fv_nested_fields"),
+        field.fields_element = $("<div />").addClass("fv_array_fields"),
         field.create_add_field_button()
     )
 
-    field.fields_element.nestable({
-        rootClass: 'fv_nested_fields',
-        itemClass: 'fv_field',
-        handleClass: 'fv_field_move_handle',
-        itemNodeName: 'div.fv_field',
-        listNodeName: 'div.fv_nested_fields',
-        threshold: 40
-    }).on('change', function(e){
-        field.reorder();
-    });
+    field.sortable = options.sortable===undefined || options.sortable!==false;
+
+    if(field.sortable){
+        field.fields_element.nestable({
+            rootClass: 'fv_array_fields',
+            itemClass: 'fv_field',
+            handleClass: 'fv_field_move_handle',
+            itemNodeName: 'div.fv_field',
+            listNodeName: 'div.fv_array_fields',
+            threshold: 40
+        }).on('change', function(e){
+            field.reorder();
+        });
+    }
 }
 
 FVArrayField.prototype.reorder = function(){
@@ -1619,7 +1753,7 @@ FVArrayField.prototype.new_field = function(index){
 FVArrayField.prototype.add_field = function(name, inner_field){
     var field = this;
 
-    inner_field.in_array(function(){
+    inner_field.in_array(field, function(){
         field.remove_field(inner_field);
     });
     inner_field.element.appendTo(field.fields_element);
@@ -1739,7 +1873,7 @@ FVArrayField.prototype.error = function(error) {
             return;
         }
 
-        if(error.error===0){
+        if(error.error===5){
             field.fields_error(error);
             field.hide_error();
         } else {
@@ -1747,7 +1881,7 @@ FVArrayField.prototype.error = function(error) {
                 var error_list = $("<ul />");
                 for(var i = 0; i < error.errors.length; i++){
                     var sub_error = error.errors[i];
-                    if(sub_error.error===0){
+                    if(sub_error.error===5){
                         field.fields_error(sub_error);
                     } else {
                         error_list.append(
@@ -2328,7 +2462,7 @@ FVKeyValueField.prototype.error = function(error) {
             return;
         }
 
-        if(error.error===0){
+        if(error.error===5){
             field.fields_error(error);
             field.hide_error();
         } else {
@@ -2336,7 +2470,7 @@ FVKeyValueField.prototype.error = function(error) {
                 var error_list = $("<ul />");
                 for(var i = 0; i < error.errors.length; i++){
                     var sub_error = error.errors[i];
-                    if(sub_error.error===0){
+                    if(sub_error.error===5){
                         field.fields_error(sub_error);
                     } else {
                         error_list.append(

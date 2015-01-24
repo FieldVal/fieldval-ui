@@ -16,8 +16,10 @@ FVObjectField.prototype.init = function(){
     var field = this;
 
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.init();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.init();
+        }
     }
 }
 
@@ -25,8 +27,10 @@ FVObjectField.prototype.remove = function(){
     var field = this;
 
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.remove();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.remove();
+        }
     }
 
     FVField.prototype.remove.call(this);
@@ -77,8 +81,11 @@ FVObjectField.prototype.disable = function() {
     var field = this;
     
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.disable();
+        console.log(i);
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.disable();
+        }
     }
 
     return FVField.prototype.disable.call(this);
@@ -88,8 +95,10 @@ FVObjectField.prototype.enable = function() {
     var field = this;
     
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.enable();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.enable();
+        }
     }
 
     return FVField.prototype.enable.call(this);
@@ -104,8 +113,10 @@ FVObjectField.prototype.blur = function() {
     var field = this;
 
     for(var i in field.fields){
-        var inner_field = field.fields[i];
-        inner_field.blur();
+        if(field.fields.hasOwnProperty(i)){
+            var inner_field = field.fields[i];
+            inner_field.blur();
+        }
     }
 
     return field;
@@ -125,7 +136,7 @@ FVObjectField.prototype.error = function(error){
             return;
         }
 
-        if(error.error===0){
+        if(error.error===5){
             field.fields_error(error);
             field.hide_error();
         } else {
@@ -133,7 +144,7 @@ FVObjectField.prototype.error = function(error){
                 var error_list = $("<ul />");
                 for(var i = 0; i < error.errors.length; i++){
                     var sub_error = error.errors[i];
-                    if(sub_error.error===0){
+                    if(sub_error.error===5){
                         field.fields_error(sub_error);
                     } else {
                         error_list.append(
@@ -167,16 +178,20 @@ FVObjectField.prototype.fields_error = function(error){
         var unrecognized_fields = error.unrecognized || {};
         
         for(var i in field.fields){
-            var inner_field = field.fields[i];
+            if(field.fields.hasOwnProperty(i)){
+                var inner_field = field.fields[i];
 
-            var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
-            inner_field.error(field_error);
+                var field_error = invalid_fields[i] || missing_fields[i] || unrecognized_fields[i] || null;
+                inner_field.error(field_error);
+            }
         }
 
     } else {
         for(var i in field.fields){
-            var inner_field = field.fields[i];
-            inner_field.error(null);
+            if(field.fields.hasOwnProperty(i)){
+                var inner_field = field.fields[i];
+                inner_field.error(null);
+            }
         }
     }
 }
@@ -194,11 +209,13 @@ FVObjectField.prototype.val = function(set_val) {
     if (arguments.length===0) {
     	var compiled = {};
     	for(var i in field.fields){
-    		var inner_field = field.fields[i];
-            if(inner_field.output_flag!==false){
-                var value = inner_field.val();
-                if(value!=null){
-            		compiled[i] = value;
+            if(field.fields.hasOwnProperty(i)){
+        		var inner_field = field.fields[i];
+                if(inner_field.output_flag!==false){
+                    var value = inner_field.val();
+                    if(value!=null){
+                		compiled[i] = value;
+                    }
                 }
             }
     	}
