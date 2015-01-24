@@ -159,6 +159,15 @@
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
                         "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                    },
+                    {
+                        "path": "Fields/FVChoiceField/FVChoiceField_2.code",
+                        "runnable_path": "Fields/FVChoiceField/FVChoiceField_runnable_2.code",
+                        "type": "js",
+                        "runnable": true, "demo": true,
+                        "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
+                        "js_library": "jquery",
+                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
                     }]
                 },
                 {
