@@ -182,11 +182,21 @@
                             "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                             "js_library": "jquery",
                             "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
-                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar options = {\n\t\tchoices: [\"one\", \"two\", \"three\"],\n\t\tallow_empty: true,\n\t\tempty_text: \"empty_value\"\n\t}\n\n\tvar form = new FVForm()\n\t.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));\n  \n  \tform.element.appendTo(\"body\");\n});",
-                            "contents": "var options = {\n\tchoices: [\"one\", \"two\", \"three\"],\n\tallow_empty: true,\n\tempty_text: \"empty_value\"\n}\n\nvar form = new FVForm()\n.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));"
+                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar options = {\n\t\tchoices: [1, 2, 3],\n\t\tallow_empty: true,\n\t\tempty_text: \"empty_value\"\n\t}\n\n\tvar form = new FVForm()\n\t.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));\n  \n  \tform.element.appendTo(\"body\");\n});",
+                            "contents": "var options = {\n\tchoices: [1, 2, 3],\n\tallow_empty: true,\n\tempty_text: \"empty_value\"\n}\n\nvar form = new FVForm()\n.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));"
+                        },
+                        {
+                            "type": "js",
+                            "runnable": true,
+                            "demo": true,
+                            "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
+                            "js_library": "jquery",
+                            "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js",
+                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar options = {\n\t\tchoices: [\n\t\t\t[1, \"one\"], \n\t\t\t[2, \"two\"],  \n\t\t\t[3, \"three\"]\n\t\t],\n\t\tallow_empty: true,\n\t\tempty_text: \"empty_value\"\n\t}\n\n\tvar form = new FVForm()\n\t.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));\n  \n  \tform.element.appendTo(\"body\");\n});",
+                            "contents": "var options = {\n\tchoices: [\n\t\t[1, \"one\"], \n\t\t[2, \"two\"],  \n\t\t[3, \"three\"]\n\t],\n\tallow_empty: true,\n\tempty_text: \"empty_value\"\n}\n\nvar form = new FVForm()\n.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));"
                         }
                     ],
-                    "text": "<p>FVChoiceField is a custom text field that provides a dropdown list of pre-defined values that match the current input.</p>\n<p><code>.val()</code> returns a string.</p>\n"
+                    "text": "<p>FVChoiceField is a custom text field that provides a dropdown list of pre-defined values that match the current input.</p>\n<p>Second argument of the constructor is an object with several keys:</p>\n<ul>\n<li><code>choices</code> is a list of values to choose form. Values can also be an array containing two elements: the value that should be returned and its display text, just like in the second example.</li>\n<li><code>allow_empty</code> is an optional boolean that specifies whether a FVChoiceField should allow choosing an <code>empty</code> value that returns null.</li>\n<li><code>empty_text</code> specifies the display text for the <code>empty</code> value</li>\n</ul>\n<p><code>.val()</code> returns a chosen value, specified in <code>choices</code> array.</p>\n"
                 },
                 {
                     "name": "FVArrayField",

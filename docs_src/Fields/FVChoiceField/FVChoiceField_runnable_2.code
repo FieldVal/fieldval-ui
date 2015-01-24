@@ -1,7 +1,11 @@
 $(document).ready(function(){
 	
 	var options = {
-		choices: [1, 2, 3],
+		choices: [
+			[1, "one"], 
+			[2, "two"],  
+			[3, "three"]
+		],
 		allow_empty: true,
 		empty_text: "empty_value"
 	}
