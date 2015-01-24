@@ -13,20 +13,24 @@ function FVArrayField(name, options) {
 
     field.element.addClass("fv_array_field");
     field.input_holder.append(
-        field.fields_element = $("<div />").addClass("fv_nested_fields"),
+        field.fields_element = $("<div />").addClass("fv_array_fields"),
         field.create_add_field_button()
     )
 
-    field.fields_element.nestable({
-        rootClass: 'fv_nested_fields',
-        itemClass: 'fv_field',
-        handleClass: 'fv_field_move_handle',
-        itemNodeName: 'div.fv_field',
-        listNodeName: 'div.fv_nested_fields',
-        threshold: 40
-    }).on('change', function(e){
-        field.reorder();
-    });
+    field.sortable = options.sortable===undefined || options.sortable!==false;
+
+    if(field.sortable){
+        field.fields_element.nestable({
+            rootClass: 'fv_array_fields',
+            itemClass: 'fv_field',
+            handleClass: 'fv_field_move_handle',
+            itemNodeName: 'div.fv_field',
+            listNodeName: 'div.fv_array_fields',
+            threshold: 40
+        }).on('change', function(e){
+            field.reorder();
+        });
+    }
 }
 
 FVArrayField.prototype.reorder = function(){
@@ -63,7 +67,7 @@ FVArrayField.prototype.new_field = function(index){
 FVArrayField.prototype.add_field = function(name, inner_field){
     var field = this;
 
-    inner_field.in_array(function(){
+    inner_field.in_array(field, function(){
         field.remove_field(inner_field);
     });
     inner_field.element.appendTo(field.fields_element);
@@ -183,7 +187,7 @@ FVArrayField.prototype.error = function(error) {
             return;
         }
 
-        if(error.error===0){
+        if(error.error===5){
             field.fields_error(error);
             field.hide_error();
         } else {
@@ -191,7 +195,7 @@ FVArrayField.prototype.error = function(error) {
                 var error_list = $("<ul />");
                 for(var i = 0; i < error.errors.length; i++){
                     var sub_error = error.errors[i];
-                    if(sub_error.error===0){
+                    if(sub_error.error===5){
                         field.fields_error(sub_error);
                     } else {
                         error_list.append(

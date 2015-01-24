@@ -1,6 +1,6 @@
 .fv_array_field{
 	>.fv_input_holder{
-		>.fv_nested_fields{
+		>.fv_array_fields{
 			>.dd-placeholder{
 				display: block; 
 				position: relative; 
@@ -20,6 +20,14 @@
 				position: absolute;
 				pointer-events: none;
 				z-index: 9999;
+			}
+			>.fv_field.fv_in_array {
+				>.fv_input_holder{
+					padding-left: 0px;
+				}
+				.fv_error_message{
+					margin-left: 0px;
+				}
 			}
 		}
 		>.fv_add_field_button{

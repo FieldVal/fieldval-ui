@@ -234,6 +234,11 @@
   border: 1px solid #999999;
   font-size: 14px;
 }
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .filter_input.fv_filter_hidden {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
 .fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_display {
   position: relative;
   background-color: white;
@@ -291,11 +296,11 @@
   -o-user-select: none;
   user-select: none;
 }
-.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option.selected {
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option.fv_selected {
   background-color: #5DB9FF;
   color: white;
 }
-.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option.highlighted {
+.fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list > .fv_choice_option.fv_highlighted {
   background-color: #2B86F3;
   color: white;
 }
@@ -316,7 +321,7 @@
 .fv_object_field > .fv_input_holder {
   padding-left: 10px;
 }
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .dd-placeholder {
+.fv_array_field > .fv_input_holder > .fv_array_fields > .dd-placeholder {
   display: block;
   position: relative;
   margin: 0px;
@@ -331,10 +336,16 @@
   background-size: 60px 60px;
   background-position: 0 0, 30px 30px;
 }
-.fv_array_field > .fv_input_holder > .fv_nested_fields > .dd-dragel {
+.fv_array_field > .fv_input_holder > .fv_array_fields > .dd-dragel {
   position: absolute;
   pointer-events: none;
   z-index: 9999;
+}
+.fv_array_field > .fv_input_holder > .fv_array_fields > .fv_field.fv_in_array > .fv_input_holder {
+  padding-left: 0px;
+}
+.fv_array_field > .fv_input_holder > .fv_array_fields > .fv_field.fv_in_array .fv_error_message {
+  margin-left: 0px;
 }
 .fv_array_field > .fv_input_holder > .fv_add_field_button {
   -webkit-appearance: none;
