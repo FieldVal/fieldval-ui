@@ -1,1 +1,1 @@
-FVDisplayField is a field that cannot be modifeid by the user. It is mostly used for display purposes.
+FVDisplayField is a field that cannot be modified by the user. It can be used for displaying computed values based on the changing of other fields (such as time from now etc.).
