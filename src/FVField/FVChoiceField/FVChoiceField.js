@@ -10,9 +10,10 @@ function FVChoiceOption(choice, parent){
         choice_option.choice_value = null;
     } else if((typeof choice)==="object"){
         choice_option.choice_value = choice[0];
-        choice_option.choice_text = choice[1];
+        choice_option.choice_text = choice[1].toString();
     } else {
-        choice_option.choice_value = choice_option.choice_text = choice;
+        choice_option.choice_value = choice;
+        choice_option.choice_text = choice.toString();
     }
 
     choice_option.element = $("<div />").addClass("fv_choice_option")

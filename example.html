@@ -69,6 +69,17 @@ $(document).ready(function(){
 	}
 	form.add_field("tags", array_field);
 
+
+	var kv_field = new FVKeyValueField("Options",{
+		add_button_text: "+ Add an options pair"
+	});
+	kv_field.new_field = function(index){
+		var option_field = new FVTextField("Option Value");
+		kv_field.add_field(null,option_field);
+		return option_field;
+	}
+	form.add_field("options", kv_field);
+
 	form.add_field("address", new FVObjectField("Address"));
 	form.fields.address.add_field("house_number", new FVTextField("House Number",{type:"number"}));
 	form.fields.address.add_field("line_1", new FVTextField("Line 1"));
@@ -91,6 +102,10 @@ $(document).ready(function(){
 		"email": "t@t.com",
 		"bio":"Bio test",
 		"tags": ["test tag"],
+		"options": {
+			"one": "a",
+			"two": "b"
+		},
 		"address": {
 			"house_number": 14,
 			"line_1": "This is line 1",
@@ -112,6 +127,11 @@ $(document).ready(function(){
 		var bio = validator.get("bio",BasicVal.string(true));
 		
 		var tags = validator.get("tags", BasicVal.array(true), BasicVal.min_length(1), BasicVal.each(function(value,i){
+			var error = BasicVal.string(true).check(value); 
+			if(error){return error};
+	    }));
+
+		var options = validator.get("options", BasicVal.object(true), BasicVal.each(function(value,i){
 			var error = BasicVal.string(true).check(value); 
 			if(error){return error};
 	    }));

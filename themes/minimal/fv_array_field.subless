@@ -1,6 +1,25 @@
 .fv_array_field{
 	>.fv_input_holder{
 		>.fv_array_fields{
+
+			>.fv_field,>.dd-dragel>.fv_field{
+				padding-top: 0px;
+				padding-bottom: 5px;
+				min-height: 35px;
+				
+				>.fv_input_holder{
+					padding-right: 35px;
+				}
+				>.fv_field_title{
+					display: none;
+				}
+				&.fv_disabled{
+					>.fv_input_holder{
+						padding-right: 0px;
+					}
+				}
+			}
+
 			>.dd-placeholder{
 				display: block; 
 				position: relative; 
@@ -41,6 +60,29 @@
 
 			&:active{
 				background-color: @fv_add_button_active_background_color;
+			}
+		}
+	}
+
+	&.fv_array_field_sortable{
+		>.fv_input_holder{
+			>.fv_array_fields{
+				>.fv_field,>.dd-dragel>.fv_field{
+					>.fv_input_holder{
+						padding-left: 30px;
+					}
+					>.fv_error_message{
+						margin-left: 30px;
+					}
+					&.fv_disabled{
+						>.fv_input_holder{
+							padding-left: 0px;
+						}
+						>.fv_error_message{
+							margin-left: 0px;
+						}
+					}
+				}
 			}
 		}
 	}
