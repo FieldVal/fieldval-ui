@@ -18,6 +18,12 @@ function FVChoiceOption(choice, parent){
 
     choice_option.element = $("<div />").addClass("fv_choice_option")
     .text(choice_option.choice_text)
+    .on("mousedown",function(e){
+        parent.mousedown();
+    })
+    .on("mouseup",function(e){
+        parent.mouseup();
+    })
     .on(FVForm.button_event,function(e){
         parent.default_click(e, choice_option);
     })
@@ -100,8 +106,11 @@ function FVChoiceField(name, options) {
             field.focus();
         })
         .attr("placeholder", name)
-        .addClass("filter_input").on('blur',function(){
-            field.blur();
+        .addClass("filter_input")
+        .on('blur',function(e){
+            if(!field.is_mousedown){
+                field.blur();
+            }
         })
     ,
         field.current_display = $("<div />")
@@ -160,6 +169,15 @@ function FVChoiceField(name, options) {
 
 
     field.filter("");
+}
+
+FVChoiceField.prototype.mousedown = function(){
+    var field = this;
+    field.is_mousedown = true;
+}
+FVChoiceField.prototype.mouseup = function(){
+    var field = this;
+    field.is_mousedown = false;
 }
 
 FVChoiceField.prototype.filter_enter_up = function() {
