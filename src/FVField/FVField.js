@@ -148,6 +148,10 @@ FVField.prototype.disable = function() {
     field.is_disabled = true;
     field.element.addClass("fv_disabled");
 
+    if(field.name_input){
+        field.name_input.disable();
+    }
+
     if(field.move_handle){
         field.move_handle.hide();
     }
@@ -163,6 +167,10 @@ FVField.prototype.enable = function() {
     var field = this;
     field.is_disabled = false;
     field.element.removeClass("fv_disabled");
+
+    if(field.name_input){
+        field.name_input.enable();
+    }
 
     if(field.move_handle){
         field.move_handle.show();

@@ -18,14 +18,15 @@ function FVArrayField(name, options) {
     )
 
     field.sortable = options.sortable===undefined || options.sortable!==false;
-
+    
     if(field.sortable){
+        field.element.addClass("fv_array_field_sortable");
         field.fields_element.nestable({
             rootClass: 'fv_array_fields',
             itemClass: 'fv_field',
             handleClass: 'fv_field_move_handle',
             itemNodeName: 'div.fv_field',
-            listNodeName: 'div.fv_array_fields',
+            listNodeName: 'div',
             threshold: 40
         }).on('change', function(e){
             field.reorder();

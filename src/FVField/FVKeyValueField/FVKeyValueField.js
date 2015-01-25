@@ -1,5 +1,3 @@
-@import("../../../bower_components/nestable/jquery.nestable.js");
-
 fieldval_ui_extend(FVKeyValueField, FVField);
 function FVKeyValueField(name, options) {
     var field = this;
@@ -13,7 +11,7 @@ function FVKeyValueField(name, options) {
 
     field.element.addClass("fv_key_value_field");
     field.input_holder.append(
-        field.fields_element = $("<div />").addClass("fv_nested_fields"),
+        field.fields_element = $("<div />").addClass("fv_key_value_fields"),
         field.create_add_field_button()
     )
 }
@@ -46,7 +44,6 @@ FVKeyValueField.prototype.add_field = function(name, inner_field){
     field.fields.push(inner_field);
     inner_field.parent = field;
 
-    field.input_holder.nestable('init');
     inner_field.name_val("");
 
     if(field.is_disabled){

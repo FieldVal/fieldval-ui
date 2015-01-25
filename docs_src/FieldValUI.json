@@ -13,7 +13,7 @@
                 "runnable": true, "demo": true,
                 "demo": true,
                 "js_library": "jquery",
-                "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
             }],
             "sections": [
                 {
@@ -40,7 +40,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -57,7 +57,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -74,7 +74,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -97,7 +97,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     },
                     {
                         "path": "Fields/FVTextField/FVTextField_textarea.code",
@@ -106,7 +106,7 @@
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "runnable": true, "demo": true,
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -119,7 +119,7 @@
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "runnable": true, "demo": true,
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -132,7 +132,7 @@
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "runnable": true, "demo": true,
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -145,7 +145,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -158,7 +158,16 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
+                    },
+                    {
+                        "path": "Fields/FVChoiceField/FVChoiceField_2.code",
+                        "runnable_path": "Fields/FVChoiceField/FVChoiceField_runnable_2.code",
+                        "type": "js",
+                        "runnable": true, "demo": true,
+                        "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
+                        "js_library": "jquery",
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -171,7 +180,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -184,7 +193,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -197,7 +206,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 },
                 {
@@ -210,7 +219,7 @@
                         "runnable": true, "demo": true,
                         "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                         "js_library": "jquery",
-                        "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                        "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
                     }]
                 }
             ]
@@ -225,7 +234,7 @@
                 "runnable": true, "demo": true,
                 "css_external": "__CURRENT_DOMAIN__/demo_files/minimal.css",
                 "js_library": "jquery",
-                "js_external": "__CURRENT_DOMAIN__/demo_files/fieldval-all.js"
+                "js_external": ["__CURRENT_DOMAIN__/demo_files/fieldval.js","__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"]
             }]
         },
         {
