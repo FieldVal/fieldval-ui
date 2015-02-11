@@ -7,9 +7,7 @@ $(document).ready(function(){
 	
 	var key_value_field = new FVKeyValueField("KeyValue");
 	key_value_field.new_field = function() {
-		var text_field = new FVTextField("Value");
-		key_value_field.add_field(text_field);
-		return text_field;
+		return new FVTextField("Value");
 	}
 
 	var form = new FVForm()

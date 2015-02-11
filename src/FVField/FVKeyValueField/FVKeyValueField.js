@@ -20,9 +20,18 @@ function FVKeyValueField(name, options) {
 FVKeyValueField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />",{type:"button"}).addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
+    var add_field_button = $("<button />",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        field.new_field(field.fields.length);
+        var returned_field = field.new_field(field.fields.length);
+
+        /* Allow the new_field function to just return a field - 
+         * this will add the field if it wasn't added in the new_field 
+         * callback. */
+         if(returned_field){
+             if(field.fields.indexOf(returned_field)===-1){
+                 field.add_field(returned_field);
+             }
+         }
     });
 
     field.add_field_buttons.push(add_field_button);
@@ -253,11 +262,28 @@ FVKeyValueField.prototype.val = function(set_val) {
         return compiled;
     } else {
         if(set_val){
+            for(var i in field.keys){
+                if(field.keys.hasOwnProperty(i)){
+                    if(set_val[i]===undefined){
+                        var inner_field = field.keys[i];
+                        field.remove_field(inner_field);
+                    }
+                }
+            }
             for(var i in set_val){
             	if(set_val.hasOwnProperty(i)){
-	        		var inner_field = field.fields[i];
+	        		var inner_field = field.keys[i];
 	                if(!inner_field){
 	                    inner_field = field.new_field(i);
+                        
+                        /* Allow the new_field function to just return a field - 
+                         * this will add the field if it wasn't added in the new_field 
+                         * callback. */
+                         if(inner_field){
+                             if(field.fields.indexOf(inner_field)===-1){
+                                 field.add_field(inner_field);
+                             }
+                         }
 	                }
 	                inner_field.val(set_val[i]);
 	                inner_field.name_val(i);

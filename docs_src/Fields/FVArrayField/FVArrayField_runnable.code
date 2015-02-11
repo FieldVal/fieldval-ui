@@ -5,8 +5,8 @@ $(document).ready(function(){
 	}
 
 	var array_field = new FVArrayField("Array", options);
-	array_field.new_field = function() {
-		array_field.add_field(new FVTextField("element"));
+	array_field.new_field = function(index) {
+		return new FVTextField("element");
 	}
 
 	var form = new FVForm()

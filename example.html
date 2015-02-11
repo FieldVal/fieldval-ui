@@ -63,20 +63,15 @@ $(document).ready(function(){
 		add_button_text: "+ Add a tag"
 	});
 	array_field.new_field = function(index){
-		var tag_field = new FVTextField("Tag");
-		array_field.add_field(tag_field);
-		return tag_field;
+		return new FVTextField("Tag");
 	}
 	form.add_field("tags", array_field);
-
 
 	var kv_field = new FVKeyValueField("Options",{
 		add_button_text: "+ Add an options pair"
 	});
 	kv_field.new_field = function(index){
-		var option_field = new FVTextField("Option Value");
-		kv_field.add_field(option_field);
-		return option_field;
+		return new FVTextField("Option Value");
 	}
 	form.add_field("options", kv_field);
 

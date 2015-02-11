@@ -376,11 +376,9 @@
   cursor: pointer;
   background-color: #00aa00;
   color: #ffffff;
-  width: 30px;
-  height: 30px;
+  margin: 0px;
   border: none;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 14px;
 }
 .fv_key_value_field > .fv_input_holder > .fv_add_field_button:active {
   background-color: #007700;
