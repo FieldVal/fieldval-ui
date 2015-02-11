@@ -64,7 +64,7 @@ $(document).ready(function(){
 	});
 	array_field.new_field = function(index){
 		var tag_field = new FVTextField("Tag");
-		array_field.add_field(null,tag_field);
+		array_field.add_field(tag_field);
 		return tag_field;
 	}
 	form.add_field("tags", array_field);
@@ -75,7 +75,7 @@ $(document).ready(function(){
 	});
 	kv_field.new_field = function(index){
 		var option_field = new FVTextField("Option Value");
-		kv_field.add_field(null,option_field);
+		kv_field.add_field(option_field);
 		return option_field;
 	}
 	form.add_field("options", kv_field);

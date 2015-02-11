@@ -17,7 +17,7 @@ function FVArrayField(name, options) {
         field.create_add_field_button()
     )
 
-    field.sortable = options.sortable===undefined || options.sortable!==false;
+    field.sortable = field.options.sortable===undefined || field.options.sortable!==false;
     
     if(field.sortable){
         field.element.addClass("fv_array_field_sortable");
@@ -65,8 +65,13 @@ FVArrayField.prototype.new_field = function(index){
     throw new Error("FVArrayField.new_field must be overriden to create fields");
 }
 
-FVArrayField.prototype.add_field = function(name, inner_field){
+FVArrayField.prototype.add_field = function(inner_field){
     var field = this;
+
+    if(arguments.length===2){
+        //Unused "name" as first parameter
+        inner_field = arguments[1];//Use the field in the second argument
+    }
 
     inner_field.in_array(field, function(){
         field.remove_field(inner_field);

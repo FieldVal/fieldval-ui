@@ -34,8 +34,13 @@ FVKeyValueField.prototype.new_field = function(){
     throw new Error("FVKeyValueField.new_field must be overriden to create fields");
 }
 
-FVKeyValueField.prototype.add_field = function(name, inner_field){
+FVKeyValueField.prototype.add_field = function(inner_field){
     var field = this;
+
+    if(arguments.length===2){
+        //Unused "name" as first parameter
+        inner_field = arguments[1];//Use the field in the second argument
+    }
 
     inner_field.in_key_value(field,function(key_name){
         field.remove_field(inner_field, key_name);
