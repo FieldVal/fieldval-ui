@@ -43,7 +43,7 @@ FVField.prototype.in_array = function(parent, remove_callback){
     }
 
     field.element.append(
-        field.remove_button = $("<button />")
+        field.remove_button = $("<button />",{type:"button"})
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
@@ -67,7 +67,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
 
     field.element.addClass("fv_in_key_value")
     .append(
-        field.remove_button = $("<button />")
+        field.remove_button = $("<button />",{type:"button"})
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();

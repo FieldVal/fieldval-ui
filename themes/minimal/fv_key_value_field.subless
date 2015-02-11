@@ -50,11 +50,9 @@
 			cursor: pointer;
 			background-color: @fv_add_button_background_color;
 			color: @fv_add_button_color;
-			width: 30px;
-			height: 30px;
+			margin: 0px;
 			border: none;
-			font-size: 20px;
-			font-weight: bold;
+			font-size: 14px;
 
 			&:active{
 				background-color: @fv_add_button_active_background_color;

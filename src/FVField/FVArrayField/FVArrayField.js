@@ -50,9 +50,18 @@ FVArrayField.prototype.reorder = function(){
 FVArrayField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />").addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
+    var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        field.new_field(field.fields.length);
+        var returned_field = field.new_field(field.fields.length);
+
+        /* Allow the new_field function to just return a field - 
+         * this will add the field if it wasn't added in the new_field 
+         * callback. */
+        if(returned_field){
+            if(field.fields.indexOf(returned_field)===-1){
+                field.add_field(returned_field);
+            }
+        }
     });
 
     field.add_field_buttons.push(add_field_button);
@@ -243,6 +252,18 @@ FVArrayField.prototype.val = function(set_val) {
         		var inner_field = field.fields[i];
                 if(!inner_field){
                     inner_field = field.new_field(i);
+
+                    /* Allow the new_field function to just return a field - 
+                     * this will add the field if it wasn't added in the new_field 
+                     * callback. */
+                     if(inner_field){
+                         if(field.fields.indexOf(inner_field)===-1){
+                             field.add_field(inner_field);
+                         }
+                     }
+                }
+                if(!inner_field){//A field wasn't returned by the new_field function
+                    inner_field = field.fields[i];
                 }
                 inner_field.val(set_val[i]);
         	}
