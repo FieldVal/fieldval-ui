@@ -7,6 +7,7 @@ function FVKeyValueField(name, options) {
     field.fields = [];
     field.keys = {};
 
+    field.add_button_text = field.options.add_button_text!==undefined ? field.options.add_button_text : "+";
     field.add_field_buttons = [];
 
     field.element.addClass("fv_key_value_field");
@@ -19,7 +20,7 @@ function FVKeyValueField(name, options) {
 FVKeyValueField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
+    var add_field_button = $("<button />",{type:"button"}).addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
         event.preventDefault();
         field.new_field(field.fields.length);
     });

@@ -52,7 +52,7 @@ FVField.prototype.in_array = function(parent, remove_callback){
     }
 
     field.element.append(
-        field.remove_button = $("<button />")
+        field.remove_button = $("<button />",{type:"button"})
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
@@ -76,7 +76,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
 
     field.element.addClass("fv_in_key_value")
     .append(
-        field.remove_button = $("<button />")
+        field.remove_button = $("<button />",{type:"button"})
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
@@ -1763,7 +1763,7 @@ FVArrayField.prototype.reorder = function(){
 FVArrayField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />").addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
+    var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
         field.new_field(field.fields.length);
     });
@@ -1957,6 +1957,9 @@ FVArrayField.prototype.val = function(set_val) {
                 if(!inner_field){
                     inner_field = field.new_field(i);
                 }
+                if(!inner_field){//A field wasn't returned by the new_field function
+                    inner_field = field.fields[i];
+                }
                 inner_field.val(set_val[i]);
         	}
         }
@@ -1972,6 +1975,7 @@ function FVKeyValueField(name, options) {
     field.fields = [];
     field.keys = {};
 
+    field.add_button_text = field.options.add_button_text!==undefined ? field.options.add_button_text : "+";
     field.add_field_buttons = [];
 
     field.element.addClass("fv_key_value_field");
@@ -1984,7 +1988,7 @@ function FVKeyValueField(name, options) {
 FVKeyValueField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />").addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
+    var add_field_button = $("<button />",{type:"button"}).addClass("fv_add_field_button").text("+").on(FVForm.button_event,function(event){
         event.preventDefault();
         field.new_field(field.fields.length);
     });

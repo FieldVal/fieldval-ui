@@ -50,7 +50,7 @@ FVArrayField.prototype.reorder = function(){
 FVArrayField.prototype.create_add_field_button = function(){
     var field = this;
 
-    var add_field_button = $("<button />").addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
+    var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
         field.new_field(field.fields.length);
     });
@@ -243,6 +243,9 @@ FVArrayField.prototype.val = function(set_val) {
         		var inner_field = field.fields[i];
                 if(!inner_field){
                     inner_field = field.new_field(i);
+                }
+                if(!inner_field){//A field wasn't returned by the new_field function
+                    inner_field = field.fields[i];
                 }
                 inner_field.val(set_val[i]);
         	}
