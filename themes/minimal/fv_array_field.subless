@@ -1,6 +1,7 @@
 .fv_array_field{
 	>.fv_input_holder{
 		>.fv_array_fields{
+			position: relative;
 
 			>.fv_field,>.dd-dragel>.fv_field{
 				padding-top: 0px;

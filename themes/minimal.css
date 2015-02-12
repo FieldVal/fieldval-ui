@@ -19,6 +19,7 @@
   padding-top: 5px;
   padding-bottom: 5px;
   box-sizing: border-box;
+  vertical-align: top;
 }
 .fv_field.fv_field_error > .fv_field_title {
   color: #aa0000;
@@ -262,6 +263,9 @@
 }
 .fv_object_field > .fv_input_holder {
   padding-left: 10px;
+}
+.fv_array_field > .fv_input_holder > .fv_array_fields {
+  position: relative;
 }
 .fv_array_field > .fv_input_holder > .fv_array_fields > .fv_field,
 .fv_array_field > .fv_input_holder > .fv_array_fields > .dd-dragel > .fv_field {
