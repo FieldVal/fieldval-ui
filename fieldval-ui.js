@@ -1174,7 +1174,7 @@ FVObjectField.prototype.init = function(){
     }
 }
 
-FVObjectField.prototype.remove = function(){
+FVObjectField.prototype.remove = function(from_parent){
     var field = this;
 
     for(var i in field.fields){
@@ -1184,7 +1184,7 @@ FVObjectField.prototype.remove = function(){
         }
     }
 
-    FVField.prototype.remove.call(this);
+    FVField.prototype.remove.call(this, from_parent);
 }
 
 FVObjectField.prototype.add_field = function(name, inner_field){
