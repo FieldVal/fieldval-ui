@@ -1,0 +1,28 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+
+    <script>
+        mocha.ui('bdd');
+        mocha.reporter('html');
+        assert = chai.assert;
+    </script>
+
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../jquery.tap.js"></script>
+    <script src="../node_modules/fieldval/fieldval.js"></script>
+    <script src="../fieldval-ui.js"></script>
+
+    <script src="test.js"></script>
+    <script>
+        if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+        else { mocha.run(); }
+    </script>
+</body>
+</html>

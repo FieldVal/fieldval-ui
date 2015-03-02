@@ -7,6 +7,7 @@ var gulpImports = require('gulp-imports');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
 var path = require('path');
+var mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 var docs_to_json = require('sa-docs-to-json');
 
@@ -37,6 +38,18 @@ gulp.task('less', function(){
     .on('error', gutil.log);
 })
 
+gulp.task('test', function(){
+    gulp.src([
+        'test/init.js'
+    ])
+    .pipe(gulpImports())
+    .pipe(concat("test.js"))
+    .pipe(gulp.dest('./test'))
+
+
+    gulp.src(['test/test.html'])
+    .pipe(mochaPhantomJS());
+});
 
 gulp.task('default', function(){
     gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
