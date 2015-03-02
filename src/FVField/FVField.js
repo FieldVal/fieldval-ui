@@ -32,6 +32,7 @@ FVField.prototype.in_array = function(parent, remove_callback){
 
     field.array_parent = parent;
     field.is_in_array = true;
+    field.array_remove_callback = remove_callback;
 
     field.element.addClass("fv_in_array");
 
@@ -47,6 +48,7 @@ FVField.prototype.in_array = function(parent, remove_callback){
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
+            field.array_remove_callback(field.key_name);
             remove_callback();
             field.remove();
         })
@@ -58,6 +60,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
 
     field.key_value_parent = parent;
     field.is_in_key_value = true;
+    field.key_value_remove_callback = remove_callback;
 
     field.name_input = new FVTextField("Key").on_change(function(name_val){
         field.key_name = field.key_value_parent.change_key_name(field.key_name, name_val, field);
@@ -71,7 +74,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
         .addClass("fv_field_remove_button")
         .html("&#10006;").on(FVForm.button_event,function(event){
             event.preventDefault();
-            remove_callback(field.key_name);
+            field.key_value_remove_callback(field.key_name);
             field.remove();
         })
     )

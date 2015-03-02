@@ -1,0 +1,8 @@
+.fv_proxy_field{
+	.fv_input_holder{
+		.loading_label{
+			line-height: 30px;
+			padding-left: 5px;
+		}
+	}
+}

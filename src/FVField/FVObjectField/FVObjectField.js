@@ -172,6 +172,8 @@ FVObjectField.prototype.error = function(error){
 FVObjectField.prototype.fields_error = function(error){
     var field = this;
 
+    //.missing and .unrecognized are unused as of FieldVal 0.4.0
+
     if(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
