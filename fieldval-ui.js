@@ -2428,17 +2428,17 @@ FVProxyField.prototype.replace = function(inner_field){
         }
     }
 
-    for(var i in inner_field){
-        if(inner_field.hasOwnProperty(i)){
-            field[i] = inner_field[i];
-        }
-    }
-
     var proto = Object.getPrototypeOf(inner_field);
 
     for(var i in proto){
         if(proto.hasOwnProperty(i)){
             field[i] = proto[i];
+        }
+    }
+
+    for(var i in inner_field){
+        if(inner_field.hasOwnProperty(i)){
+            field[i] = inner_field[i];
         }
     }
 
