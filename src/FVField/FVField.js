@@ -12,7 +12,19 @@ function FVField(name, options) {
 
     field.on_change_callbacks = [];
 
-    field.element = $("<div />").addClass("fv_field").data("field",field);
+    if(field.options.form){
+        field.element = $("<form />")
+        .addClass("fv_field")
+        .data("field",field)
+        .on("submit",function(event){
+            event.preventDefault();
+            field.submit();
+            return false;
+        });
+        field.on_submit_callbacks = [];
+    } else {
+        field.element = $("<div />").addClass("fv_field").data("field",field);
+    }
     field.title = $("<div />").addClass("fv_field_title").text(field.name)
     if(!field.name){
         //Field name is empty
@@ -25,6 +37,26 @@ function FVField(name, options) {
     field.error_message = $("<div />").addClass("fv_error_message").hide()
 
     field.layout();
+}
+
+FVField.prototype.on_submit = function(callback){
+    var field = this;
+
+    field.on_submit_callbacks.push(callback);
+
+    return field;
+}
+
+FVField.prototype.submit = function(){
+    var field = this;
+
+    var compiled = field.val();
+    for(var i = 0; i < field.on_submit_callbacks.length; i++){
+        var callback = field.on_submit_callbacks[i];
+        callback(compiled);
+    }
+
+    return compiled;
 }
 
 FVField.prototype.in_array = function(parent, remove_callback){

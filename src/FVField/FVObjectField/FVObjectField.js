@@ -81,7 +81,6 @@ FVObjectField.prototype.disable = function() {
     var field = this;
     
     for(var i in field.fields){
-        console.log(i);
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
             inner_field.disable();

@@ -21,7 +21,19 @@ function FVField(name, options) {
 
     field.on_change_callbacks = [];
 
-    field.element = $("<div />").addClass("fv_field").data("field",field);
+    if(field.options.form){
+        field.element = $("<form />")
+        .addClass("fv_field")
+        .data("field",field)
+        .on("submit",function(event){
+            event.preventDefault();
+            field.submit();
+            return false;
+        });
+        field.on_submit_callbacks = [];
+    } else {
+        field.element = $("<div />").addClass("fv_field").data("field",field);
+    }
     field.title = $("<div />").addClass("fv_field_title").text(field.name)
     if(!field.name){
         //Field name is empty
@@ -34,6 +46,26 @@ function FVField(name, options) {
     field.error_message = $("<div />").addClass("fv_error_message").hide()
 
     field.layout();
+}
+
+FVField.prototype.on_submit = function(callback){
+    var field = this;
+
+    field.on_submit_callbacks.push(callback);
+
+    return field;
+}
+
+FVField.prototype.submit = function(){
+    var field = this;
+
+    var compiled = field.val();
+    for(var i = 0; i < field.on_submit_callbacks.length; i++){
+        var callback = field.on_submit_callbacks[i];
+        callback(compiled);
+    }
+
+    return compiled;
 }
 
 FVField.prototype.in_array = function(parent, remove_callback){
@@ -1235,7 +1267,6 @@ FVObjectField.prototype.disable = function() {
     var field = this;
     
     for(var i in field.fields){
-        console.log(i);
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
             inner_field.disable();
@@ -2288,6 +2319,20 @@ FVKeyValueField.prototype.val = function(set_val) {
         return field;
     }
 }
+
+if ( typeof Object.getPrototypeOf !== "function" ) {
+    if ( typeof "test".__proto__ === "object" ) {
+        Object.getPrototypeOf = function(object){
+            return object.__proto__;
+        };
+    } else {
+        Object.getPrototypeOf = function(object){
+            // May break if the constructor has been tampered with
+            return object.constructor.prototype;
+        };
+    }
+}
+
 fieldval_ui_extend(FVProxyField, FVField);
 
 function FVProxyField(name, options) {
@@ -2295,11 +2340,10 @@ function FVProxyField(name, options) {
 
     FVProxyField.superConstructor.call(this, name, options);
 
-    field.element.addClass("fv_proxy_field").append(
-        field.input_holder = $("<div />").addClass("fv_input_holder").append(
-            $("<div />").addClass("loading_label").text("Loading...")
-        )
-    )
+    field.element.addClass("fv_proxy_field");
+    field.input_holder.append(
+        $("<div />").addClass("loading_label").text("Loading...")
+    );
 
     field.init_called = false;
     field.last_val = undefined;
@@ -2322,9 +2366,31 @@ FVProxyField.prototype.replace = function(inner_field){
         field.inner_field.init();
     }
 
+
+    //Carry any pre/appended elements into the new field
+    var before = [];
+    var after = [];
+    var seen_title = false;
+    field.element.children().each(function(index,dom_element){
+        if(dom_element===field.title[0]){
+            seen_title = true;
+        } else {
+            if(dom_element!==field.input_holder[0] && dom_element!==field.error_message[0]){
+                if(!seen_title){
+                    before.push(dom_element);
+                } else {
+                    after.push(dom_element);
+                }
+            }
+        }
+    });
+
     field.element.replaceWith(field.inner_field.element);
 
     field.element = field.inner_field.element;
+
+    field.element.prepend(before);
+    field.element.append(after);
 
     if(field.last_val!==undefined){
         field.inner_field.val(field.last_val);
@@ -2346,16 +2412,35 @@ FVProxyField.prototype.replace = function(inner_field){
     for(var n=0; n<field.on_change_callbacks.length; n++){
         on_change_callbacks.push(field.on_change_callbacks[n]);
     }
+    var on_submit_callbacks = [];
+    if(field.on_submit_callbacks!==undefined){
+        for(var n=0; n<field.on_submit_callbacks.length; n++){
+            on_submit_callbacks.push(field.on_submit_callbacks[n]);
+        }
+    }
 
     for(var i in inner_field){
         if(inner_field.hasOwnProperty(i)){
             field[i] = inner_field[i];
-            inner_field[i] = field[i];
+        }
+    }
+
+    var proto = Object.getPrototypeOf(inner_field);
+
+    for(var i in proto){
+        if(proto.hasOwnProperty(i)){
+            field[i] = proto[i];
         }
     }
 
     for(var n=0; n<on_change_callbacks.length; n++){
         field.on_change_callbacks.push(on_change_callbacks[n]);
+    }
+
+    if(field.on_submit_callbacks!==undefined){
+        for(var n=0; n<on_submit_callbacks.length; n++){
+            field.on_submit_callbacks.push(on_submit_callbacks[n]);
+        }
     }
 
     if(field.is_in_key_value){
@@ -2388,47 +2473,16 @@ fieldval_ui_extend(FVForm, FVObjectField);
 function FVForm(fields){
 	var form = this;
 
-	FVForm.superConstructor.call(this);
-
-	var children = form.element.children();
-
-	form.element.remove();
-	form.element = $("<form />").addClass("fv_form").append(children);
-
-	form.element.on("submit",function(event){
-        event.preventDefault();
-        form.submit();
-        return false;
+	FVForm.superConstructor.call(this,null,{
+		form: true
 	});
 
-	form.fields_element = form.element;
+	form.element.addClass("fv_form");
 
-	form.submit_callbacks = [];
+	form.fields_element = form.element;
 }
 FVForm.button_event = 'click';
 FVForm.is_mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|nokia|series40|x11|opera mini/i.test(navigator.userAgent.toLowerCase());
 if($.tap){
 	FVForm.button_event = 'tap';
-}
-
-FVForm.prototype.on_submit = function(callback){
-	var form = this;
-
-	form.submit_callbacks.push(callback);
-
-	return form;
-}
-
-FVForm.prototype.submit = function(){
-	var form = this;
-
-	var compiled = form.val();
-
-	for(var i = 0; i < form.submit_callbacks.length; i++){
-		var callback = form.submit_callbacks[i];
-
-		callback(compiled);
-	}
-
-	return compiled;
 }
