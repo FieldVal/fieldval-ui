@@ -52,21 +52,26 @@ FVArrayField.prototype.create_add_field_button = function(){
 
     var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        var returned_field = field.new_field(field.fields.length);
-
-        /* Allow the new_field function to just return a field - 
-         * this will add the field if it wasn't added in the new_field 
-         * callback. */
-        if(returned_field){
-            if(field.fields.indexOf(returned_field)===-1){
-                field.add_field(returned_field);
-            }
-        }
+        field.add_field_clicked();   
     });
 
     field.add_field_buttons.push(add_field_button);
 
     return add_field_button;
+}
+
+FVArrayField.prototype.add_field_clicked = function() {
+    var field = this;
+    var returned_field = field.new_field(field.fields.length);
+
+    /* Allow the new_field function to just return a field - 
+     * this will add the field if it wasn't added in the new_field 
+     * callback. */
+    if(returned_field){
+        if(field.fields.indexOf(returned_field)===-1){
+            field.add_field(returned_field);
+        }
+    }
 }
 
 FVArrayField.prototype.new_field = function(index){
