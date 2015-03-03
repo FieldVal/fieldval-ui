@@ -204,18 +204,6 @@ it("should set value", function() {
 		assert.equal(field.val(), text_field.val());
 	})
 
-	it("should retain classes and modifications after replacing", function() {
-		field.element.addClass("test_class");
-		field.title.empty().append(
-	        $("<div/>").text("test element")
-	    )
-
-		var text_field = new FVTextField();
-		field.replace(text_field);
-		assert.notEqual(field.element.attr("class").indexOf("test_class"), -1);
-		assert.equal(field.title.children().eq(0).text(), "test element");
-	})
-
 	describe("be replaced by FVArrayField", function() {
 
 		beforeEach(function() {
