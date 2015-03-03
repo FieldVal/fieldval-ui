@@ -53,13 +53,20 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.css("display"), "inline");
 })
 
-	it("should call on_change when value has changed", function(done) {
+	it("should call on_change when val was called", function(done) {
 		var new_value = false
 		field.on_change(function(val) {
 			assert.equal(val, new_value);
 			done();
 		})
 		field.val(new_value);
+	})
+
+	it("should call on_change when input value has changed", function(done) {
+		field.on_change(function(val) {
+			done();
+		})
+		field.input.trigger({ type: 'change' });
 	})
 
 })
@@ -88,13 +95,23 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when value has changed", function(done) {
+	it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
 		done();
 	})
 	field.val(new_value);
+})
+	it("should call on_change when input value has changed", function(done) {
+	var old_val = field.val();
+	field.on_change(function(val) {
+		assert.equal(val, old_val + "a");
+		done();
+	})
+
+	field.input.val(old_val + "a");
+	field.input.trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
 })
 
 })
@@ -123,13 +140,23 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when value has changed", function(done) {
+	it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
 		done();
 	})
 	field.val(new_value);
+})
+	it("should call on_change when input value has changed", function(done) {
+	var old_val = field.val();
+	field.on_change(function(val) {
+		assert.equal(val, old_val + "a");
+		done();
+	})
+
+	field.input.val(old_val + "a");
+	field.input.trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
 })
 
 })
@@ -159,7 +186,7 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when value has changed", function(done) {
+	it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
@@ -203,6 +230,16 @@ describe("FieldVal UI", function() {
 		field.val(new_value);
 	})
 
+	it("should call on_change when input value has changed", function(done) {
+		var old_val = field.val();
+		field.on_change(function(val) {
+			done();
+		})
+
+		field.inputs[0].val(old_val + "a");
+		field.inputs[0].trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
+	})
+
 })
 	describe("FVDisplayField", function() {
 
@@ -228,7 +265,7 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when value has changed", function(done) {
+	it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
