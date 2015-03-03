@@ -7,7 +7,10 @@ var gulpImports = require('gulp-imports');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
 var path = require('path');
+
 var mochaPhantomJS = require('gulp-mocha-phantomjs');
+var istanbul = require('gulp-istanbul');
+var istanbulReport = require('gulp-istanbul-report');
 
 var docs_to_json = require('sa-docs-to-json');
 
@@ -39,16 +42,34 @@ gulp.task('less', function(){
 })
 
 gulp.task('test', function(){
-    gulp.src([
-        'test/init.js'
-    ])
-    .pipe(gulpImports())
-    .pipe(concat("test.js"))
-    .pipe(gulp.dest('./test'))
+    
+    gulp.src("fieldval-ui.js")
+    .pipe(istanbul({coverageVariable: "__coverage__"}))
+    .pipe(gulp.dest('./test_tmp/'))
+    .on('finish', function() {
+    
+        gulp.src('test/init.js')
+        .pipe(gulpImports())
+        .pipe(concat("test.js"))
+        .pipe(gulp.dest('./test'))
+        .on('finish', function() {
+            
+            var coverageFile = './coverage/coverage.json';
 
-
-    gulp.src(['test/test.html'])
-    .pipe(mochaPhantomJS());
+            gulp.src('test/test.html', {read: false})
+            .pipe(mochaPhantomJS({
+                phantomjs: {
+                    hooks: 'mocha-phantomjs-istanbul',
+                    coverageFile: coverageFile
+                }
+            }))
+            .on('finish', function() {
+                gulp.src(coverageFile)
+                .pipe(istanbulReport())
+            });    
+        })
+    })
+    
 });
 
 gulp.task('default', function(){

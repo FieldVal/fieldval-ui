@@ -17,6 +17,9 @@
         "gulp-less": "1.3.6",
         "mocha": "*",
         "mocha-phantomjs": "*",
+        "gulp-istanbul": "*",
+        "gulp-istanbul-report": "*",
+        "mocha-phantomjs-istanbul": "*",
         "chai": "*",
         "gulp-mocha-phantomjs": "*", 
         "sa-docs-to-json": "SuperAwesomeLtd/sa-docs-to-json"
