@@ -47,6 +47,7 @@ FVDisplayField.prototype.val = function(set_val) {
         return field.input.text();
     } else {
         field.input.html(FVDisplayField.replace_line_breaks(set_val));
+        field.did_change();
         return field;
     }
 }

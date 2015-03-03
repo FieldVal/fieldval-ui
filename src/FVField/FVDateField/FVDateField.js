@@ -178,6 +178,8 @@ FVDateField.prototype.val = function(set_val) {
                     input.val(as_components[i]);
                 }
             }
+
+            field.did_change();
         }
 
         return field;

@@ -1,7 +1,9 @@
-describe("FVTextField", function() {
+describe("FVChoiceField", function() {
 
 	beforeEach(function() {
-		field = new FVTextField();
+		field = new FVChoiceField("choice_field", {
+			choices: ["new_value", "two", "three"]
+		});
 		$("body").append(field.element);
 	})
 

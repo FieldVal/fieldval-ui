@@ -453,7 +453,7 @@ FVChoiceField.prototype.val = function(set_val) {
             for(var i = 0; i < field.option_array.length; i++){
                 var choice_option = field.option_array[i];
                 if(set_val === choice_option.get_value()){
-                    field.select_option(choice_option,true);
+                    field.select_option(choice_option);
                     break;
                 }
             }

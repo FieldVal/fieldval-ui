@@ -51,6 +51,7 @@ FVBooleanField.prototype.val = function(set_val) {
             set_val = false;
         }
        	field.input.prop('checked', set_val);
+        field.did_change();
         return field;
     }
 }

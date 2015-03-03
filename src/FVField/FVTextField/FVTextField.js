@@ -128,6 +128,7 @@ FVTextField.prototype.val = function(set_val) {
         return value;
     } else {
         field.input.val(set_val);
+        field.did_change();
         return field;
     }
 }

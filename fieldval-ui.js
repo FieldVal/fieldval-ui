@@ -416,6 +416,7 @@ FVTextField.prototype.val = function(set_val) {
         return value;
     } else {
         field.input.val(set_val);
+        field.did_change();
         return field;
     }
 }
@@ -477,6 +478,7 @@ FVDisplayField.prototype.val = function(set_val) {
         return field.input.text();
     } else {
         field.input.html(FVDisplayField.replace_line_breaks(set_val));
+        field.did_change();
         return field;
     }
 }
@@ -935,7 +937,7 @@ FVChoiceField.prototype.val = function(set_val) {
             for(var i = 0; i < field.option_array.length; i++){
                 var choice_option = field.option_array[i];
                 if(set_val === choice_option.get_value()){
-                    field.select_option(choice_option,true);
+                    field.select_option(choice_option);
                     break;
                 }
             }
@@ -1123,6 +1125,8 @@ FVDateField.prototype.val = function(set_val) {
                     input.val(as_components[i]);
                 }
             }
+
+            field.did_change();
         }
 
         return field;
@@ -1181,6 +1185,7 @@ FVBooleanField.prototype.val = function(set_val) {
             set_val = false;
         }
        	field.input.prop('checked', set_val);
+        field.did_change();
         return field;
     }
 }

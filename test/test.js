@@ -27,10 +27,11 @@ describe("FieldVal UI", function() {
 
 
 })
-	describe("FVTextField", function() {
+	
+	describe("FVBooleanField", function() {
 
 	beforeEach(function() {
-		field = new FVTextField("text_field");
+		field = new FVBooleanField();
 		$("body").append(field.element);
 	})
 
@@ -53,12 +54,188 @@ describe("FieldVal UI", function() {
 })
 
 	it("should call on_change when value has changed", function(done) {
-		field.on_change(function() {
-			done();		
+		var new_value = false
+		field.on_change(function(val) {
+			assert.equal(val, new_value);
+			done();
 		})
-		field.val("new_value");
-		field.check_changed();
+		field.val(new_value);
 	})
+
+})
+
+	describe("FVTextField", function() {
+
+	beforeEach(function() {
+		field = new FVTextField();
+		$("body").append(field.element);
+	})
+
+	afterEach(function() {
+		field.remove();
+		assert.equal(field.element.parent().length, 0);
+		field = undefined;
+	})
+
+	it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+	it("should call on_change when value has changed", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+})
+	
+	describe("FVPasswordField", function() {
+
+	beforeEach(function() {
+		field = new FVPasswordField();
+		$("body").append(field.element);
+	})
+
+	afterEach(function() {
+		field.remove();
+		assert.equal(field.element.parent().length, 0);
+		field = undefined;
+	})
+
+	it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+	it("should call on_change when value has changed", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+})
+	describe("FVChoiceField", function() {
+
+	beforeEach(function() {
+		field = new FVChoiceField("choice_field", {
+			choices: ["new_value", "two", "three"]
+		});
+		$("body").append(field.element);
+	})
+
+	afterEach(function() {
+		field.remove();
+		assert.equal(field.element.parent().length, 0);
+		field = undefined;
+	})
+
+	it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+	it("should call on_change when value has changed", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+})
+	describe("FVDateField", function() {
+
+	beforeEach(function() {
+		field = new FVDateField("date_field", {format: "yyyy-MM-dd"});
+		$("body").append(field.element);
+	})
+
+	afterEach(function() {
+		field.remove();
+		assert.equal(field.element.parent().length, 0);
+		field = undefined;
+	})
+
+	it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+
+	it("should call on_change when value has changed", function(done) {
+		var new_value = "2015-12-12";
+		field.on_change(function(val) {
+			assert.equal(val, new_value);
+			done();
+		})
+		field.val(new_value);
+	})
+
+})
+	describe("FVDisplayField", function() {
+
+	beforeEach(function() {
+		field = new FVDisplayField();
+		$("body").append(field.element);
+	})
+
+	afterEach(function() {
+		field.remove();
+		assert.equal(field.element.parent().length, 0);
+		field = undefined;
+	})
+
+	it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+	it("should call on_change when value has changed", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
 
 })
 
@@ -142,7 +319,6 @@ it("should set value", function() {
 	assert.deepEqual(field.val(), value);
 
 })
-
 })
 	describe("FVKeyValueField", function() {
 
