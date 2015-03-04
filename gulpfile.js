@@ -25,7 +25,10 @@ gulp.task('js', function(){
     .pipe(uglify())
     .pipe(concat('fieldval-ui.min.js'))
     .pipe(gulp.dest('./'))
-    .on('error', gutil.log);
+    .on('error', gutil.log)
+    .on('end', function(){
+        return gulp.start('test');
+    });
 })
 
 gulp.task('less', function(){

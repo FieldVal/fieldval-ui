@@ -1,0 +1,162 @@
+<meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'/>
+<script src="node_modules/jquery/dist/jquery.js"></script>
+
+<script src="jquery.tap.js"></script>
+
+<script src="node_modules/fieldval/fieldval.js"></script>
+
+<script src="fieldval-ui.js"></script>
+
+<!-- Apply the "minimal" theme to FieldVal-UI -->
+<link rel="stylesheet" type="text/css" href="themes/minimal.css">
+<script src="themes/minimal.js"></script>
+
+<style type="text/css">
+	body{
+		font-family: "Helvetica";
+	}
+</style>
+
+<script>
+$(document).ready(function(){
+	var form = new FVForm();
+	var output;
+
+	$("body").append(
+		$("<button />").text("Enable").on('tap',function(){
+			form.enable();
+		})
+	,
+		$("<button />").text("Disable").on('tap',function(){
+			form.disable();
+		})
+	)
+
+	//values and displayed names
+	var gender_choices = [
+		["m","Male"],
+		["f","Female"]
+	];
+	var date_format = "yyyy/MM/dd hh:mm:ss";
+
+	FVField.prototype.show_error = function(){
+		var field = this;
+		field.error_message.slideDown();
+	}
+
+	form.add_field("first_name", new FVTextField("First Name"));
+	form.add_field("last_name", new FVTextField("Last Name"));
+	form.add_field("plan_type", new FVDisplayField("Plan Type"));
+	form.add_field("join_date", new FVDateField("Join Date", {
+		format: date_format
+	}));
+	form.add_field("gender", new FVChoiceField("Gender",{
+		choices: gender_choices,
+		allow_empty: true,
+		empty_text: "(Prefer not to say)"
+	}));
+	form.add_field("email", new FVTextField("Email"));
+	form.add_field("subscribe", new FVBooleanField("Subscribe"));
+	form.add_field("bio", new FVTextField("Bio","textarea"));
+
+	var array_field = new FVArrayField("Tags",{
+		add_button_text: "+ Add a tag"
+	});
+	array_field.new_field = function(index){
+		return new FVTextField("Tag");
+	}
+	form.add_field("tags", array_field);
+
+	var kv_field = new FVKeyValueField("Options",{
+		add_button_text: "+ Add an options pair"
+	});
+	kv_field.new_field = function(index){
+		return new FVTextField("Option Value");
+	}
+	form.add_field("options", kv_field);
+
+	form.add_field("address", new FVObjectField("Address"));
+	form.fields.address.add_field("house_number", new FVTextField("House Number",{type:"number"}));
+	form.fields.address.add_field("line_1", new FVTextField("Line 1"));
+	form.fields.address.add_field("line_2", new FVTextField("Line 2"));
+	form.fields.address.add_field("line_3", new FVTextField("Line 3"));
+
+	$("body").append(
+		form.element.append(
+			$("<button />").text("Submit")
+		),
+		output = $("<pre />")
+	)
+
+	form.val({
+		"first_name": "Marcus",
+		"last_name": "Longmuir",
+		"plan_type": "Free",
+		"join_date": "2014/01/01 11:11:11",
+		"gender": "m",
+		"email": "t@t.com",
+		"bio":"Bio test",
+		"tags": ["test tag"],
+		"options": {
+			"one": "a",
+			"two": "b"
+		},
+		"address": {
+			"house_number": 14,
+			"line_1": "This is line 1",
+			"line_2": "This is line 2",
+			"line_3": "This is line 3"
+		}
+	})
+
+	form.on_submit(function(object){
+
+		var validator = new FieldVal(object);
+		var first_name = validator.get("first_name",BasicVal.string(true),BasicVal.min_length(5),BasicVal.max_length(10));
+		var last_name = validator.get("last_name",BasicVal.string(true),BasicVal.min_length(5));
+		var join_date = validator.get("join_date",BasicVal.string(true), DateVal.date(date_format, {
+			emit: DateVal.EMIT_DATE//emits the value as a Date object
+		}));
+		var gender = validator.get("gender",BasicVal.string(false), BasicVal.one_of(gender_choices));
+		var email = validator.get("email",BasicVal.string(true), BasicVal.email());
+		var bio = validator.get("bio",BasicVal.string(true));
+		
+		var tags = validator.get("tags", BasicVal.array(true), BasicVal.min_length(1), BasicVal.each(function(value,i){
+			var error = BasicVal.string(true).check(value); 
+			if(error){return error};
+	    }));
+
+		var options = validator.get("options", BasicVal.object(true), BasicVal.each(function(value,i){
+			var error = BasicVal.string(true).check(value); 
+			if(error){return error};
+	    }));
+
+	    var subscribe = validator.get("subscribe", BasicVal.boolean(true));
+
+		var address = validator.get("address",BasicVal.object(true));
+		if(address){
+
+			var address_validator = new FieldVal(address);
+			address_validator.get("house_number", BasicVal.integer(true), BasicVal.minimum(10));
+			address_validator.get("line_1", BasicVal.string(true), BasicVal.min_length(5));
+			address_validator.get("line_2", BasicVal.string(true), BasicVal.min_length(5));
+			address_validator.get("line_3", BasicVal.string(true), BasicVal.min_length(5));
+			var address_error = address_validator.end();
+			if(address_error){
+				validator.invalid("address",address_error);
+			}
+		}
+
+		var error = validator.end();
+
+		if(error){
+			console.log(error);
+			form.error(error)
+			output.text('"error": '+JSON.stringify(error,null,4));
+		} else {
+			form.clear_errors();
+			output.text('"object": '+JSON.stringify(object,null,4));
+		}
+	})
+})
+</script>

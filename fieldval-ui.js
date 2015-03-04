@@ -2176,9 +2176,6 @@ FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_fie
 FVKeyValueField.prototype.remove_field = function(target){
     var field = this;
 
-    console.log(arguments);
-    console.trace();
-
     var inner_field;
     var index;
     if(typeof target === "string"){
@@ -2551,6 +2548,6 @@ function FVForm(fields){
 }
 FVForm.button_event = 'click';
 FVForm.is_mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|nokia|series40|x11|opera mini/i.test(navigator.userAgent.toLowerCase());
-if($.tap){
+if($.fn.tap || $.tap){
 	FVForm.button_event = 'tap';
 }

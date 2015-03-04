@@ -1,4 +1,4 @@
-@import("../../../bower_components/nestable/jquery.nestable.js");
+@import("../../../node_modules/nestable/jquery.nestable.js");
 
 fieldval_ui_extend(FVArrayField, FVField);
 function FVArrayField(name, options) {

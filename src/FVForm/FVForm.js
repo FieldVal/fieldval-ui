@@ -13,6 +13,6 @@ function FVForm(fields){
 }
 FVForm.button_event = 'click';
 FVForm.is_mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|nokia|series40|x11|opera mini/i.test(navigator.userAgent.toLowerCase());
-if($.tap){
+if($.fn.tap || $.tap){
 	FVForm.button_event = 'tap';
 }
