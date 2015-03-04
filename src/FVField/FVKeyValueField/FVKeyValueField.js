@@ -22,21 +22,26 @@ FVKeyValueField.prototype.create_add_field_button = function(){
 
     var add_field_button = $("<button />",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        var returned_field = field.new_field(field.fields.length);
-
-        /* Allow the new_field function to just return a field - 
-         * this will add the field if it wasn't added in the new_field 
-         * callback. */
-         if(returned_field){
-             if(field.fields.indexOf(returned_field)===-1){
-                 field.add_field(returned_field);
-             }
-         }
+        field.add_field_clicked();
     });
 
     field.add_field_buttons.push(add_field_button);
 
     return add_field_button;
+}
+
+FVKeyValueField.prototype.add_field_clicked = function() {
+    var field = this;
+    var returned_field = field.new_field(field.fields.length);
+
+    /* Allow the new_field function to just return a field - 
+     * this will add the field if it wasn't added in the new_field 
+     * callback. */
+     if(returned_field){
+         if(field.fields.indexOf(returned_field)===-1){
+             field.add_field(returned_field);
+         }
+     }
 }
 
 FVKeyValueField.prototype.new_field = function(){
@@ -111,7 +116,6 @@ FVKeyValueField.prototype.remove_field = function(target){
         for(var i = 0; i < field.fields.length; i++){
             if(field.fields.hasOwnProperty(i)){
                 if(field.fields[i]===target){
-                    console.log(i,target);
                     inner_field = field.fields[i];
                     index = i;
                     break;
@@ -137,6 +141,8 @@ FVKeyValueField.prototype.error = function(error){
 
 FVKeyValueField.prototype.fields_error = function(error){
     var field = this;
+
+    //.missing and .unrecognized are unused as of FieldVal 0.4.0
 
     if(error){
         var invalid_fields = error.invalid || {};
@@ -245,8 +251,10 @@ FVKeyValueField.prototype.error = function(error) {
     }
 }
 
-FVKeyValueField.prototype.val = function(set_val) {
+FVKeyValueField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {};
 
     if (arguments.length===0) {
     	var compiled = {};
@@ -285,10 +293,14 @@ FVKeyValueField.prototype.val = function(set_val) {
                              }
                          }
 	                }
-	                inner_field.val(set_val[i]);
+	                inner_field.val(set_val[i], {ignore_parent_change: true});
 	                inner_field.name_val(i);
 				}
         	}
+        }
+
+        if (!options.ignore_change) {
+            field.did_change(options);
         }
         return field;
     }

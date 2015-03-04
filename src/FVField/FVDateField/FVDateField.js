@@ -125,8 +125,10 @@ FVDateField.prototype.blur = function() {
     return field;
 }
 
-FVDateField.prototype.val = function(set_val) {
+FVDateField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {};
 
     if (arguments.length===0) {
 
@@ -177,6 +179,10 @@ FVDateField.prototype.val = function(set_val) {
                     var input = field.inputs[i];
                     input.val(as_components[i]);
                 }
+            }
+
+            if (!options.ignore_change) {
+                field.did_change(options);
             }
         }
 

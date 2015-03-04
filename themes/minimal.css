@@ -387,3 +387,7 @@
 .fv_key_value_field > .fv_input_holder > .fv_add_field_button:active {
   background-color: #007700;
 }
+.fv_proxy_field .fv_input_holder .loading_label {
+  line-height: 30px;
+  padding-left: 5px;
+}
