@@ -3,8 +3,15 @@
     "version": "0.3.4",
     "description": "fieldval-ui",
     "main": "fieldval-ui.js",
+    "scripts": {
+        "test": "./node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FieldVal/fieldval-ui.git"
+    },
     "dependencies": {
-        "fieldval" : "^0.3.0"
+        "fieldval" : "^0.4.0"
     },
     "devDependencies": {
         "gulp-imports" : "MarcusLongmuir/gulp-imports",
