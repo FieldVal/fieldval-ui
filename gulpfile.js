@@ -8,6 +8,10 @@ var rename = require('gulp-rename');
 var less = require('gulp-less');
 var path = require('path');
 
+var mochaPhantomJS = require('gulp-mocha-phantomjs');
+var istanbul = require('gulp-istanbul');
+var istanbulReport = require('gulp-istanbul-report');
+
 var docs_to_json = require('sa-docs-to-json');
 
 gulp.task('js', function(){
@@ -21,7 +25,10 @@ gulp.task('js', function(){
     .pipe(uglify())
     .pipe(concat('fieldval-ui.min.js'))
     .pipe(gulp.dest('./'))
-    .on('error', gutil.log);
+    .on('error', gutil.log)
+    .on('end', function(){
+        return gulp.start('test');
+    });
 })
 
 gulp.task('less', function(){
@@ -37,6 +44,36 @@ gulp.task('less', function(){
     .on('error', gutil.log);
 })
 
+gulp.task('test', function(){
+    
+    gulp.src("fieldval-ui.js")
+    .pipe(istanbul({coverageVariable: "__coverage__"}))
+    .pipe(gulp.dest('./test_tmp/'))
+    .on('finish', function() {
+    
+        gulp.src('test/init.js')
+        .pipe(gulpImports())
+        .pipe(concat("test.js"))
+        .pipe(gulp.dest('./test'))
+        .on('finish', function() {
+            
+            var coverageFile = './coverage/coverage.json';
+
+            gulp.src('test/test.html', {read: false})
+            .pipe(mochaPhantomJS({
+                phantomjs: {
+                    hooks: 'mocha-phantomjs-istanbul',
+                    coverageFile: coverageFile
+                }
+            }))
+            .on('finish', function() {
+                gulp.src(coverageFile)
+                .pipe(istanbulReport())
+            });    
+        })
+    })
+    
+});
 
 gulp.task('default', function(){
     gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);

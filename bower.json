@@ -11,9 +11,5 @@
 		"src",
 		"gulpfile.js",
 		".gitignore"
-	],
-	"devDependencies": {
-		"jquery": "1.11.1",
-		"nestable": "FieldVal/Nestable"
-	}
+	]
 }
