@@ -11,15 +11,63 @@ describe("FVProxyField", function() {
 		field = undefined;
 	})
 
-	it("should be replaced by a FVTextField", function() {
-		var text_field = new FVTextField();
-		text_field.val("text_field_value");
-		
-		field.replace(text_field);
-		assert.equal(field.val(), text_field.val());
+	describe("replaced by a FVTextField", function() {
+		beforeEach(function() {
+			field.replace(new FVTextField());
+		})
+
+		@import("FVTextField/FVTextField.js");
+
 	})
 
-	describe("be replaced by FVArrayField", function() {
+	describe("replaced by a FVPasswordField", function() {
+		beforeEach(function() {
+			field.replace(new FVPasswordField());
+		})
+
+		@import("FVPasswordField/FVPasswordField.js");
+
+	})
+
+	describe("replaced by a FVDisplayField", function() {
+		beforeEach(function() {
+			field.replace(new FVDisplayField());
+		})
+
+		@import("FVDisplayField/FVDisplayField.js");
+
+	})
+
+	describe("replaced by a FVDateField", function() {
+		beforeEach(function() {
+			field.replace(new FVDateField());
+		})
+
+		@import("FVDateField/FVDateField.js");
+
+	})
+
+	describe("replaced by a FVBooleanField", function() {
+		beforeEach(function() {
+			field.replace(new FVBooleanField());
+		})
+
+		@import("FVBooleanField/FVBooleanField.js");
+
+	})
+
+	describe("replaced by a FVChoiceField", function() {
+		beforeEach(function() {
+			field.replace(new FVChoiceField("choice_field", {
+				choices: ["new_value", "two", "three"]
+			}));
+		})
+
+		@import("FVChoiceField/FVChoiceField.js");
+
+	})
+
+	describe("replaced by FVArrayField", function() {
 
 		beforeEach(function() {
 			var array_field = new FVArrayField();
@@ -29,23 +77,22 @@ describe("FVProxyField", function() {
 			field.replace(array_field);
 		})
 
-		@import("FVArrayField/FVArrayField_methods.js");
-		
+		@import("FVArrayField/FVArrayField.js");
 
 	})
 
-	describe("be replaced by FVObjectField", function() {
+	describe("replaced by FVObjectField", function() {
 
 		beforeEach(function() {
 			var object_field = new FVObjectField();
 			field.replace(object_field);
 		})
 
-		@import("FVObjectField/FVObjectField_methods.js");
+		@import("FVObjectField/FVObjectField.js");
 
 	})
 
-	describe("be replaced by FVKeyValueField", function() {
+	describe("replaced by FVKeyValueField", function() {
 		
 		beforeEach(function() {
 			var key_value_field = new FVKeyValueField();
@@ -55,7 +102,7 @@ describe("FVProxyField", function() {
 			field.replace(key_value_field);
 		})
 
-		@import("FVKeyValueField/FVKeyValueField_methods.js");
+		@import("FVKeyValueField/FVKeyValueField.js");
 
 	})
 

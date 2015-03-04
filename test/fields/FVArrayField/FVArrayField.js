@@ -1,19 +1,46 @@
-describe("FVArrayField", function() {
+it("should add a field", function() {
+	field.add_field_clicked();
+	assert.equal(field.fields.length, 1);
+})
 
-	beforeEach(function() {
-		field = new FVArrayField();
-		field.new_field = function() {
-			return new FVTextField();
-		}
-		$("body").append(field.element);
+it("should remove a field", function() {
+	field.add_field_clicked();
+	field.remove_field(field.fields[0]);
+	assert.equal(field.fields.length, 0);
+})
+
+it("should set value", function() {
+	var value = ["one", "two", "three"];
+	field.val(value);
+	assert.deepEqual(field.val(), value);
+})
+
+it("should call on_change once when val was called", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	var new_value = ["first_value", "second_value"]
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
 	})
 
-	afterEach(function() {
-		field.remove();
-		assert.equal(field.element.parent().length, 0);
-		field = undefined;
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	field.val(["first_value", "second_value"]);
+
+	field.on_change(function(val) {
+		assert.deepEqual(val, ["new_value", "second_value"]);
+		done();
 	})
 
-	@import("FVArrayField_methods.js");
-
+	field.fields[0].val("new_value");
 })

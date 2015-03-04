@@ -53,21 +53,21 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.css("display"), "inline");
 })
 
-	it("should call on_change when val was called", function(done) {
-		var new_value = false
-		field.on_change(function(val) {
-			assert.equal(val, new_value);
-			done();
-		})
-		field.val(new_value);
+it("should call on_change when val was called", function(done) {
+	var new_value = false
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
 	})
+	field.val(new_value);
+})
 
-	it("should call on_change when input value has changed", function(done) {
-		field.on_change(function(val) {
-			done();
-		})
-		field.input.trigger({ type: 'change' });
+it("should call on_change when input value has changed", function(done) {
+	field.on_change(function(val) {
+		done();
 	})
+	field.input.trigger({ type: 'change' });
+})
 
 })
 
@@ -95,7 +95,7 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when val was called", function(done) {
+it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
@@ -103,7 +103,7 @@ describe("FieldVal UI", function() {
 	})
 	field.val(new_value);
 })
-	it("should call on_change when input value has changed", function(done) {
+it("should call on_change when input value has changed", function(done) {
 	var old_val = field.val();
 	field.on_change(function(val) {
 		assert.equal(val, old_val + "a");
@@ -140,7 +140,7 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when val was called", function(done) {
+it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
@@ -148,7 +148,7 @@ describe("FieldVal UI", function() {
 	})
 	field.val(new_value);
 })
-	it("should call on_change when input value has changed", function(done) {
+it("should call on_change when input value has changed", function(done) {
 	var old_val = field.val();
 	field.on_change(function(val) {
 		assert.equal(val, old_val + "a");
@@ -186,7 +186,7 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when val was called", function(done) {
+it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
@@ -221,24 +221,24 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.css("display"), "inline");
 })
 
-	it("should call on_change when value has changed", function(done) {
-		var new_value = "2015-12-12";
-		field.on_change(function(val) {
-			assert.equal(val, new_value);
-			done();
-		})
-		field.val(new_value);
+it("should call on_change when value has changed", function(done) {
+	var new_value = "2015-12-12";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+it("should call on_change when input value has changed", function(done) {
+	var old_val = field.val();
+	field.on_change(function(val) {
+		done();
 	})
 
-	it("should call on_change when input value has changed", function(done) {
-		var old_val = field.val();
-		field.on_change(function(val) {
-			done();
-		})
-
-		field.inputs[0].val(old_val + "a");
-		field.inputs[0].trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
-	})
+	field.inputs[0].val(old_val + "a");
+	field.inputs[0].trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
+})
 
 })
 	describe("FVDisplayField", function() {
@@ -265,7 +265,7 @@ describe("FieldVal UI", function() {
 	assert.equal(error_element.text(), "test error");
 	assert.equal(error_element.css("display"), "inline");
 })
-	it("should call on_change when val was called", function(done) {
+it("should call on_change when val was called", function(done) {
 	var new_value = "new_value";
 	field.on_change(function(val) {
 		assert.equal(val, new_value);
@@ -507,15 +507,210 @@ it ("should call on_change when its child has changed", function(done) {
 		field = undefined;
 	})
 
-	it("should be replaced by a FVTextField", function() {
-		var text_field = new FVTextField();
-		text_field.val("text_field_value");
-		
-		field.replace(text_field);
-		assert.equal(field.val(), text_field.val());
+	describe("replaced by a FVTextField", function() {
+		beforeEach(function() {
+			field.replace(new FVTextField());
+		})
+
+		it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+it("should call on_change when val was called", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+it("should call on_change when input value has changed", function(done) {
+	var old_val = field.val();
+	field.on_change(function(val) {
+		assert.equal(val, old_val + "a");
+		done();
 	})
 
-	describe("be replaced by FVArrayField", function() {
+	field.input.val(old_val + "a");
+	field.input.trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
+})
+
+	})
+
+	describe("replaced by a FVPasswordField", function() {
+		beforeEach(function() {
+			field.replace(new FVPasswordField());
+		})
+
+		it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+it("should call on_change when val was called", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+it("should call on_change when input value has changed", function(done) {
+	var old_val = field.val();
+	field.on_change(function(val) {
+		assert.equal(val, old_val + "a");
+		done();
+	})
+
+	field.input.val(old_val + "a");
+	field.input.trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
+})
+
+	})
+
+	describe("replaced by a FVDisplayField", function() {
+		beforeEach(function() {
+			field.replace(new FVDisplayField());
+		})
+
+		it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+it("should call on_change when val was called", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+	})
+
+	describe("replaced by a FVDateField", function() {
+		beforeEach(function() {
+			field.replace(new FVDateField());
+		})
+
+		it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+
+it("should call on_change when value has changed", function(done) {
+	var new_value = "2015-12-12";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+it("should call on_change when input value has changed", function(done) {
+	var old_val = field.val();
+	field.on_change(function(val) {
+		done();
+	})
+
+	field.inputs[0].val(old_val + "a");
+	field.inputs[0].trigger({ type: 'keyup', keyCode: 65, which: 65, charcCode:65});
+})
+
+	})
+
+	describe("replaced by a FVBooleanField", function() {
+		beforeEach(function() {
+			field.replace(new FVBooleanField());
+		})
+
+		it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+
+it("should call on_change when val was called", function(done) {
+	var new_value = false
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+it("should call on_change when input value has changed", function(done) {
+	field.on_change(function(val) {
+		done();
+	})
+	field.input.trigger({ type: 'change' });
+})
+
+	})
+
+	describe("replaced by a FVChoiceField", function() {
+		beforeEach(function() {
+			field.replace(new FVChoiceField("choice_field", {
+				choices: ["new_value", "two", "three"]
+			}));
+		})
+
+		it("should display an error", function() {
+	field.error({
+		error: 9999,
+		error_message: "test error"
+	})
+	field.show_error();
+
+	var error_element = field.error_message.eq(0).children().eq(0);
+	assert.equal(error_element.text(), "test error");
+	assert.equal(error_element.css("display"), "inline");
+})
+it("should call on_change when val was called", function(done) {
+	var new_value = "new_value";
+	field.on_change(function(val) {
+		assert.equal(val, new_value);
+		done();
+	})
+	field.val(new_value);
+})
+
+	})
+
+	describe("replaced by FVArrayField", function() {
 
 		beforeEach(function() {
 			var array_field = new FVArrayField();
@@ -571,11 +766,10 @@ it ("should call on_change when its child has changed", function(done) {
 
 	field.fields[0].val("new_value");
 })
-		
 
 	})
 
-	describe("be replaced by FVObjectField", function() {
+	describe("replaced by FVObjectField", function() {
 
 		beforeEach(function() {
 			var object_field = new FVObjectField();
@@ -647,7 +841,7 @@ it ("should call on_change when its child has changed", function(done) {
 
 	})
 
-	describe("be replaced by FVKeyValueField", function() {
+	describe("replaced by FVKeyValueField", function() {
 		
 		beforeEach(function() {
 			var key_value_field = new FVKeyValueField();

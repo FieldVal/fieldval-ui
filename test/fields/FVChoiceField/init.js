@@ -13,7 +13,6 @@ describe("FVChoiceField", function() {
 		field = undefined;
 	})
 
-	@import("./common/common.js")
-	@import("./common/text_field_common.js")
+	@import("FVChoiceField.js");
 
 })

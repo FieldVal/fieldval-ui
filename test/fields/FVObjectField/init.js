@@ -1,7 +1,7 @@
-describe("FVTextField", function() {
+describe("FVObjectField", function() {
 
 	beforeEach(function() {
-		field = new FVTextField();
+		field = new FVObjectField();
 		$("body").append(field.element);
 	})
 
@@ -11,8 +11,5 @@ describe("FVTextField", function() {
 		field = undefined;
 	})
 
-	@import("./common/common.js")
-	@import("./common/text_field_common.js")
-	@import("./common/text_input.js")
-
+	@import("FVObjectField.js");
 })
