@@ -251,8 +251,10 @@ FVKeyValueField.prototype.error = function(error) {
     }
 }
 
-FVKeyValueField.prototype.val = function(set_val) {
+FVKeyValueField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {};
 
     if (arguments.length===0) {
     	var compiled = {};
@@ -291,10 +293,14 @@ FVKeyValueField.prototype.val = function(set_val) {
                              }
                          }
 	                }
-	                inner_field.val(set_val[i]);
+	                inner_field.val(set_val[i], {ignore_parent_change: true});
 	                inner_field.name_val(i);
 				}
         	}
+        }
+
+        if (!options.ignore_change) {
+            field.did_change(options);
         }
         return field;
     }

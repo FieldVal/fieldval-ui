@@ -242,8 +242,10 @@ FVArrayField.prototype.error = function(error) {
     }
 }
 
-FVArrayField.prototype.val = function(set_val) {
+FVArrayField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {};
 
     if (arguments.length===0) {
     	var compiled = [];
@@ -272,8 +274,13 @@ FVArrayField.prototype.val = function(set_val) {
                 if(!inner_field){//A field wasn't returned by the new_field function
                     inner_field = field.fields[i];
                 }
-                inner_field.val(set_val[i]);
+                inner_field.val(set_val[i], {ignore_parent_change: true});
+
         	}
+            
+            if (!options.ignore_change) {
+                field.did_change(options);
+            }
         }
         return field;
     }

@@ -39,8 +39,10 @@ FVBooleanField.prototype.blur = function() {
     return field;
 }
 
-FVBooleanField.prototype.val = function(set_val) {
+FVBooleanField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {}
 
     if (arguments.length===0) {
         return field.input.is(":checked")
@@ -51,7 +53,11 @@ FVBooleanField.prototype.val = function(set_val) {
             set_val = false;
         }
        	field.input.prop('checked', set_val);
-        field.did_change();
+        
+        if (!options.ignore_change) {
+            field.did_change(options);
+        }
+
         return field;
     }
 }

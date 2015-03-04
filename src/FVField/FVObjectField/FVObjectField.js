@@ -204,8 +204,10 @@ FVObjectField.prototype.clear_errors = function(){
 	field.error(null);
 }
 
-FVObjectField.prototype.val = function(set_val) {
+FVObjectField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {}
 
     if (arguments.length===0) {
     	var compiled = {};
@@ -225,9 +227,12 @@ FVObjectField.prototype.val = function(set_val) {
     	for(var i in set_val){
     		var inner_field = field.fields[i];
             if(inner_field){
-        		inner_field.val(set_val[i]);
+        		inner_field.val(set_val[i], {ignore_parent_change: true});
             }
     	}
+        if (!options.ignore_change) {
+            field.did_change(options);
+        }
         return field;
     }
 }

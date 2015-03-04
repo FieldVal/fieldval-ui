@@ -309,6 +309,36 @@ it("should set value", function() {
 	assert.deepEqual(field.val(), value);
 })
 
+it("should call on_change once when val was called", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	var new_value = ["first_value", "second_value"]
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	field.val(["first_value", "second_value"]);
+
+	field.on_change(function(val) {
+		assert.deepEqual(val, ["new_value", "second_value"]);
+		done();
+	})
+
+	field.fields[0].val("new_value");
+})
+
 })
 	describe("FVObjectField", function() {
 
@@ -356,6 +386,35 @@ it("should set value", function() {
 	assert.deepEqual(field.val(), value);
 
 })
+
+it("should call on_change once when val was called", function(done) {
+	field.add_field("text", new FVTextField());
+	field.add_field("bool", new FVBooleanField());
+	
+	var new_value = {
+		text: "new_value",
+		bool: false
+	}
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	var text_field = new FVTextField();
+	field.add_field("text", text_field);
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, {"text": "new_value"});
+		done();
+	})
+
+	text_field.val("new_value");
+})
 })
 	describe("FVKeyValueField", function() {
 
@@ -392,6 +451,45 @@ it("should set value", function() {
 	}
 	field.val(value);
 	assert.deepEqual(field.val(), value);
+})
+
+it("should call on_change once when val was called", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	var new_value = {
+		"one": "first_value",
+		"two": "second_value"
+	}
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	field.val({
+		"one": "first_value",
+		"two": "second_value"
+	});
+
+	field.on_change(function(val) {
+		assert.deepEqual(val, {
+			"one": "new_value",
+			"two": "second_value"
+		});
+		done();
+	})
+
+	field.fields[0].val("new_value");
 })
 
 })
@@ -443,6 +541,36 @@ it("should set value", function() {
 	field.val(value);
 	assert.deepEqual(field.val(), value);
 })
+
+it("should call on_change once when val was called", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	var new_value = ["first_value", "second_value"]
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	field.val(["first_value", "second_value"]);
+
+	field.on_change(function(val) {
+		assert.deepEqual(val, ["new_value", "second_value"]);
+		done();
+	})
+
+	field.fields[0].val("new_value");
+})
 		
 
 	})
@@ -488,6 +616,35 @@ it("should set value", function() {
 
 })
 
+it("should call on_change once when val was called", function(done) {
+	field.add_field("text", new FVTextField());
+	field.add_field("bool", new FVBooleanField());
+	
+	var new_value = {
+		text: "new_value",
+		bool: false
+	}
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	var text_field = new FVTextField();
+	field.add_field("text", text_field);
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, {"text": "new_value"});
+		done();
+	})
+
+	text_field.val("new_value");
+})
+
 	})
 
 	describe("be replaced by FVKeyValueField", function() {
@@ -519,6 +676,45 @@ it("should set value", function() {
 	}
 	field.val(value);
 	assert.deepEqual(field.val(), value);
+})
+
+it("should call on_change once when val was called", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	var new_value = {
+		"one": "first_value",
+		"two": "second_value"
+	}
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	field.val({
+		"one": "first_value",
+		"two": "second_value"
+	});
+
+	field.on_change(function(val) {
+		assert.deepEqual(val, {
+			"one": "new_value",
+			"two": "second_value"
+		});
+		done();
+	})
+
+	field.fields[0].val("new_value");
 })
 
 	})

@@ -14,3 +14,33 @@ it("should set value", function() {
 	field.val(value);
 	assert.deepEqual(field.val(), value);
 })
+
+it("should call on_change once when val was called", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	var new_value = ["first_value", "second_value"]
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	field.new_field = function() {
+		return new FVTextField();
+	}
+
+	field.val(["first_value", "second_value"]);
+
+	field.on_change(function(val) {
+		assert.deepEqual(val, ["new_value", "second_value"]);
+		done();
+	})
+
+	field.fields[0].val("new_value");
+})

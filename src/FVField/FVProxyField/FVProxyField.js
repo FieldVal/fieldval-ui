@@ -137,13 +137,18 @@ FVProxyField.prototype.replace = function(inner_field){
 }
 
 //Captures calls to val
-FVProxyField.prototype.val = function(set_val){
+FVProxyField.prototype.val = function(set_val, options){
     var field = this;
+    options = options || {}
+    
     if(field.inner_field){
         return field.inner_field.val.apply(field.inner_field, arguments);
     } else {
         if (arguments.length!==0) {
             field.last_val = set_val;
+            if (!options.ignore_change) {
+                field.did_change(options);
+            }
         }
     }
 }

@@ -31,3 +31,32 @@ it("should set value", function() {
 	assert.deepEqual(field.val(), value);
 
 })
+
+it("should call on_change once when val was called", function(done) {
+	field.add_field("text", new FVTextField());
+	field.add_field("bool", new FVBooleanField());
+	
+	var new_value = {
+		text: "new_value",
+		bool: false
+	}
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, new_value);
+		done();
+	})
+
+	field.val(new_value);
+})
+
+it ("should call on_change when its child has changed", function(done) {
+	var text_field = new FVTextField();
+	field.add_field("text", text_field);
+	
+	field.on_change(function(val) {
+		assert.deepEqual(val, {"text": "new_value"});
+		done();
+	})
+
+	text_field.val("new_value");
+})

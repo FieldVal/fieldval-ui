@@ -157,8 +157,12 @@ FVField.prototype.output = function(do_output){
     return field;
 }
 
-FVField.prototype.did_change = function(){
+FVField.prototype.did_change = function(options){
     var field = this;
+
+    if (options === undefined) {
+        options = {}
+    }   
 
     var val = field.val();
 
@@ -167,6 +171,11 @@ FVField.prototype.did_change = function(){
 
         callback(val);
     }
+
+    if (field.parent && !options.ignore_parent_change) {
+        field.parent.did_change();
+    }
+
     return field;
 }
 
