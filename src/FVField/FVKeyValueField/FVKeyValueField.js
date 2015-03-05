@@ -266,6 +266,7 @@ FVKeyValueField.prototype.val = function(set_val, options) {
         }
         return compiled;
     } else {
+        options.ignore_parent_change = true;
         if(set_val){
             for(var i in field.keys){
                 if(field.keys.hasOwnProperty(i)){
@@ -290,7 +291,7 @@ FVKeyValueField.prototype.val = function(set_val, options) {
                              }
                          }
 	                }
-	                inner_field.val(set_val[i], {ignore_parent_change: true});
+	                inner_field.val(set_val[i], options);
 	                inner_field.name_val(i);
 				}
         	}

@@ -257,6 +257,7 @@ FVArrayField.prototype.val = function(set_val, options) {
         return compiled;
     } else {
         if(set_val){
+            options.ignore_parent_change = true;
             for(var i=0; i<set_val.length; i++){
         		var inner_field = field.fields[i];
                 if(!inner_field){
@@ -274,7 +275,7 @@ FVArrayField.prototype.val = function(set_val, options) {
                 if(!inner_field){//A field wasn't returned by the new_field function
                     inner_field = field.fields[i];
                 }
-                inner_field.val(set_val[i], {ignore_parent_change: true});
+                inner_field.val(set_val[i], options);
 
         	}
             

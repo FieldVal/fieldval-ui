@@ -224,10 +224,11 @@ FVObjectField.prototype.val = function(set_val, options) {
     	}
         return compiled;
     } else {
+        options.ignore_parent_change = true;
     	for(var i in set_val){
     		var inner_field = field.fields[i];
             if(inner_field){
-        		inner_field.val(set_val[i], {ignore_parent_change: true});
+        		inner_field.val(set_val[i], options);
             }
     	}
         if (!options.ignore_change) {
