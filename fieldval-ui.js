@@ -1488,16 +1488,15 @@ FVObjectField.prototype.val = function(set_val, options) {
     })();
 
     var defaults = {
-            listNodeName    : 'ol',
-            itemNodeName    : 'li',
-            rootClass       : 'dd',
-            itemClass       : 'dd-item',
-            dragClass       : 'dd-dragel',
-            handleClass     : 'dd-handle',
-            placeClass      : 'dd-placeholder',
-            group           : 0,
-            threshold       : 20
-        };
+        listNodeName    : 'ol',
+        itemNodeName    : 'li',
+        rootClass       : 'dd',
+        itemClass       : 'dd-item',
+        dragClass       : 'dd-dragel',
+        handleClass     : 'dd-handle',
+        placeClass      : 'dd-placeholder',
+        threshold       : 20
+    };
 
     function Plugin(element, options)
     {
@@ -1514,8 +1513,6 @@ FVObjectField.prototype.val = function(set_val, options) {
             var list = this;
 
             list.reset();
-
-            list.el.data('nestable-group', this.options.group);
 
             list.placeEl = $('<div class="' + list.options.placeClass + '"/>');
 
@@ -1740,8 +1737,8 @@ FVObjectField.prototype.val = function(set_val, options) {
             /**
              * move vertical
              */
-            // check if groups match if dragging over new root
-            if (opt.group !== pointElRoot.data('nestable-group')) {
+            // check that this is the same list element
+            if (this.el[0] !== pointElRoot[0]) {
                 return;
             }
 
