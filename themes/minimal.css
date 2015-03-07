@@ -14,6 +14,12 @@
 .fv_form.rows .fv_field > .fv_error_message {
   margin-left: 20%;
 }
+.fv_form.rows .fv_field.fv_in_array > .fv_input_holder {
+  width: 100%;
+}
+.fv_form.rows .fv_field.fv_in_key_value > .fv_key_value_name_input > .fv_input_holder {
+  width: 100%;
+}
 .fv_field {
   position: relative;
   padding-top: 5px;
