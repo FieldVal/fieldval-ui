@@ -44,7 +44,7 @@ gulp.task('less', function(){
     .on('error', gutil.log);
 })
 
-gulp.task('test', function(){
+gulp.task('test', function(done){
     
     gulp.src("fieldval-ui.js")
     .pipe(istanbul({coverageVariable: "__coverage__"}))
@@ -69,6 +69,7 @@ gulp.task('test', function(){
             .on('finish', function() {
                 gulp.src(coverageFile)
                 .pipe(istanbulReport())
+                done();
             });    
         })
     })
@@ -76,9 +77,13 @@ gulp.task('test', function(){
 });
 
 gulp.task('default', function(){
-    gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
-    gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
     gulp.watch(['docs_src/**/*'], ['docs']);
+    gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
+    gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
+    gulp.watch(['test/**/*.js'], ['test']);
+    gulp.start('docs');
+    gulp.start('less');
+    gulp.start('js');
 });
 
 gulp.task('docs', function() {
