@@ -81,9 +81,7 @@ gulp.task('default', function(){
     gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
     gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
     gulp.watch(['test/**/*.js'], ['test']);
-    gulp.start('docs');
-    gulp.start('less');
-    gulp.start('js');
+    gulp.start('docs','less','js');
 });
 
 gulp.task('docs', function() {
