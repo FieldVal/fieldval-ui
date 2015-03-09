@@ -140,6 +140,8 @@ FVProxyField.prototype.replace = function(inner_field){
     for(var i=0; i<field.on_replace_callbacks.length; i++){
         field.on_replace_callbacks[i]();
     }
+
+    field.did_change();
 }
 
 FVProxyField.prototype.on_replace = function(callback){

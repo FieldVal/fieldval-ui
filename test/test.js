@@ -499,8 +499,12 @@ it ("should call on_change when its child has changed", function(done) {
 	beforeEach(function() {
 		field = new FVProxyField();
 		replace_callback_count = 0;
+		on_change_count = 0;
 		field.on_replace(function(){
 			replace_callback_count++;
+		})
+		field.on_change(function(val){
+			on_change_count++;
 		})
 		$("body").append(field.element);
 	})
@@ -508,6 +512,7 @@ it ("should call on_change when its child has changed", function(done) {
 	afterEach(function() {
 		field.remove();
 		assert.equal(replace_callback_count, 1);
+		assert.equal(on_change_count > 0, true);
 		assert.equal(field.element.parent().length, 0);
 		field = undefined;
 	})
