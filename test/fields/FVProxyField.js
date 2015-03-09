@@ -2,11 +2,16 @@ describe("FVProxyField", function() {
 	
 	beforeEach(function() {
 		field = new FVProxyField();
+		replace_callback_count = 0;
+		field.on_replace(function(){
+			replace_callback_count++;
+		})
 		$("body").append(field.element);
 	})
 
 	afterEach(function() {
 		field.remove();
+		assert.equal(replace_callback_count, 1);
 		assert.equal(field.element.parent().length, 0);
 		field = undefined;
 	})
