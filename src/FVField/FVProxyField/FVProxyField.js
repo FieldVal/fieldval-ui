@@ -39,14 +39,15 @@ FVProxyField.prototype.init = function(){
         field.inner_field.init();
     }
 }
-FVProxyField.prototype.replace = function(inner_field){
+FVProxyField.prototype.replace = function(inner_field, options){
     var field = this;
+
+    options = options || {};
 
     field.inner_field = inner_field;
     if(field.init_called){
         field.inner_field.init();
     }
-
 
     //Carry any pre/appended elements into the new field
     var before = [];
@@ -141,7 +142,9 @@ FVProxyField.prototype.replace = function(inner_field){
         field.on_replace_callbacks[i]();
     }
 
-    field.did_change();
+    if (!options.ignore_change) {
+        field.did_change(options);
+    }
 }
 
 FVProxyField.prototype.on_replace = function(callback){
