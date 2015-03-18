@@ -42,9 +42,8 @@ function FVField(name, options) {
     if(field.options.description){
         field.description_label = $("<div />").addClass("fv_field_description").text(field.options.description)
     }
-    field.input_holder = $("<div />").addClass("fv_input_holder")
+    field.input_holder = $("<div />").addClass("fv_input_holder");
     field.error_message = $("<div />").addClass("fv_error_message").hide()
-
     field.layout();
 }
 
@@ -84,16 +83,18 @@ FVField.prototype.in_array = function(parent, remove_callback){
         );
     }
 
-    field.element.append(
-        field.remove_button = $("<button />",{type:"button"})
-        .addClass("fv_field_remove_button")
-        .html("&#10006;").on(FVForm.button_event,function(event){
-            event.preventDefault();
-            field.array_remove_callback(field.key_name);
-            remove_callback();
-            field.remove();
-        })
-    )
+    if (!field.array_parent.hide_remove_button) {
+        field.element.append(
+            field.remove_button = $("<button />",{type:"button"})
+            .addClass("fv_field_remove_button")
+            .html("&#10006;").on(FVForm.button_event,function(event){
+                event.preventDefault();
+                field.array_remove_callback(field.key_name);
+                remove_callback();
+                field.remove();
+            })
+        )
+    }
 }
 
 FVField.prototype.in_key_value = function(parent, remove_callback){
@@ -1794,6 +1795,9 @@ function FVArrayField(name, options) {
 
     FVArrayField.superConstructor.call(this, name, options);
 
+    field.hide_add_button = field.options.hide_add_button || false;
+    field.hide_remove_button = field.options.hide_remove_button || false;
+
     field.fields = [];
 
     field.add_button_text = field.options.add_button_text!==undefined ? field.options.add_button_text : "+";
@@ -1801,9 +1805,14 @@ function FVArrayField(name, options) {
 
     field.element.addClass("fv_array_field");
     field.input_holder.append(
-        field.fields_element = $("<div />").addClass("fv_array_fields"),
-        field.create_add_field_button()
+        field.fields_element = $("<div />").addClass("fv_array_fields")
     )
+
+    if (!field.hide_add_button) {
+        field.input_holder.append(
+            field.create_add_field_button()
+        )
+    }
 
     field.sortable = field.options.sortable===undefined || field.options.sortable!==false;
     

@@ -6,6 +6,9 @@ function FVArrayField(name, options) {
 
     FVArrayField.superConstructor.call(this, name, options);
 
+    field.hide_add_button = field.options.hide_add_button || false;
+    field.hide_remove_button = field.options.hide_remove_button || false;
+
     field.fields = [];
 
     field.add_button_text = field.options.add_button_text!==undefined ? field.options.add_button_text : "+";
@@ -13,9 +16,14 @@ function FVArrayField(name, options) {
 
     field.element.addClass("fv_array_field");
     field.input_holder.append(
-        field.fields_element = $("<div />").addClass("fv_array_fields"),
-        field.create_add_field_button()
+        field.fields_element = $("<div />").addClass("fv_array_fields")
     )
+
+    if (!field.hide_add_button) {
+        field.input_holder.append(
+            field.create_add_field_button()
+        )
+    }
 
     field.sortable = field.options.sortable===undefined || field.options.sortable!==false;
     
