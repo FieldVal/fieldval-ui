@@ -197,13 +197,6 @@ FVObjectField.prototype.fields_error = function(error){
     }
 }
 
-
-FVObjectField.prototype.clear_errors = function(){
-	var field = this;
-
-	field.error(null);
-}
-
 FVObjectField.prototype.val = function(set_val, options) {
     var field = this;
 

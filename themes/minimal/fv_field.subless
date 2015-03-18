@@ -68,12 +68,32 @@
 	}
 
 	>.fv_error_message{
-		background-color: #AA0000;
-		color: white;
-		font-size: 14px;
-		display: inline-block;
-		box-sizing: border-box;
-		padding: 5px;
+
+		> ul{
+			background-color: #AA0000;
+			color: white;
+			font-size: 14px;
+			display: inline-block;
+			box-sizing: border-box;
+			margin: 0px;
+			padding-left: 25px;
+			padding-top: 5px;
+			padding-right: 5px;
+			padding-bottom: 5px;
+
+			> li{
+
+			}
+		}
+		> span{
+			padding: 5px;
+			background-color: #AA0000;
+			color: white;
+			font-size: 14px;
+			display: inline-block;
+			box-sizing: border-box;
+			padding: 5px;
+		}
 	}
 
 	>.fv_field_description{

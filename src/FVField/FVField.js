@@ -41,6 +41,12 @@ function FVField(name, options) {
     field.layout();
 }
 
+FVField.prototype.clear_errors = function(){
+    var field = this;
+
+    field.error(null);
+}
+
 FVField.prototype.on_submit = function(callback){
     var field = this;
 
