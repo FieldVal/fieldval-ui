@@ -25,7 +25,7 @@ function FVField(name, options) {
     } else {
         field.element = $("<div />").addClass("fv_field").data("field",field);
     }
-    field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    field.title = $("<div />").addClass("fv_field_title").text(field.name?field.name:"")
     if(!field.name){
         //Field name is empty
         field.title.hide();
