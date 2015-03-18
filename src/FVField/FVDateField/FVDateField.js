@@ -34,6 +34,9 @@ function FVDateField(name, options) {//format is currently unused
     }
 }
 
+FVDateField.character_width = 14;
+FVDateField.padding_width = 4;
+
 FVDateField.prototype.add_element_from_component = function(component, component_value){
     var field = this;
 
@@ -51,6 +54,9 @@ FVDateField.prototype.add_element_from_component = function(component, component
             "maxlength": component_max_length
         })
         .addClass("fv_date_input")
+        .css({
+            "width": (component_max_length * FVDateField.character_width) + FVDateField.padding_width
+        })
         .on("keyup",function(){
             field.did_change()
         })
