@@ -34,7 +34,7 @@ function FVField(name, options) {
     } else {
         field.element = $("<div />").addClass("fv_field").data("field",field);
     }
-    field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    field.title = $("<div />").addClass("fv_field_title").text(field.name?field.name:"")
     if(!field.name){
         //Field name is empty
         field.title.hide();
@@ -1002,6 +1002,9 @@ function FVDateField(name, options) {//format is currently unused
     }
 }
 
+FVDateField.character_width = 14;
+FVDateField.padding_width = 4;
+
 FVDateField.prototype.add_element_from_component = function(component, component_value){
     var field = this;
 
@@ -1019,6 +1022,9 @@ FVDateField.prototype.add_element_from_component = function(component, component
             "maxlength": component_max_length
         })
         .addClass("fv_date_input")
+        .css({
+            "width": (component_max_length * FVDateField.character_width) + FVDateField.padding_width
+        })
         .on("keyup",function(){
             field.did_change()
         })
@@ -2562,8 +2568,6 @@ function FVForm(fields){
 	});
 
 	form.element.addClass("fv_form");
-
-	form.fields_element = form.element;
 }
 FVForm.button_event = 'click';
 FVForm.is_mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|nokia|series40|x11|opera mini/i.test(navigator.userAgent.toLowerCase());
