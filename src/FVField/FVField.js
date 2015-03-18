@@ -13,7 +13,9 @@ function FVField(name, options) {
     field.on_change_callbacks = [];
 
     if(field.options.form){
-        field.element = $("<form />")
+        field.element = $("<form />",{
+            "novalidate": "novalidate"//Disable browser-based validation
+        })
         .addClass("fv_field")
         .data("field",field)
         .on("submit",function(event){
