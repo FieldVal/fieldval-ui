@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "jquery": "^1.11.1",
-    "nestable": "FieldVal/Nestable",
+    "nestable": "FieldVal/Nestable#4ba94eb66b",
     "gulp-imports": "MarcusLongmuir/gulp-imports",
     "gulp": "^3.6.1",
     "gulp-util": "^2.2.14",
