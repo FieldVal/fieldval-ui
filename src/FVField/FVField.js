@@ -12,7 +12,7 @@ function FVField(name, options) {
 
     field.on_change_callbacks = [];
 
-    if(field.options.form){
+    if(field.options.use_form){
         field.element = $("<form />",{
             "novalidate": "novalidate"//Disable browser-based validation
         })

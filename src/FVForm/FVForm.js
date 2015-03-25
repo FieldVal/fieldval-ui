@@ -4,7 +4,7 @@ function FVForm(fields){
 	var form = this;
 
 	FVForm.superConstructor.call(this,null,{
-		form: true
+		use_form: true
 	});
 
 	form.element.addClass("fv_form");

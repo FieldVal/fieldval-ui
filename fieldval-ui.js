@@ -21,7 +21,7 @@ function FVField(name, options) {
 
     field.on_change_callbacks = [];
 
-    if(field.options.form){
+    if(field.options.use_form){
         field.element = $("<form />",{
             "novalidate": "novalidate"//Disable browser-based validation
         })
@@ -2559,7 +2559,7 @@ function FVForm(fields){
 	var form = this;
 
 	FVForm.superConstructor.call(this,null,{
-		form: true
+		use_form: true
 	});
 
 	form.element.addClass("fv_form");
