@@ -16,7 +16,7 @@ function FVField(name, options) {
         field.element = $("<form />",{
             "novalidate": "novalidate"//Disable browser-based validation
         })
-        .addClass("fv_field")
+        .addClass("fv_field fv_form")
         .data("field",field)
         .on("submit",function(event){
             event.preventDefault();
