@@ -1,4 +1,4 @@
-@import("../../../bower_components/nestable/jquery.nestable.js");
+@import("../../../node_modules/nestable/jquery.nestable.js");
 
 fieldval_ui_extend(FVArrayField, FVField);
 function FVArrayField(name, options) {
@@ -52,21 +52,26 @@ FVArrayField.prototype.create_add_field_button = function(){
 
     var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        var returned_field = field.new_field(field.fields.length);
-
-        /* Allow the new_field function to just return a field - 
-         * this will add the field if it wasn't added in the new_field 
-         * callback. */
-        if(returned_field){
-            if(field.fields.indexOf(returned_field)===-1){
-                field.add_field(returned_field);
-            }
-        }
+        field.add_field_clicked();   
     });
 
     field.add_field_buttons.push(add_field_button);
 
     return add_field_button;
+}
+
+FVArrayField.prototype.add_field_clicked = function() {
+    var field = this;
+    var returned_field = field.new_field(field.fields.length);
+
+    /* Allow the new_field function to just return a field - 
+     * this will add the field if it wasn't added in the new_field 
+     * callback. */
+    if(returned_field){
+        if(field.fields.indexOf(returned_field)===-1){
+            field.add_field(returned_field);
+        }
+    }
 }
 
 FVArrayField.prototype.new_field = function(index){
@@ -131,6 +136,8 @@ FVArrayField.prototype.error = function(error){
 
 FVArrayField.prototype.fields_error = function(error){
     var field = this;
+
+    //.missing and .unrecognized are unused as of FieldVal 0.4.0
 
     if(error){
         var invalid_fields = error.invalid || {};
@@ -235,8 +242,10 @@ FVArrayField.prototype.error = function(error) {
     }
 }
 
-FVArrayField.prototype.val = function(set_val) {
+FVArrayField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {};
 
     if (arguments.length===0) {
     	var compiled = [];
@@ -248,6 +257,7 @@ FVArrayField.prototype.val = function(set_val) {
         return compiled;
     } else {
         if(set_val){
+            options.ignore_parent_change = true;
             for(var i=0; i<set_val.length; i++){
         		var inner_field = field.fields[i];
                 if(!inner_field){
@@ -265,8 +275,13 @@ FVArrayField.prototype.val = function(set_val) {
                 if(!inner_field){//A field wasn't returned by the new_field function
                     inner_field = field.fields[i];
                 }
-                inner_field.val(set_val[i]);
+                inner_field.val(set_val[i], options);
+
         	}
+            
+            if (!options.ignore_change) {
+                field.did_change(options);
+            }
         }
         return field;
     }

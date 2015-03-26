@@ -23,7 +23,7 @@ FVObjectField.prototype.init = function(){
     }
 }
 
-FVObjectField.prototype.remove = function(){
+FVObjectField.prototype.remove = function(from_parent){
     var field = this;
 
     for(var i in field.fields){
@@ -33,7 +33,7 @@ FVObjectField.prototype.remove = function(){
         }
     }
 
-    FVField.prototype.remove.call(this);
+    FVField.prototype.remove.call(this, from_parent);
 }
 
 FVObjectField.prototype.add_field = function(name, inner_field){
@@ -81,7 +81,6 @@ FVObjectField.prototype.disable = function() {
     var field = this;
     
     for(var i in field.fields){
-        console.log(i);
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
             inner_field.disable();
@@ -172,6 +171,8 @@ FVObjectField.prototype.error = function(error){
 FVObjectField.prototype.fields_error = function(error){
     var field = this;
 
+    //.missing and .unrecognized are unused as of FieldVal 0.4.0
+
     if(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
@@ -196,15 +197,10 @@ FVObjectField.prototype.fields_error = function(error){
     }
 }
 
-
-FVObjectField.prototype.clear_errors = function(){
-	var field = this;
-
-	field.error(null);
-}
-
-FVObjectField.prototype.val = function(set_val) {
+FVObjectField.prototype.val = function(set_val, options) {
     var field = this;
+
+    options = options || {}
 
     if (arguments.length===0) {
     	var compiled = {};
@@ -221,12 +217,16 @@ FVObjectField.prototype.val = function(set_val) {
     	}
         return compiled;
     } else {
+        options.ignore_parent_change = true;
     	for(var i in set_val){
     		var inner_field = field.fields[i];
             if(inner_field){
-        		inner_field.val(set_val[i]);
+        		inner_field.val(set_val[i], options);
             }
     	}
+        if (!options.ignore_change) {
+            field.did_change(options);
+        }
         return field;
     }
 }

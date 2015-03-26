@@ -3,16 +3,11 @@
   display: block;
   position: relative;
 }
-.fv_form.rows .fv_field > .fv_field_title {
-  width: 20%;
-  vertical-align: top;
+.fv_form.fv_object_field > .fv_input_holder {
+  padding-left: 0px;
 }
-.fv_form.rows .fv_field > .fv_input_holder {
-  width: 80%;
-  display: inline-block;
-}
-.fv_form.rows .fv_field > .fv_error_message {
-  margin-left: 20%;
+.fv_form.fv_field.rows > .fv_input_holder {
+  width: 100%;
 }
 .fv_field {
   position: relative;
@@ -20,6 +15,28 @@
   padding-bottom: 5px;
   box-sizing: border-box;
   vertical-align: top;
+}
+.fv_field.rows > .fv_field_title,
+.fv_field.rows .fv_field > .fv_field_title {
+  width: 20%;
+  vertical-align: top;
+}
+.fv_field.rows > .fv_input_holder,
+.fv_field.rows .fv_field > .fv_input_holder {
+  width: 80%;
+  display: inline-block;
+}
+.fv_field.rows > .fv_error_message,
+.fv_field.rows .fv_field > .fv_error_message {
+  margin-left: 20%;
+}
+.fv_field.rows.fv_in_array > .fv_input_holder,
+.fv_field.rows .fv_field.fv_in_array > .fv_input_holder {
+  width: 100%;
+}
+.fv_field.rows.fv_in_key_value > .fv_key_value_name_input > .fv_input_holder,
+.fv_field.rows .fv_field.fv_in_key_value > .fv_key_value_name_input > .fv_input_holder {
+  width: 100%;
 }
 .fv_field.fv_field_error > .fv_field_title {
   color: #aa0000;
@@ -44,7 +61,19 @@
   padding-right: 5px;
   box-sizing: border-box;
 }
-.fv_field > .fv_error_message {
+.fv_field > .fv_error_message > ul {
+  background-color: #AA0000;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0px;
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+.fv_field > .fv_error_message > span {
   background-color: #AA0000;
   color: white;
   font-size: 14px;
@@ -148,6 +177,9 @@
 .fv_date_field > .fv_input_holder > .fv_date_input {
   font-size: 14px;
   display: inline-block;
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 .fv_date_field > .fv_input_holder > .fv_date_separator {
   display: inline-block;
@@ -386,4 +418,8 @@
 }
 .fv_key_value_field > .fv_input_holder > .fv_add_field_button:active {
   background-color: #007700;
+}
+.fv_proxy_field .fv_input_holder .loading_label {
+  line-height: 30px;
+  padding-left: 5px;
 }

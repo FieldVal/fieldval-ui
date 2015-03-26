@@ -1,5 +1,5 @@
 <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'/>
-<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="node_modules/jquery/dist/jquery.js"></script>
 
 <script src="jquery.tap.js"></script>
 
@@ -23,11 +23,11 @@ $(document).ready(function(){
 	var output;
 
 	$("body").append(
-		$("<button />").text("Enable").on('click',function(){
+		$("<button />").text("Enable").on('tap',function(){
 			form.enable();
 		})
 	,
-		$("<button />").text("Disable").on('click',function(){
+		$("<button />").text("Disable").on('tap',function(){
 			form.disable();
 		})
 	)
