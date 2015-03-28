@@ -18,11 +18,20 @@ function FVField(name, options) {
         })
         .addClass("fv_field fv_form")
         .data("field",field)
-        .on("submit",function(event){
+        
+        var submit_function = function(event){
             event.preventDefault();
             field.submit();
             return false;
-        });
+        };
+
+        var field_dom_element = field.element[0];
+        if (field_dom_element.addEventListener) {// For all major browsers, except IE 8 and earlier
+            field_dom_element.addEventListener("submit", submit_function);
+        } else if (field_dom_element.attachEvent) {// For IE 8 and earlier versions
+            field_dom_element.attachEvent("submit", submit_function);
+        }
+
         field.on_submit_callbacks = [];
     } else {
         field.element = $("<div />").addClass("fv_field").data("field",field);
