@@ -136,11 +136,11 @@
                                 "__CURRENT_DOMAIN__/demo_files/fieldval.js",
                                 "__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"
                             ],
-                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"textarea\", new FVTextField(\"Simple textarea\", \"textarea\"));\n  \n  \tform.element.appendTo(\"body\");\n});",
-                            "contents": "var form = new FVForm()\n.add_field(\"textarea\", new FVTextField(\"Simple textarea\", \"textarea\"));"
+                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"textarea\", new FVTextField(\"Simple textarea\", {\n\t\t\"type\": \"textarea\",\n\t\t\"consume_tabs\": true\n\t}));\n  \n  \tform.element.appendTo(\"body\");\n});",
+                            "contents": "var form = new FVForm()\n.add_field(\"textarea\", new FVTextField(\"Simple textarea\", {\n\t\"type\": \"textarea\",\n\t\"consume_tabs\": true\n}));"
                         }
                     ],
-                    "text": "<p>FVTextField is a standard text input field.</p>\n<p>Constructor takes optional type parameter, which accepts any input tag attribute values (e.g. text, password) or &quot;textarea&quot;.</p>\n<p><code>.val()</code> returns a string.</p>\n"
+                    "text": "<p>FVTextField is a standard text input field.</p>\n<p>Constructor takes optional <code>&quot;type&quot;</code> parameter, which accepts any input tag attribute values (e.g. &quot;text&quot;, &quot;password&quot; or &quot;textarea&quot;).</p>\n<p>When using the &quot;textarea&quot; type, the field will observe the <code>&quot;consume_tabs&quot;</code> option flag and will insert tabs on tab key presses, but therefore prevents the use of the tab key to shift the focus from the field.</p>\n<p><code>.val()</code> returns a string.</p>\n"
                 },
                 {
                     "name": "FVPasswordField",

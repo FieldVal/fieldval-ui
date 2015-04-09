@@ -57,7 +57,7 @@ $(document).ready(function(){
 	}));
 	form.add_field("email", new FVTextField("Email"));
 	form.add_field("subscribe", new FVBooleanField("Subscribe"));
-	form.add_field("bio", new FVTextField("Bio","textarea"));
+	form.add_field("bio", new FVTextField("Bio",{"type":"textarea","consume_tabs":true}));
 
 	var array_field = new FVArrayField("Tags",{
 		add_button_text: "+ Add a tag"
