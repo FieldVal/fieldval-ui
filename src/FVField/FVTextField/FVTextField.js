@@ -10,6 +10,7 @@ function FVTextField(name, options) {
         options = {};
     } else if(options_type === "object"){
         field.input_type = options.type || "text";
+        field.consume_tabs = options.consume_tabs || false;
     } else {
         options = {};
     }
@@ -37,6 +38,26 @@ function FVTextField(name, options) {
             for(var i = 0; i < field.enter_callbacks.length; i++){
                 field.enter_callbacks[i](e);
             }
+
+            if(field.input_type==="textarea" && (event.metaKey || event.ctrlKey)){
+                var form = field.element.closest("form");
+                if(form){
+                    form.data("field").submit();
+                }
+            }
+        }
+
+        if(field.consume_tabs && e.keyCode===9) {
+            e.preventDefault();
+            var start = $(this).get(0).selectionStart;
+            var end = $(this).get(0).selectionEnd;
+
+            // set textarea value to: text before caret + tab + text after caret
+            $(this).val($(this).val().substring(0, start) + "\t" + $(this).val().substring(end));
+
+            // put caret at right position again
+            $(this).get(0).selectionStart =
+            $(this).get(0).selectionEnd = start + 1;
         }
     })
     .on("keyup paste cut",function(){
