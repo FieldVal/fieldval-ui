@@ -167,6 +167,12 @@
 		};
 	}
 
+	&.with_remove_button{
+		>.fv_input_holder{
+			padding-right: 35px;
+		}
+	}
+	
 	>.fv_field_remove_button{
 		-webkit-appearance: none;
 		cursor: pointer;

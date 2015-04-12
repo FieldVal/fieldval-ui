@@ -203,6 +203,17 @@ FVKeyValueField.prototype.enable = function(){
     return FVField.prototype.enable.call(this);
 }
 
+FVKeyValueField.prototype.remove = function(from_parent){
+    var field = this;
+
+    for(var i=0; i<field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.remove();
+    }
+
+    FVField.prototype.remove.call(this, from_parent);
+}
+
 FVKeyValueField.prototype.error = function(error) {
     var field = this;
 
