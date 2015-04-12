@@ -92,7 +92,7 @@ FVField.prototype.in_array = function(parent, remove_callback){
     }
 
     if (!field.array_parent.hide_remove_button) {
-        field.element.append(
+        field.element.addClass("with_remove_button").append(
             field.remove_button = $("<button />",{type:"button"})
             .addClass("fv_field_remove_button")
             .html("&#10006;").on(FVForm.button_event,function(event){
