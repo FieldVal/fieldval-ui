@@ -1,7 +1,10 @@
 $(document).ready(function(){
 	
 	var form = new FVForm()
-	.add_field("textarea", new FVTextField("Simple textarea", "textarea"));
+	.add_field("textarea", new FVTextField("Simple textarea", {
+		"type": "textarea",
+		"consume_tabs": true
+	}));
   
   	form.element.appendTo("body");
 });

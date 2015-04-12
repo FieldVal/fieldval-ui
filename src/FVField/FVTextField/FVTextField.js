@@ -10,6 +10,7 @@ function FVTextField(name, options) {
         options = {};
     } else if(options_type === "object"){
         field.input_type = options.type || "text";
+        field.consume_tabs = options.consume_tabs || false;
     } else {
         options = {};
     }
@@ -37,6 +38,18 @@ function FVTextField(name, options) {
             for(var i = 0; i < field.enter_callbacks.length; i++){
                 field.enter_callbacks[i](e);
             }
+
+            if(field.input_type==="textarea" && (event.metaKey || event.ctrlKey)){
+                var form = field.element.closest("form");
+                if(form){
+                    form.data("field").submit();
+                }
+            }
+        }
+
+        if(field.input_type==="textarea" && field.consume_tabs && e.keyCode===9) {
+            e.preventDefault();
+            document.execCommand("insertText", false, "\t");
         }
     })
     .on("keyup paste cut",function(){
@@ -112,7 +125,7 @@ FVTextField.prototype.blur = function() {
     return field;
 }
 
-FVTextField.numeric_regex = /^\d+(\.\d+)?$/;
+FVTextField.numeric_regex = /^[-+]?\d*\.?\d+$/;
 
 FVTextField.prototype.val = function(set_val, options) {
     var field = this;

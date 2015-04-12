@@ -21,20 +21,31 @@ function FVField(name, options) {
 
     field.on_change_callbacks = [];
 
-    if(field.options.form){
-        field.element = $("<form />")
-        .addClass("fv_field")
+    if(field.options.use_form){
+        field.element = $("<form />",{
+            "novalidate": "novalidate"//Disable browser-based validation
+        })
+        .addClass("fv_field fv_form")
         .data("field",field)
-        .on("submit",function(event){
+        
+        var submit_function = function(event){
             event.preventDefault();
             field.submit();
             return false;
-        });
+        };
+
+        var field_dom_element = field.element[0];
+        if (field_dom_element.addEventListener) {// For all major browsers, except IE 8 and earlier
+            field_dom_element.addEventListener("submit", submit_function);
+        } else if (field_dom_element.attachEvent) {// For IE 8 and earlier versions
+            field_dom_element.attachEvent("submit", submit_function);
+        }
+
         field.on_submit_callbacks = [];
     } else {
         field.element = $("<div />").addClass("fv_field").data("field",field);
     }
-    field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    field.title = $("<div />").addClass("fv_field_title").text(field.name?field.name:"")
     if(!field.name){
         //Field name is empty
         field.title.hide();
@@ -45,6 +56,12 @@ function FVField(name, options) {
     field.input_holder = $("<div />").addClass("fv_input_holder");
     field.error_message = $("<div />").addClass("fv_error_message").hide()
     field.layout();
+}
+
+FVField.prototype.clear_errors = function(){
+    var field = this;
+
+    field.error(null);
 }
 
 FVField.prototype.on_submit = function(callback){
@@ -308,6 +325,7 @@ function FVTextField(name, options) {
         options = {};
     } else if(options_type === "object"){
         field.input_type = options.type || "text";
+        field.consume_tabs = options.consume_tabs || false;
     } else {
         options = {};
     }
@@ -335,6 +353,18 @@ function FVTextField(name, options) {
             for(var i = 0; i < field.enter_callbacks.length; i++){
                 field.enter_callbacks[i](e);
             }
+
+            if(field.input_type==="textarea" && (event.metaKey || event.ctrlKey)){
+                var form = field.element.closest("form");
+                if(form){
+                    form.data("field").submit();
+                }
+            }
+        }
+
+        if(field.input_type==="textarea" && field.consume_tabs && e.keyCode===9) {
+            e.preventDefault();
+            document.execCommand("insertText", false, "\t");
         }
     })
     .on("keyup paste cut",function(){
@@ -410,7 +440,7 @@ FVTextField.prototype.blur = function() {
     return field;
 }
 
-FVTextField.numeric_regex = /^\d+(\.\d+)?$/;
+FVTextField.numeric_regex = /^[-+]?\d*\.?\d+$/;
 
 FVTextField.prototype.val = function(set_val, options) {
     var field = this;
@@ -1003,6 +1033,9 @@ function FVDateField(name, options) {//format is currently unused
     }
 }
 
+FVDateField.character_width = 14;
+FVDateField.padding_width = 4;
+
 FVDateField.prototype.add_element_from_component = function(component, component_value){
     var field = this;
 
@@ -1020,6 +1053,9 @@ FVDateField.prototype.add_element_from_component = function(component, component
             "maxlength": component_max_length
         })
         .addClass("fv_date_input")
+        .css({
+            "width": (component_max_length * FVDateField.character_width) + FVDateField.padding_width
+        })
         .on("keyup",function(){
             field.did_change()
         })
@@ -1420,13 +1456,6 @@ FVObjectField.prototype.fields_error = function(error){
     }
 }
 
-
-FVObjectField.prototype.clear_errors = function(){
-	var field = this;
-
-	field.error(null);
-}
-
 FVObjectField.prototype.val = function(set_val, options) {
     var field = this;
 
@@ -1517,17 +1546,10 @@ FVObjectField.prototype.val = function(set_val, options) {
 
             list.placeEl = $('<div class="' + list.options.placeClass + '"/>');
 
-            $.each(this.el.find(list.options.itemNodeName), function(k, el) {
-                list.setParent($(el));
-            });
-
             var onStartEvent = function(e)
             {
                 var handle = $(e.target);
                 if (!handle.hasClass(list.options.handleClass)) {
-                    if (handle.closest('.' + list.options.noDragClass).length) {
-                        return;
-                    }
                     handle = handle.closest('.' + list.options.handleClass);
                 }
 
@@ -1540,8 +1562,11 @@ FVObjectField.prototype.val = function(set_val, options) {
                     return;
                 }
 
-                e.preventDefault();
-                list.dragStart(e.touches ? e.touches[0] : e);
+                var dragEl = handle.closest('.' + list.options.itemClass);
+                if(dragEl[0].parentNode===list.el[0]){
+                    e.preventDefault();
+                    list.dragStart(e.touches ? e.touches[0] : e);
+                }
             };
 
             var onMoveEvent = function(e)
@@ -1604,13 +1629,7 @@ FVObjectField.prototype.val = function(set_val, options) {
 
         setParent: function(li)
         {
-            li.children('[data-action="expand"]').hide();
-        },
-
-        unsetParent: function(li)
-        {
-            li.children('[data-action]').remove();
-            li.children(this.options.listNodeName).remove();
+            li.data("fv_parent_list",this);
         },
 
         dragStart: function(e)
@@ -1718,30 +1737,35 @@ FVObjectField.prototype.val = function(set_val, options) {
             if (!hasPointerEvents) {
                 this.dragEl[0].style.visibility = 'hidden';
             }
-            this.pointEl = $(document.elementFromPoint(e.pageX - document.body.scrollLeft, e.pageY - (window.pageYOffset || document.documentElement.scrollTop)));
-            if(!this.pointEl.hasClass(opt.itemClass)){
-                this.pointEl = this.pointEl.closest('.' + opt.itemClass);
+            
+
+            var pointEl = $(document.elementFromPoint(e.pageX - document.body.scrollLeft, e.pageY - (window.pageYOffset || document.documentElement.scrollTop)));
+            if(!pointEl.hasClass(opt.itemClass)){
+                pointEl = pointEl.closest('.' + opt.itemClass);
             }
             if (!hasPointerEvents) {
                 this.dragEl[0].style.visibility = 'visible';
             }
-            if (this.pointEl.hasClass(opt.handleClass)) {
-                this.pointEl = this.pointEl.closest("."+opt.itemClass);
+            if (pointEl.hasClass(opt.handleClass)) {
+                pointEl = pointEl.closest("."+opt.itemClass);
             }
-            else if (!this.pointEl.length || !this.pointEl.hasClass(opt.itemClass)) {
+            else if (!pointEl.length || !pointEl.hasClass(opt.itemClass)) {
                 return;
             }
 
             // find parent list of item under cursor
-            var pointElRoot = this.pointEl.closest('.' + opt.rootClass);
+            var pointElRoot = $(pointEl[0].parentNode)
 
             /**
              * move vertical
              */
             // check that this is the same list element
+            // console.log(this.el[0], pointElRoot[0]);
             if (this.el[0] !== pointElRoot[0]) {
                 return;
             }
+
+            this.pointEl = pointEl;
 
             var diffY = e.pageY - this.pointEl.offset().top;
             var diffX = e.pageY - this.pointEl.offset().top;
@@ -1770,8 +1794,7 @@ FVObjectField.prototype.val = function(set_val, options) {
         var lists  = this,
             retval = this;
 
-        lists.each(function()
-        {
+        lists.each(function(){
             var plugin = $(this).data("nestable");
 
             if (!plugin) {
@@ -2567,12 +2590,10 @@ function FVForm(fields){
 	var form = this;
 
 	FVForm.superConstructor.call(this,null,{
-		form: true
+		use_form: true
 	});
 
 	form.element.addClass("fv_form");
-
-	form.fields_element = form.element;
 }
 FVForm.button_event = 'click';
 FVForm.is_mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|nokia|series40|x11|opera mini/i.test(navigator.userAgent.toLowerCase());

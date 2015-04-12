@@ -5,6 +5,34 @@
 	box-sizing: border-box;
 	vertical-align: top;
 
+	&.rows{
+		&, .fv_field{
+			>.fv_field_title{
+				width: 20%;
+				vertical-align: top;
+			}
+			>.fv_input_holder{
+				width: 80%;
+				display: inline-block;
+			}
+			>.fv_error_message{
+				margin-left: 20%;
+			}
+		}
+		&.fv_in_array, .fv_field.fv_in_array{
+			>.fv_input_holder{
+				width: 100%;
+			}
+		}
+		&.fv_in_key_value, .fv_field.fv_in_key_value{
+			>.fv_key_value_name_input{
+				>.fv_input_holder{
+					width: 100%;
+				}
+			}
+		}
+	}
+
 	&.fv_field_error{
 		>.fv_field_title{
 			color: @fv_error_color;
@@ -40,12 +68,32 @@
 	}
 
 	>.fv_error_message{
-		background-color: #AA0000;
-		color: white;
-		font-size: 14px;
-		display: inline-block;
-		box-sizing: border-box;
-		padding: 5px;
+
+		> ul{
+			background-color: #AA0000;
+			color: white;
+			font-size: 14px;
+			display: inline-block;
+			box-sizing: border-box;
+			margin: 0px;
+			padding-left: 25px;
+			padding-top: 5px;
+			padding-right: 5px;
+			padding-bottom: 5px;
+
+			> li{
+
+			}
+		}
+		> span{
+			padding: 5px;
+			background-color: #AA0000;
+			color: white;
+			font-size: 14px;
+			display: inline-block;
+			box-sizing: border-box;
+			padding: 5px;
+		}
 	}
 
 	>.fv_field_description{

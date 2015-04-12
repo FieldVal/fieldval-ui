@@ -136,11 +136,11 @@
                                 "__CURRENT_DOMAIN__/demo_files/fieldval.js",
                                 "__CURRENT_DOMAIN__/demo_files/fieldval-ui.js"
                             ],
-                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"textarea\", new FVTextField(\"Simple textarea\", \"textarea\"));\n  \n  \tform.element.appendTo(\"body\");\n});",
-                            "contents": "var form = new FVForm()\n.add_field(\"textarea\", new FVTextField(\"Simple textarea\", \"textarea\"));"
+                            "runnable_contents": "$(document).ready(function(){\n\t\n\tvar form = new FVForm()\n\t.add_field(\"textarea\", new FVTextField(\"Simple textarea\", {\n\t\t\"type\": \"textarea\",\n\t\t\"consume_tabs\": true\n\t}));\n  \n  \tform.element.appendTo(\"body\");\n});",
+                            "contents": "var form = new FVForm()\n.add_field(\"textarea\", new FVTextField(\"Simple textarea\", {\n\t\"type\": \"textarea\",\n\t\"consume_tabs\": true\n}));"
                         }
                     ],
-                    "text": "<p>FVTextField is a standard text input field.</p>\n<p>Constructor takes optional type parameter, which accepts any input tag attribute values (e.g. text, password) or &quot;textarea&quot;.</p>\n<p><code>.val()</code> returns a string.</p>\n"
+                    "text": "<p>FVTextField is a standard text input field.</p>\n<p>Constructor takes optional <code>&quot;type&quot;</code> parameter, which accepts any input tag attribute values (e.g. &quot;text&quot;, &quot;password&quot; or &quot;textarea&quot;).</p>\n<p>When using the &quot;textarea&quot; type, the field will observe the <code>&quot;consume_tabs&quot;</code> option flag and will insert tabs on tab key presses, but therefore prevents the use of the tab key to shift the focus from the field.</p>\n<p><code>.val()</code> returns a string.</p>\n"
                 },
                 {
                     "name": "FVPasswordField",
@@ -229,7 +229,7 @@
                             "contents": "var options = {\n\tchoices: [\n\t\t[1, \"one\"], \n\t\t[2, \"two\"],  \n\t\t[3, \"three\"]\n\t],\n\tallow_empty: true,\n\tempty_text: \"empty_value\"\n}\n\nvar form = new FVForm()\n.add_field(\"choice\", new FVChoiceField(\"Choice field\", options));"
                         }
                     ],
-                    "text": "<p>FVChoiceField is a custom text field that provides a dropdown list of pre-defined values that match the current input.</p>\n<p>Second argument of the constructor is an object with several keys:</p>\n<ul>\n<li><code>choices</code> is a list of values to choose form. Values can also be an array containing two elements: the value that should be returned and its display text, just like in the second example.</li>\n<li><code>allow_empty</code> is an optional boolean that specifies whether a FVChoiceField should allow choosing an <code>empty</code> value that returns null.</li>\n<li><code>empty_text</code> specifies the display text for the <code>empty</code> value</li>\n</ul>\n<p><code>.val()</code> returns a chosen value, specified in <code>choices</code> array.</p>\n"
+                    "text": "<p>FVChoiceField is a custom text field that provides a dropdown list of pre-defined values that match the current input.</p>\n<p>Second argument of the constructor is an object with several keys:</p>\n<ul>\n<li><code>choices</code> is a list of values to choose form. Values can also be an array containing two elements: the value that should be returned and its display text as shown in the second example.</li>\n<li><code>allow_empty</code> is an optional boolean that specifies whether a FVChoiceField should allow choosing an <code>empty</code> value that returns null.</li>\n<li><code>empty_text</code> specifies the display text for the <code>empty</code> value</li>\n</ul>\n<p><code>.val()</code> returns a chosen value, specified in <code>choices</code> array.</p>\n"
                 },
                 {
                     "name": "FVArrayField",

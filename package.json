@@ -1,6 +1,6 @@
 {
   "name": "fieldval-ui",
-  "version": "0.4.0",
+  "version": "0.4.4",
   "description": "fieldval-ui",
   "main": "fieldval-ui.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "jquery": "^1.11.1",
-    "nestable": "FieldVal/Nestable",
+    "nestable": "FieldVal/Nestable#ed0171e769",
     "gulp-imports": "MarcusLongmuir/gulp-imports",
     "gulp": "^3.6.1",
     "gulp-util": "^2.2.14",

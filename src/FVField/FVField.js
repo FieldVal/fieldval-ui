@@ -12,20 +12,31 @@ function FVField(name, options) {
 
     field.on_change_callbacks = [];
 
-    if(field.options.form){
-        field.element = $("<form />")
-        .addClass("fv_field")
+    if(field.options.use_form){
+        field.element = $("<form />",{
+            "novalidate": "novalidate"//Disable browser-based validation
+        })
+        .addClass("fv_field fv_form")
         .data("field",field)
-        .on("submit",function(event){
+        
+        var submit_function = function(event){
             event.preventDefault();
             field.submit();
             return false;
-        });
+        };
+
+        var field_dom_element = field.element[0];
+        if (field_dom_element.addEventListener) {// For all major browsers, except IE 8 and earlier
+            field_dom_element.addEventListener("submit", submit_function);
+        } else if (field_dom_element.attachEvent) {// For IE 8 and earlier versions
+            field_dom_element.attachEvent("submit", submit_function);
+        }
+
         field.on_submit_callbacks = [];
     } else {
         field.element = $("<div />").addClass("fv_field").data("field",field);
     }
-    field.title = $("<div />").addClass("fv_field_title").text(field.name)
+    field.title = $("<div />").addClass("fv_field_title").text(field.name?field.name:"")
     if(!field.name){
         //Field name is empty
         field.title.hide();
@@ -36,6 +47,12 @@ function FVField(name, options) {
     field.input_holder = $("<div />").addClass("fv_input_holder");
     field.error_message = $("<div />").addClass("fv_error_message").hide()
     field.layout();
+}
+
+FVField.prototype.clear_errors = function(){
+    var field = this;
+
+    field.error(null);
 }
 
 FVField.prototype.on_submit = function(callback){
