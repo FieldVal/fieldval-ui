@@ -11,6 +11,8 @@ function FVField(name, options) {
     field.is_disabled = false;
 
     field.on_change_callbacks = [];
+    field.on_focus_callbacks = [];
+    field.on_blur_callbacks = [];
 
     if(field.options.use_form){
         field.element = $("<form />",{
@@ -53,6 +55,8 @@ FVField.prototype.clear_errors = function(){
     var field = this;
 
     field.error(null);
+
+    return field;
 }
 
 FVField.prototype.on_submit = function(callback){
@@ -103,6 +107,8 @@ FVField.prototype.in_array = function(parent, remove_callback){
             })
         )
     }
+
+    return field;
 }
 
 FVField.prototype.in_key_value = function(parent, remove_callback){
@@ -127,11 +133,14 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
             field.key_value_remove_callback(field.key_name);
             field.remove();
         })
-    )
+    );
+
+    return field;
 }
 
 FVField.prototype.init = function(){
     var field = this;
+    return field;
 }
 
 FVField.prototype.remove = function(from_parent){
@@ -142,6 +151,8 @@ FVField.prototype.remove = function(from_parent){
         field.parent.remove_field(field);
         field.parent = null;
     }
+
+    return field;
 }
 
 FVField.prototype.change_name = function(name) {
@@ -159,12 +170,30 @@ FVField.prototype.layout = function(){
         field.input_holder,
         field.error_message
     )
+
+    return field;
 }
 
 FVField.prototype.on_change = function(callback){
     var field = this;
 
     field.on_change_callbacks.push(callback);
+
+    return field;
+}
+
+FVField.prototype.on_focus = function(callback){
+    var field = this;
+
+    field.on_focus_callbacks.push(callback);
+
+    return field;
+}
+
+FVField.prototype.on_blur = function(callback){
+    var field = this;
+
+    field.on_blur_callbacks.push(callback);
 
     return field;
 }
@@ -197,8 +226,45 @@ FVField.prototype.did_change = function(options){
     return field;
 }
 
+FVField.prototype.did_focus = function(){
+    var field = this;
+
+    for(var i = 0; i < field.on_focus_callbacks.length; i++){
+        var callback = field.on_focus_callbacks[i];
+
+        callback();
+    }
+
+    if(field.parent){
+        field.parent.did_focus();
+    }
+
+    return field;
+}
+
+FVField.prototype.did_blur = function(){
+    var field = this;
+
+    if(field.suppress_blur){
+        return field;
+    }
+
+    for(var i = 0; i < field.on_blur_callbacks.length; i++){
+        var callback = field.on_blur_callbacks[i];
+
+        callback();
+    }
+
+    if(field.parent){
+        field.parent.did_blur();
+    }
+
+    return field;
+}
+
 FVField.prototype.icon = function(params) {
     var field = this;
+    return field;
 }
 
 FVField.prototype.val = function(set_val) {
@@ -247,20 +313,30 @@ FVField.prototype.enable = function() {
 
 FVField.prototype.blur = function() {
     var field = this;
+
+    if(field.name_input){
+        field.name_input.blur();
+    }
+
+    return field;
 }
 
 FVField.prototype.focus = function() {
     var field = this;
+
+    return field;
 }
 
 FVField.prototype.show_error = function(){
     var field = this;
     field.error_message.show();
+    return field;
 }
 
 FVField.prototype.hide_error = function(){
     var field = this;
     field.error_message.hide();
+    return field;
 }
 
 //Used in key_value fields

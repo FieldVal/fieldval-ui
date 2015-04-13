@@ -1,0 +1,6 @@
+.fv_boolean_field{
+	>.fv_input_holder{
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+}

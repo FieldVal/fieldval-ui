@@ -12,6 +12,12 @@ function FVBooleanField(name, options) {
     .on("change",function(){
         field.did_change()
     })
+    .on("focus",function(){
+        field.did_focus();
+    })
+    .on("blur",function(){
+        field.did_blur();
+    })
     .appendTo(field.input_holder);
 }
 
@@ -30,13 +36,13 @@ FVBooleanField.prototype.enable = function() {
 FVBooleanField.prototype.focus = function() {
     var field = this;
     field.input.focus();
-    return field;
+    return FVField.prototype.focus.call(this);
 }
 
 FVBooleanField.prototype.blur = function() {
     var field = this;
     field.input.blur();
-    return field;
+    return FVField.prototype.blur.call(this);
 }
 
 FVBooleanField.prototype.val = function(set_val, options) {

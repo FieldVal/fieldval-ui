@@ -94,7 +94,6 @@
   padding-right: 5px;
   box-sizing: border-box;
   margin: 0px;
-  height: 30px;
   line-height: 30px;
   border: 1px solid #999999;
 }
@@ -295,6 +294,10 @@
 }
 .fv_display_field > .fv_input_holder > div {
   font-size: 14px;
+}
+.fv_boolean_field > .fv_input_holder {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .fv_object_field > .fv_input_holder {
   padding-left: 10px;

@@ -1,87 +1,6 @@
+@import("FVChoiceOption.js");
+
 fieldval_ui_extend(FVChoiceField, FVField);
-
-function FVChoiceOption(choice, parent){
-    var choice_option = this;
-
-    choice_option.parent = parent;
-
-    if(choice===null){
-        choice_option.choice_text = parent.empty_text;
-        choice_option.choice_value = null;
-    } else if((typeof choice)==="object"){
-        choice_option.choice_value = choice[0];
-        choice_option.choice_text = choice[1].toString();
-    } else {
-        choice_option.choice_value = choice;
-        choice_option.choice_text = choice.toString();
-    }
-
-    choice_option.element = $("<div />").addClass("fv_choice_option")
-    .text(choice_option.choice_text)
-    .on("mousedown",function(e){
-        parent.mousedown();
-    })
-    .on("mouseup",function(e){
-        parent.mouseup();
-    })
-    .on(FVForm.button_event,function(e){
-        parent.default_click(e, choice_option);
-    })
-}
-
-FVChoiceOption.prototype.matches_filter = function(filter){
-    var choice_option = this;
-
-    if(choice_option.choice_value===null){
-        if(filter.length===0){
-            return true;
-        }
-    } else if(choice_option.choice_text.toLowerCase().indexOf(filter.toLowerCase())===0) {
-        return true;
-    }
-}
-
-FVChoiceOption.prototype.get_value = function(){
-    var choice_option = this;
-
-    return choice_option.choice_value;
-}
-
-FVChoiceOption.prototype.add_highlight = function(){
-    var choice_option = this;
-    choice_option.element.addClass("fv_highlighted");
-}
-
-FVChoiceOption.prototype.remove_highlight = function(){
-    var choice_option = this;
-    choice_option.element.removeClass("fv_highlighted");
-}
-
-FVChoiceOption.prototype.add_selected = function(){
-    var choice_option = this;
-    choice_option.element.addClass("fv_selected");
-}
-
-FVChoiceOption.prototype.remove_selected = function(){
-    var choice_option = this;
-    choice_option.element.removeClass("fv_selected");
-}
-
-FVChoiceOption.prototype.hide = function(){
-    var choice_option = this;
-    choice_option.element.hide();
-}
-
-FVChoiceOption.prototype.show = function(){
-    var choice_option = this;
-    choice_option.element.show()
-}
-
-FVChoiceOption.prototype.get_display = function(){
-    var choice_option = this;
-
-    return $("<div />").text(choice_option.choice_text);
-}
 
 function FVChoiceField(name, options) {
     var field = this;
@@ -103,7 +22,9 @@ function FVChoiceField(name, options) {
     .append(
         field.filter_input = $("<input type='text' />")
         .on('focus',function(e){
-            field.focus();
+            setTimeout(function(){
+                field.input_focus();
+            },1);
         })
         .attr("placeholder", name)
         .addClass("filter_input")
@@ -233,19 +154,22 @@ FVChoiceField.prototype.show_list = function(){
 
     if(!field.is_disabled){
 
+        if(field.list_open){
+            return field;
+        }
+
         field.input_holder.css("min-height", field.current_display.outerHeight()+"px");
 
         field.filter_input.removeClass("fv_filter_hidden");
         field.current_display.hide();
-        if(!FVForm.is_mobile){
-            if(!field.filter_input.is(":focus")){
-                field.filter_input.focus();
-            }
-        }
         field.choice_list.show();
         field.current_highlight = field.selected_value;
         field.filter(field.filter_input.val(), true);
+
+        field.list_open = true;
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.hide_list = function(){
@@ -261,6 +185,10 @@ FVChoiceField.prototype.hide_list = function(){
     field.filter_input.addClass("fv_filter_hidden")
     field.current_display.show();
     field.choice_list.hide();
+
+    field.list_open = false;
+
+    return field;
 }
 
 FVChoiceField.prototype.filter = function(text, initial){
@@ -324,8 +252,26 @@ FVChoiceField.prototype.select_option = function(choice_option, options){
         )
     }
     field.hide_list();
-    
-    field.filter_input.blur().val("");
+
+    if(!options.val_event){
+        var next;
+        if(field.filter_input.is(":focus")){
+            var tabables = $("input[tabindex != '-1']:visible,textarea[tabindex != '-1']:visible,button[tabindex != '-1']:visible");
+            if(tabables){
+                var index = tabables.index(field.filter_input);
+                if(index!==-1){
+                    next = tabables[index + 1];
+                }
+            }
+        }
+        if(next){
+            next.focus();
+        } else {
+            field.blur();
+        }
+    }
+
+    field.filter_input.val("");
     
     if(!options.ignore_change){
         field.did_change(options);
@@ -423,15 +369,22 @@ FVChoiceField.prototype.select_highlighted = function(){
     }
 }
 
-FVChoiceField.prototype.focus = function() {
+FVChoiceField.prototype.input_focus = function(){
+    var field = this;
+
+    field.filter_input.val("");
+
+    field.show_list();
+
+    field.did_focus();
+}
+
+FVChoiceField.prototype.focus = function(from_input) {
     var field = this;
     
-    field.filter_input.val("");
-    setTimeout(function(){
-        field.show_list();
-    },1);
+    field.filter_input.focus();
 
-    return field;
+    return FVField.prototype.focus.call(this);
 }
 
 FVChoiceField.prototype.blur = function() {
@@ -439,7 +392,9 @@ FVChoiceField.prototype.blur = function() {
     
     field.hide_list();
 
-    return field;
+    field.did_blur();
+
+    return FVField.prototype.blur.call(this);
 }
 
 FVChoiceField.prototype.val = function(set_val, options) {
@@ -455,6 +410,8 @@ FVChoiceField.prototype.val = function(set_val, options) {
             for(var i = 0; i < field.option_array.length; i++){
                 var choice_option = field.option_array[i];
                 if(set_val === choice_option.get_value()){
+                    options = options || {};
+                    options.val_event = true;
                     field.select_option(choice_option, options);
                     break;
                 }
