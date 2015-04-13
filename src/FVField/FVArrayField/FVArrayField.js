@@ -6,6 +6,10 @@ function FVArrayField(name, options) {
 
     FVArrayField.superConstructor.call(this, name, options);
 
+    field.hide_add_button = field.options.hide_add_button || false;
+    field.hide_remove_button = field.options.hide_remove_button || false;
+    field.sortable = field.options.sortable || false;
+
     field.fields = [];
 
     field.add_button_text = field.options.add_button_text!==undefined ? field.options.add_button_text : "+";
@@ -13,11 +17,14 @@ function FVArrayField(name, options) {
 
     field.element.addClass("fv_array_field");
     field.input_holder.append(
-        field.fields_element = $("<div />").addClass("fv_array_fields"),
-        field.create_add_field_button()
+        field.fields_element = $("<div />").addClass("fv_array_fields")
     )
 
-    field.sortable = field.options.sortable===undefined || field.options.sortable!==false;
+    if (!field.hide_add_button) {
+        field.input_holder.append(
+            field.create_add_field_button()
+        )
+    }
     
     if(field.sortable){
         field.element.addClass("fv_array_field_sortable");
@@ -101,6 +108,17 @@ FVArrayField.prototype.add_field = function(inner_field){
     }
 }
 
+FVArrayField.prototype.remove = function(from_parent){
+    var field = this;
+
+    for(var i=0; i<field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.remove();
+    }
+
+    FVField.prototype.remove.call(this, from_parent);
+}
+
 FVArrayField.prototype.remove_field = function(target){
     var field = this;
 
@@ -109,13 +127,11 @@ FVArrayField.prototype.remove_field = function(target){
         index = target;
         inner_field = field.fields[target];
     } else if(target instanceof FVField){
-        for(var i in field.fields){
-            if(field.fields.hasOwnProperty(i)){
-                if(field.fields[i]===target){
-                    index = i;
-                    inner_field = field.fields[i];
-                    break;
-                }
+        for(var i=0; i<field.fields.length; i++){
+            if(field.fields[i]===target){
+                index = i;
+                inner_field = field.fields[i];
+                break;
             }
         }
     } else {
@@ -152,7 +168,7 @@ FVArrayField.prototype.fields_error = function(error){
         }
 
     } else {
-        for(var i in field.fields){
+        for(var i=0; i<field.fields.length; i++){
             var inner_field = field.fields[i];
             inner_field.error(null);
         }
@@ -195,6 +211,35 @@ FVArrayField.prototype.enable = function(){
         add_field_button.show();
     }
     return FVField.prototype.enable.call(this);
+}
+
+FVArrayField.prototype.focus = function() {
+    var field = this;
+    
+    for(var i = 0; i < field.fields.length; i++){
+        var inner_field = field.fields[i];
+        if(inner_field){
+            inner_field.focus();
+            return field;
+        }    
+    }
+
+    return FVField.prototype.focus.call(this);
+}
+
+FVArrayField.prototype.blur = function() {
+    var field = this;
+
+    field.suppress_blur = true;
+    for(var i = 0; i < field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.blur();
+    }
+    field.suppress_blur = false;
+
+    field.did_blur();
+
+    return FVField.prototype.blur.call(this);
 }
 
 FVArrayField.prototype.error = function(error) {
@@ -276,8 +321,18 @@ FVArrayField.prototype.val = function(set_val, options) {
                     inner_field = field.fields[i];
                 }
                 inner_field.val(set_val[i], options);
-
         	}
+            if(set_val.length<field.fields.length){
+                var to_remove = [];
+                for(var i = set_val.length; i < field.fields.length; i++){
+                    to_remove.push(field.fields[i]);
+                }
+
+                for(var i = 0; i < to_remove.length; i++){
+                    var inner_field = to_remove[i];
+                    inner_field.remove();
+                }
+            }
             
             if (!options.ignore_change) {
                 field.did_change(options);

@@ -94,7 +94,6 @@
   padding-right: 5px;
   box-sizing: border-box;
   margin: 0px;
-  height: 30px;
   line-height: 30px;
   border: 1px solid #999999;
 }
@@ -145,6 +144,9 @@
   border-right: 6px solid transparent;
   border-left: 6px solid transparent;
   content: "";
+}
+.fv_field.with_remove_button > .fv_input_holder {
+  padding-right: 35px;
 }
 .fv_field > .fv_field_remove_button {
   -webkit-appearance: none;
@@ -293,6 +295,10 @@
 .fv_display_field > .fv_input_holder > div {
   font-size: 14px;
 }
+.fv_boolean_field > .fv_input_holder {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 .fv_object_field > .fv_input_holder {
   padding-left: 10px;
 }
@@ -304,10 +310,6 @@
   padding-top: 0px;
   padding-bottom: 5px;
   min-height: 35px;
-}
-.fv_array_field > .fv_input_holder > .fv_array_fields > .fv_field > .fv_input_holder,
-.fv_array_field > .fv_input_holder > .fv_array_fields > .dd-dragel > .fv_field > .fv_input_holder {
-  padding-right: 35px;
 }
 .fv_array_field > .fv_input_holder > .fv_array_fields > .fv_field > .fv_field_title,
 .fv_array_field > .fv_input_holder > .fv_array_fields > .dd-dragel > .fv_field > .fv_field_title {

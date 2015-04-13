@@ -60,11 +60,15 @@ FVDateField.prototype.add_element_from_component = function(component, component
         .on("keyup",function(){
             field.did_change()
         })
-
-        input.blur(function(){
+        .on("focus",function(e){
+            field.did_focus();
+        })
+        .on("blur",function(e){
             var input_val = input.val();
             var padded = DateVal.pad_to_valid(input_val, component_value);
             input.val(padded);
+
+            field.did_blur();
         })
 
         field.inputs.push(input);
@@ -114,21 +118,27 @@ FVDateField.prototype.focus = function() {
     
     var input = field.inputs[0];
     if(input){
-        input.blur();
+        input.focus();
     }
 
-    return field;
+    return FVField.prototype.focus.call(this);
 }
 
 FVDateField.prototype.blur = function() {
     var field = this;
+
+    field.suppress_blur = true;
     for(var i = 0; i < field.inputs.length; i++){
         var input = field.inputs[i];
         if(input){
             input.blur();
         }
     }
-    return field;
+    field.suppress_blur = false;
+
+    field.did_blur();
+
+    return FVField.prototype.blur.call(this);
 }
 
 FVDateField.prototype.val = function(set_val, options) {

@@ -109,7 +109,6 @@
 			padding-right: 5px;
 			box-sizing: border-box;
 			margin: 0px;
-			height: 30px;
 			line-height: 30px;
 			border: 1px solid @fv_border_color;
 		}
@@ -167,6 +166,12 @@
 		};
 	}
 
+	&.with_remove_button{
+		>.fv_input_holder{
+			padding-right: 35px;
+		}
+	}
+	
 	>.fv_field_remove_button{
 		-webkit-appearance: none;
 		cursor: pointer;

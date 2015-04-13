@@ -57,6 +57,12 @@ function FVTextField(name, options) {
             field.check_changed();
         },0);
     })
+    .on("focus",function(){
+        field.did_focus();
+    })
+    .on("blur",function(){
+        field.did_blur();
+    })
     .appendTo(field.input_holder);
 }
 
@@ -115,14 +121,18 @@ FVTextField.prototype.enable = function() {
 
 FVTextField.prototype.focus = function() {
     var field = this;
+    
     field.input.focus();
-    return field;
+
+    return FVField.prototype.focus.call(this);
 }
 
 FVTextField.prototype.blur = function() {
     var field = this;
+    
     field.input.blur();
-    return field;
+
+    return FVField.prototype.blur.call(this);
 }
 
 FVTextField.numeric_regex = /^[-+]?\d*\.?\d+$/;

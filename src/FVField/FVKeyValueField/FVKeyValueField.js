@@ -203,6 +203,46 @@ FVKeyValueField.prototype.enable = function(){
     return FVField.prototype.enable.call(this);
 }
 
+FVKeyValueField.prototype.focus = function() {
+    var field = this;
+    
+    for(var i = 0; i < field.fields.length; i++){
+        var inner_field = field.fields[i];
+        if(inner_field){
+            inner_field.focus();
+            return field;
+        }    
+    }
+
+    return FVField.prototype.focus.call(this);
+}
+
+FVKeyValueField.prototype.blur = function() {
+    var field = this;
+
+    field.suppress_blur = true;
+    for(var i = 0; i < field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.blur();
+    }
+    field.suppress_blur = false;
+
+    field.did_blur();
+
+    return FVField.prototype.blur.call(this);
+}
+
+FVKeyValueField.prototype.remove = function(from_parent){
+    var field = this;
+
+    for(var i=0; i<field.fields.length; i++){
+        var inner_field = field.fields[i];
+        inner_field.remove();
+    }
+
+    FVField.prototype.remove.call(this, from_parent);
+}
+
 FVKeyValueField.prototype.error = function(error) {
     var field = this;
 
