@@ -64,6 +64,7 @@
 				top: 28px;
 				display: none;
 				max-height: 200px;
+				background-color: white;
 				border: 1px solid @fv_border_color;
 				border-top: none;
 				width: 100%;

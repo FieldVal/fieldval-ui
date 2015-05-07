@@ -248,6 +248,7 @@
   top: 28px;
   display: none;
   max-height: 200px;
+  background-color: white;
   border: 1px solid #999999;
   border-top: none;
   width: 100%;
