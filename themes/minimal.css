@@ -244,10 +244,11 @@
 }
 .fv_choice_field > .fv_input_holder > .fv_choice_input > .fv_choice_list {
   position: absolute;
-  z-index: 1;
+  z-index: 999999999;
   top: 28px;
   display: none;
   max-height: 200px;
+  background-color: white;
   border: 1px solid #999999;
   border-top: none;
   width: 100%;

@@ -16,14 +16,26 @@ function FVChoiceOption(choice, parent){
 
     choice_option.element = $("<div />").addClass("fv_choice_option")
     .text(choice_option.choice_text)
-    .on("mousedown",function(e){
+
+    choice_option.add_mouse_events();
+}
+
+FVChoiceOption.prototype.add_mouse_events = function(){
+    var choice_option = this;
+
+    var parent = choice_option.parent;
+
+    choice_option.element.on("mousedown",function(e){
         parent.mousedown();
+        e.preventDefault();
     })
     .on("mouseup",function(e){
         parent.mouseup();
+        e.preventDefault();
     })
     .on(FVForm.button_event,function(e){
         parent.default_click(e, choice_option);
+        e.preventDefault();
     })
 }
 

@@ -636,14 +636,26 @@ function FVChoiceOption(choice, parent){
 
     choice_option.element = $("<div />").addClass("fv_choice_option")
     .text(choice_option.choice_text)
-    .on("mousedown",function(e){
+
+    choice_option.add_mouse_events();
+}
+
+FVChoiceOption.prototype.add_mouse_events = function(){
+    var choice_option = this;
+
+    var parent = choice_option.parent;
+
+    choice_option.element.on("mousedown",function(e){
         parent.mousedown();
+        e.preventDefault();
     })
     .on("mouseup",function(e){
         parent.mouseup();
+        e.preventDefault();
     })
     .on(FVForm.button_event,function(e){
         parent.default_click(e, choice_option);
+        e.preventDefault();
     })
 }
 
@@ -712,6 +724,8 @@ function FVChoiceField(name, options) {
     field.choices = field.options.choices || [];
     field.allow_empty = field.options.allow_empty || false;
     field.empty_text = field.options.empty_text || "";
+    field.clear_filter_on_select = field.options.clear_filter_on_select!=undefined ? field.options.clear_filter_on_select : true;
+    field.clear_filter_on_focus = field.options.clear_filter_on_focus!=undefined ? field.options.clear_filter_on_focus : true;
 
     field.option_array = [];
     field.selected_value = null;
@@ -777,7 +791,6 @@ function FVChoiceField(name, options) {
 
     if(field.allow_empty){
         var choice_option = new field.option_class(null, field);
-        field.option_array.push(choice_option);
         field.add_option(choice_option);
     }
 
@@ -785,7 +798,6 @@ function FVChoiceField(name, options) {
         var choice = field.choices[i];
 
         var choice_option = new field.option_class(choice, field);
-        field.option_array.push(choice_option);
         field.add_option(choice_option);
     }
 
@@ -972,7 +984,9 @@ FVChoiceField.prototype.select_option = function(choice_option, options){
         }
     }
 
-    field.filter_input.val("");
+    if(field.clear_filter_on_select){
+        field.filter_input.val("");
+    }
     
     if(!options.ignore_change){
         field.did_change(options);
@@ -1038,10 +1052,11 @@ FVChoiceField.prototype.move_into_view = function(target){
     },1);
 }
 
-FVChoiceField.prototype.add_option = function(option_element, initial){
+FVChoiceField.prototype.add_option = function(choice_option, initial){
     var field = this;
 
-    field.choice_list.append(option_element.element);
+    field.option_array.push(choice_option);
+    field.choice_list.append(choice_option.element);
 }
 
 FVChoiceField.prototype.default_click = function(e, choice_option){
@@ -1073,7 +1088,9 @@ FVChoiceField.prototype.select_highlighted = function(){
 FVChoiceField.prototype.input_focus = function(){
     var field = this;
 
-    field.filter_input.val("");
+    if(field.clear_filter_on_focus){
+        field.filter_input.val("");
+    }
 
     field.show_list();
 

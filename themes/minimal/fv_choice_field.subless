@@ -60,10 +60,11 @@
 
 			>.fv_choice_list{
 				position: absolute;
-				z-index: 1;
+				z-index: 999999999;
 				top: 28px;
 				display: none;
 				max-height: 200px;
+				background-color: white;
 				border: 1px solid @fv_border_color;
 				border-top: none;
 				width: 100%;
