@@ -14,4 +14,12 @@
 			font-weight: bold;
 		}
 	}
+
+	&.fv_field_error{
+		>.fv_input_holder{
+			>.fv_date_input{
+				border: 1px solid @fv_error_color;
+			}
+		}
+	}
 }

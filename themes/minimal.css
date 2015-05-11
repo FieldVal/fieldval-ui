@@ -41,12 +41,6 @@
 .fv_field.fv_field_error > .fv_field_title {
   color: #aa0000;
 }
-.fv_field.fv_field_error > .fv_input_holder > input {
-  border: 1px solid #aa0000;
-}
-.fv_field.fv_field_error > .fv_input_holder > textarea {
-  border: 1px solid #aa0000;
-}
 .fv_field.fv_disabled > .fv_input_holder > input {
   color: #a8a8a8;
   background-color: #efefef;
@@ -86,25 +80,6 @@
 }
 .fv_field > .fv_input_holder {
   box-sizing: border-box;
-}
-.fv_field > .fv_input_holder > input {
-  border-radius: 0px;
-  -webkit-border-radius: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
-  box-sizing: border-box;
-  margin: 0px;
-  line-height: 30px;
-  border: 1px solid #999999;
-}
-.fv_field > .fv_input_holder > textarea {
-  border-radius: 0px;
-  -webkit-border-radius: 0px;
-  margin: 0px;
-  resize: none;
-  min-height: 100px;
-  box-sizing: border-box;
-  border: 1px solid #999999;
 }
 .fv_field > .fv_field_move_handle {
   cursor: pointer;
@@ -167,14 +142,27 @@
 .fv_field > .fv_field_remove_button:active {
   background-color: #770000;
 }
-.fv_text_field > .fv_input_holder > textarea.fv_text_input {
+.fv_text_field > .fv_input_holder > .fv_text_input {
   width: 100%;
   font-size: 14px;
   vertical-align: top;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  box-sizing: border-box;
+  margin: 0px;
+  resize: none;
+  border: 1px solid #999999;
+}
+.fv_text_field > .fv_input_holder > textarea.fv_text_input {
+  min-height: 100px;
 }
 .fv_text_field > .fv_input_holder > input.fv_text_input {
-  width: 100%;
-  font-size: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+  line-height: 30px;
+}
+.fv_text_field.fv_field_error > .fv_input_holder > .fv_text_input {
+  border: 1px solid #aa0000;
 }
 .fv_date_field > .fv_input_holder > .fv_date_input {
   font-size: 14px;
@@ -188,6 +176,9 @@
   width: 15px;
   text-align: center;
   font-weight: bold;
+}
+.fv_date_field.fv_field_error > .fv_input_holder > .fv_date_input {
+  border: 1px solid #aa0000;
 }
 .fv_choice_field > .fv_input_holder > .fv_choice_input {
   font-size: 14px;
