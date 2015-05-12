@@ -16,9 +16,33 @@
   box-sizing: border-box;
   vertical-align: top;
 }
+.fv_field.rows,
+.fv_field.rows .fv_field {
+  /* Float fix */
+}
+.fv_field.rows:after,
+.fv_field.rows .fv_field:after {
+  clear: both;
+}
+.fv_field.rows:before,
+.fv_field.rows .fv_field:before,
+.fv_field.rows:after,
+.fv_field.rows .fv_field:after {
+  content: " ";
+  display: table;
+}
 .fv_field.rows > .fv_field_title,
 .fv_field.rows .fv_field > .fv_field_title {
   width: 20%;
+  float: left;
+  padding-top: 9px;
+  vertical-align: top;
+}
+.fv_field.rows > .fv_field_description,
+.fv_field.rows .fv_field > .fv_field_description {
+  width: 20%;
+  float: left;
+  clear: left;
   vertical-align: top;
 }
 .fv_field.rows > .fv_input_holder,
@@ -77,6 +101,8 @@
 }
 .fv_field > .fv_field_description {
   font-size: 12px;
+  padding-right: 5px;
+  box-sizing: border-box;
 }
 .fv_field > .fv_input_holder {
   box-sizing: border-box;
@@ -165,15 +191,25 @@
   border: 1px solid #aa0000;
 }
 .fv_date_field > .fv_input_holder > .fv_date_input {
+  width: 100%;
+  vertical-align: top;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  box-sizing: border-box;
+  margin: 0px;
+  resize: none;
+  border: 1px solid #999999;
   font-size: 14px;
   display: inline-block;
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
+  line-height: 30px;
 }
 .fv_date_field > .fv_input_holder > .fv_date_separator {
   display: inline-block;
   width: 15px;
+  line-height: 34px;
   text-align: center;
   font-weight: bold;
 }
@@ -286,6 +322,8 @@
 }
 .fv_display_field > .fv_input_holder > div {
   font-size: 14px;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 .fv_boolean_field > .fv_input_holder {
   padding-top: 5px;
