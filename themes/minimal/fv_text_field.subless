@@ -1,13 +1,33 @@
 .fv_text_field{
 	>.fv_input_holder{
-		>textarea.fv_text_input{
+		>.fv_text_input{
 			width: 100%;
 			font-size: 14px;
 			vertical-align: top;
+
+			border-radius: 0px;
+			-webkit-border-radius: 0px;
+			box-sizing: border-box;
+			margin: 0px;
+			resize: none;
+			border: 1px solid @fv_border_color;
 		}
+		>textarea.fv_text_input{
+			min-height: 100px;
+		}
+
 		>input.fv_text_input{
-			width: 100%;
-			font-size: 14px;
+			padding-left: 5px;
+			padding-right: 5px;
+			line-height: 30px;
+		}
+	}
+
+	&.fv_field_error{
+		>.fv_input_holder{
+			>.fv_text_input{
+				border: 1px solid @fv_error_color;
+			}
 		}
 	}
 }

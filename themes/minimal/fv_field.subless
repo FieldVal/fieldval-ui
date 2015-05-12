@@ -37,14 +37,6 @@
 		>.fv_field_title{
 			color: @fv_error_color;
 		}
-		>.fv_input_holder{
-			>input{
-				border: 1px solid @fv_error_color;
-			}
-			>textarea{
-				border: 1px solid @fv_error_color;
-			}
-		}
 	}
 
 	&.fv_disabled{
@@ -102,25 +94,6 @@
 
 	>.fv_input_holder{
 		box-sizing: border-box;
-		>input{
-			border-radius: 0px;
-			-webkit-border-radius: 0px;
-			padding-left: 5px;
-			padding-right: 5px;
-			box-sizing: border-box;
-			margin: 0px;
-			line-height: 30px;
-			border: 1px solid @fv_border_color;
-		}
-		>textarea{
-			border-radius: 0px;
-			-webkit-border-radius: 0px;
-			margin: 0px;
-			resize: none;
-			min-height: 100px;
-			box-sizing: border-box;
-			border: 1px solid @fv_border_color;
-		}
 	}
 
 	
