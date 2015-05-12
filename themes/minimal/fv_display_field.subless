@@ -2,6 +2,8 @@
 	>.fv_input_holder{
 		>div{
 			font-size: 14px;
+			padding-top: 10px;
+			padding-bottom: 5px;
 		}
 	}
 }

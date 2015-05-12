@@ -7,8 +7,26 @@
 
 	&.rows{
 		&, .fv_field{
+				
+			/* Float fix */
+			&:after{
+				clear: both;
+			}
+			&:before, &:after {
+			    content: " ";
+			    display: table;
+			}
+
 			>.fv_field_title{
 				width: 20%;
+				float: left;
+				padding-top: 9px;
+				vertical-align: top;
+			}
+			>.fv_field_description{
+				width: 20%;
+				float: left;
+				clear: left;
 				vertical-align: top;
 			}
 			>.fv_input_holder{
@@ -90,6 +108,8 @@
 
 	>.fv_field_description{
 		font-size: 12px;
+		padding-right: 5px;
+		box-sizing: border-box;
 	}
 
 	>.fv_input_holder{
