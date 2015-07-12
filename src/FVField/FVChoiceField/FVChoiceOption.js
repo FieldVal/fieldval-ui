@@ -37,6 +37,8 @@ FVChoiceOption.prototype.add_mouse_events = function(){
         parent.default_click(e, choice_option);
         e.preventDefault();
     })
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.matches_filter = function(filter){
@@ -60,31 +62,43 @@ FVChoiceOption.prototype.get_value = function(){
 FVChoiceOption.prototype.add_highlight = function(){
     var choice_option = this;
     choice_option.element.addClass("fv_highlighted");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.remove_highlight = function(){
     var choice_option = this;
     choice_option.element.removeClass("fv_highlighted");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.add_selected = function(){
     var choice_option = this;
     choice_option.element.addClass("fv_selected");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.remove_selected = function(){
     var choice_option = this;
     choice_option.element.removeClass("fv_selected");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.hide = function(){
     var choice_option = this;
     choice_option.element.hide();
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.show = function(){
     var choice_option = this;
-    choice_option.element.show()
+    choice_option.element.show();
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.get_display = function(){

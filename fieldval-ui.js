@@ -29,7 +29,7 @@ function FVField(name, options) {
         })
         .addClass("fv_field fv_form")
         .data("field",field)
-        
+
         var submit_function = function(event){
             event.preventDefault();
             field.submit();
@@ -129,6 +129,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
 
     field.name_input = new FVTextField("Key").on_change(function(name_val){
         field.key_name = field.key_value_parent.change_key_name(field.key_name, name_val, field);
+        field.key_value_parent.did_change();
     });
     field.name_input.element.addClass("fv_key_value_name_input")
     field.title.replaceWith(field.name_input.element);
@@ -152,12 +153,12 @@ FVField.prototype.init = function(){
     return field;
 }
 
-FVField.prototype.remove = function(from_parent){
+FVField.prototype.remove = function(from_parent, options){
     var field = this;
 
     field.element.remove();
     if(field.parent && !from_parent){//from_parent prevents cycling
-        field.parent.remove_field(field);
+        field.parent.remove_field(field, options);
         field.parent = null;
     }
 
@@ -218,7 +219,7 @@ FVField.prototype.did_change = function(options){
 
     if (options === undefined) {
         options = {}
-    }   
+    }
 
     var val = field.val();
 
@@ -389,6 +390,7 @@ FVField.prototype.error = function(error) {
         }
     }
 }
+
 fieldval_ui_extend(FVTextField, FVField);
 
 function FVTextField(name, options) {
@@ -417,11 +419,11 @@ function FVTextField(name, options) {
     } else {
         field.input = $("<input type='"+field.input_type+"' />")
     }
-    
+
     field.enter_callbacks = [];
 
     field.previous_value = {};//Object to ensure invalid initial comparison
-    
+
     field.input.addClass("fv_text_input")
     .attr("placeholder", name)
     .on("keydown",function(e){
@@ -465,13 +467,15 @@ FVTextField.prototype.check_changed = function(){
         field.previous_value = this_value;
         field.did_change()
     }
+
+    return field;
 }
 
 FVTextField.prototype.on_enter = function(callback){
     var field = this;
 
     field.enter_callbacks.push(callback);
-    
+
     return field;
 }
 
@@ -512,7 +516,7 @@ FVTextField.prototype.enable = function() {
 
 FVTextField.prototype.focus = function() {
     var field = this;
-    
+
     field.input.focus();
 
     return FVField.prototype.focus.call(this);
@@ -520,7 +524,7 @@ FVTextField.prototype.focus = function() {
 
 FVTextField.prototype.blur = function() {
     var field = this;
-    
+
     field.input.blur();
 
     return FVField.prototype.blur.call(this);
@@ -544,7 +548,7 @@ FVTextField.prototype.val = function(set_val, options) {
         return value;
     } else {
         field.input.val(set_val);
-        
+
         if (!options.ignore_change) {
             field.did_change(options);
         }
@@ -552,6 +556,7 @@ FVTextField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 fieldval_ui_extend(FVPasswordField, FVTextField);
 
 function FVPasswordField(name) {
@@ -657,6 +662,8 @@ FVChoiceOption.prototype.add_mouse_events = function(){
         parent.default_click(e, choice_option);
         e.preventDefault();
     })
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.matches_filter = function(filter){
@@ -680,31 +687,43 @@ FVChoiceOption.prototype.get_value = function(){
 FVChoiceOption.prototype.add_highlight = function(){
     var choice_option = this;
     choice_option.element.addClass("fv_highlighted");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.remove_highlight = function(){
     var choice_option = this;
     choice_option.element.removeClass("fv_highlighted");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.add_selected = function(){
     var choice_option = this;
     choice_option.element.addClass("fv_selected");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.remove_selected = function(){
     var choice_option = this;
     choice_option.element.removeClass("fv_selected");
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.hide = function(){
     var choice_option = this;
     choice_option.element.hide();
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.show = function(){
     var choice_option = this;
-    choice_option.element.show()
+    choice_option.element.show();
+
+    return choice_option;
 }
 
 FVChoiceOption.prototype.get_display = function(){
@@ -712,6 +731,7 @@ FVChoiceOption.prototype.get_display = function(){
 
     return $("<div />").text(choice_option.choice_text);
 }
+
 
 fieldval_ui_extend(FVChoiceField, FVField);
 
@@ -808,20 +828,24 @@ function FVChoiceField(name, options) {
 FVChoiceField.prototype.mousedown = function(){
     var field = this;
     field.is_mousedown = true;
+    return field;
 }
 FVChoiceField.prototype.mouseup = function(){
     var field = this;
     field.is_mousedown = false;
+    return field;
 }
 
 FVChoiceField.prototype.filter_enter_up = function() {
     var field = this;
     field.select_highlighted();
+    return field;
 }
 
 FVChoiceField.prototype.filter_esc_up = function() {
     var field = this;
     field.hide_list();
+    return field;
 }
 
 FVChoiceField.prototype.filter_key_up = function(e) {
@@ -830,22 +854,22 @@ FVChoiceField.prototype.filter_key_up = function(e) {
     if(e.keyCode===9){
         //Tab
         e.preventDefault();
-        return;
-    }if(e.keyCode===40){
+        return field;
+    } else if(e.keyCode===40){
         //Move down
         field.move_down();
         e.preventDefault();
-        return;
+        return field;
     } else if(e.keyCode===38){
         //Move up
         field.move_up();
         e.preventDefault();
-        return;
+        return field;
     } else if(e.keyCode===13){
         //Enter press
         field.filter_enter_up();
         e.preventDefault();
-        return;
+        return field;
     } else if(e.keyCode===27){
         //Esc
         field.filter_esc_up();
@@ -853,6 +877,7 @@ FVChoiceField.prototype.filter_key_up = function(e) {
     }
 
     field.filter(field.filter_input.val());
+    return field;
 }
 
 FVChoiceField.prototype.filter_key_down = function(e) {
@@ -860,6 +885,7 @@ FVChoiceField.prototype.filter_key_down = function(e) {
     if(e.keyCode===38 || e.keyCode===40 || e.keyCode===13){
         e.preventDefault();
     }
+    return field;
 }
 
 FVChoiceField.prototype.show_list = function(){
@@ -931,6 +957,8 @@ FVChoiceField.prototype.filter = function(text, initial){
     if(field.current_highlight){
         field.current_highlight.add_highlight();
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.value_to_text = function(value){
@@ -987,10 +1015,12 @@ FVChoiceField.prototype.select_option = function(choice_option, options){
     if(field.clear_filter_on_select){
         field.filter_input.val("");
     }
-    
+
     if(!options.ignore_change){
         field.did_change(options);
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.move_up = function(){
@@ -1007,6 +1037,8 @@ FVChoiceField.prototype.move_up = function(){
             field.current_highlight = null;
         }
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.move_down = function(){
@@ -1020,7 +1052,7 @@ FVChoiceField.prototype.move_down = function(){
     } else {
         var index = field.option_array.indexOf(field.current_highlight);
         if(index<field.option_array.length-1){
-            
+
             field.current_highlight.remove_highlight();
 
             field.current_highlight = field.option_array[index+1];
@@ -1028,6 +1060,8 @@ FVChoiceField.prototype.move_down = function(){
             field.move_into_view();
         }
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.move_into_view = function(target){
@@ -1045,11 +1079,13 @@ FVChoiceField.prototype.move_into_view = function(target){
         }
 
         field.choice_list.scrollTop(
-            field.choice_list.scrollTop() - 
-            field.choice_list.offset().top + 
+            field.choice_list.scrollTop() -
+            field.choice_list.offset().top +
             offset - 50
         );
     },1);
+
+    return field;
 }
 
 FVChoiceField.prototype.add_option = function(choice_option, initial){
@@ -1057,6 +1093,8 @@ FVChoiceField.prototype.add_option = function(choice_option, initial){
 
     field.option_array.push(choice_option);
     field.choice_list.append(choice_option.element);
+
+    return field;
 }
 
 FVChoiceField.prototype.default_click = function(e, choice_option){
@@ -1069,12 +1107,16 @@ FVChoiceField.prototype.default_click = function(e, choice_option){
         e.originalEvent.stopPropagation();
     }
     field.select_option(choice_option);
+
+    return field;
 }
 
 FVChoiceField.prototype.finalize_option = function(option_element, initial){
     var field = this;
 
     option_element.appendTo(field.choice_list)
+
+    return field;
 }
 
 FVChoiceField.prototype.select_highlighted = function(){
@@ -1083,6 +1125,8 @@ FVChoiceField.prototype.select_highlighted = function(){
     if(field.current_highlight){
         field.select_option(field.current_highlight);
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.input_focus = function(){
@@ -1095,11 +1139,13 @@ FVChoiceField.prototype.input_focus = function(){
     field.show_list();
 
     field.did_focus();
+
+    return field;
 }
 
 FVChoiceField.prototype.focus = function(from_input) {
     var field = this;
-    
+
     field.filter_input.focus();
 
     return FVField.prototype.focus.call(this);
@@ -1107,7 +1153,7 @@ FVChoiceField.prototype.focus = function(from_input) {
 
 FVChoiceField.prototype.blur = function() {
     var field = this;
-    
+
     field.hide_list();
 
     field.did_blur();
@@ -1138,6 +1184,7 @@ FVChoiceField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 fieldval_ui_extend(FVDateField, FVField);
 
 function FVDateField(name, options) {//format is currently unused
@@ -1157,7 +1204,7 @@ function FVDateField(name, options) {//format is currently unused
     var format_error = DateVal.date_format().check(field.format_string, function(emit_format_array){
         field.format_array = emit_format_array;
     })
-    
+
     if(format_error){
         console.error(format_error.error_message);
         return;
@@ -1214,6 +1261,8 @@ FVDateField.prototype.add_element_from_component = function(component, component
         field.inputs.push(input);
         field.input_holder.append(input)
     }
+
+    return field;
 }
 
 FVDateField.prototype.icon = function(params) {
@@ -1255,7 +1304,7 @@ FVDateField.prototype.enable = function() {
 
 FVDateField.prototype.focus = function() {
     var field = this;
-    
+
     var input = field.inputs[0];
     if(input){
         input.focus();
@@ -1345,6 +1394,7 @@ FVDateField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 fieldval_ui_extend(FVBooleanField, FVField);
 
 function FVBooleanField(name, options) {
@@ -1406,7 +1456,7 @@ FVBooleanField.prototype.val = function(set_val, options) {
             set_val = false;
         }
        	field.input.prop('checked', set_val);
-        
+
         if (!options.ignore_change) {
             field.did_change(options);
         }
@@ -1414,6 +1464,7 @@ FVBooleanField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 fieldval_ui_extend(FVObjectField, FVField);
 
 function FVObjectField(name, options) {
@@ -1437,6 +1488,8 @@ FVObjectField.prototype.init = function(){
             inner_field.init();
         }
     }
+
+    return field;
 }
 
 FVObjectField.prototype.remove = function(from_parent){
@@ -1445,11 +1498,11 @@ FVObjectField.prototype.remove = function(from_parent){
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
-            inner_field.remove();
+            inner_field.remove(false,{ignore_change:true});
         }
     }
 
-    FVField.prototype.remove.call(this, from_parent);
+    return FVField.prototype.remove.call(this, from_parent);
 }
 
 FVObjectField.prototype.add_field = function(name, inner_field){
@@ -1462,8 +1515,10 @@ FVObjectField.prototype.add_field = function(name, inner_field){
     return field;
 }
 
-FVObjectField.prototype.remove_field = function(target){
+FVObjectField.prototype.remove_field = function(target, options){
     var field = this;
+
+    options = options || {};
 
     var inner_field,key;
     if(typeof target === "string"){
@@ -1484,6 +1539,12 @@ FVObjectField.prototype.remove_field = function(target){
     if(inner_field){
         inner_field.remove(true);//Field class will perform inner_field.element.remove()
         delete field.fields[key];
+
+        if(!options.ignore_change){
+            field.did_change();
+        }
+
+        return inner_field;
     }
 }
 
@@ -1495,7 +1556,7 @@ FVObjectField.prototype.change_name = function(name) {
 
 FVObjectField.prototype.disable = function() {
     var field = this;
-    
+
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
@@ -1508,7 +1569,7 @@ FVObjectField.prototype.disable = function() {
 
 FVObjectField.prototype.enable = function() {
     var field = this;
-    
+
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
@@ -1521,7 +1582,7 @@ FVObjectField.prototype.enable = function() {
 
 FVObjectField.prototype.focus = function() {
     var field = this;
-    
+
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
@@ -1529,7 +1590,7 @@ FVObjectField.prototype.focus = function() {
                 inner_field.focus();
                 return field;
             }
-        }    
+        }
     }
 
     return FVField.prototype.focus.call(this);
@@ -1563,7 +1624,7 @@ FVObjectField.prototype.error = function(error){
 
         if(error.error===undefined){
             console.error("No error provided");
-            return;
+            return field;
         }
 
         if(error.error===5){
@@ -1597,6 +1658,8 @@ FVObjectField.prototype.error = function(error){
         field.fields_error(null);
         field.hide_error();
     }
+
+    return field;
 }
 
 FVObjectField.prototype.fields_error = function(error){
@@ -1608,7 +1671,7 @@ FVObjectField.prototype.fields_error = function(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
         var unrecognized_fields = error.unrecognized || {};
-        
+
         for(var i in field.fields){
             if(field.fields.hasOwnProperty(i)){
                 var inner_field = field.fields[i];
@@ -1626,6 +1689,8 @@ FVObjectField.prototype.fields_error = function(error){
             }
         }
     }
+
+    return field;
 }
 
 FVObjectField.prototype.val = function(set_val, options) {
@@ -1661,6 +1726,7 @@ FVObjectField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 /*!
  * Nestable jQuery Plugin - Copyright (c) 2012 David Bushell - http://dbushell.com/
  * Dual-licensed under the BSD or MIT licenses
@@ -2009,7 +2075,7 @@ function FVArrayField(name, options) {
             field.create_add_field_button()
         )
     }
-    
+
     if(field.sortable){
         field.element.addClass("fv_array_field_sortable");
         field.fields_element.nestable({
@@ -2036,6 +2102,8 @@ FVArrayField.prototype.reorder = function(){
         var child_field = child.data("field");
         field.fields.push(child_field);
     }
+
+    return field;
 }
 
 FVArrayField.prototype.create_add_field_button = function(){
@@ -2043,7 +2111,7 @@ FVArrayField.prototype.create_add_field_button = function(){
 
     var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        field.add_field_clicked();   
+        field.add_field_clicked();
     });
 
     field.add_field_buttons.push(add_field_button);
@@ -2055,14 +2123,16 @@ FVArrayField.prototype.add_field_clicked = function() {
     var field = this;
     var returned_field = field.new_field(field.fields.length);
 
-    /* Allow the new_field function to just return a field - 
-     * this will add the field if it wasn't added in the new_field 
+    /* Allow the new_field function to just return a field -
+     * this will add the field if it wasn't added in the new_field
      * callback. */
     if(returned_field){
         if(field.fields.indexOf(returned_field)===-1){
             field.add_field(returned_field);
         }
     }
+
+    return field;
 }
 
 FVArrayField.prototype.new_field = function(index){
@@ -2070,13 +2140,8 @@ FVArrayField.prototype.new_field = function(index){
     throw new Error("FVArrayField.new_field must be overriden to create fields");
 }
 
-FVArrayField.prototype.add_field = function(inner_field){
+FVArrayField.prototype.add_field = function(inner_field, suppress_change){
     var field = this;
-
-    if(arguments.length===2){
-        //Unused "name" as first parameter
-        inner_field = arguments[1];//Use the field in the second argument
-    }
 
     inner_field.in_array(field, function(){
         field.remove_field(inner_field);
@@ -2090,6 +2155,12 @@ FVArrayField.prototype.add_field = function(inner_field){
     if(field.is_disabled){
         inner_field.disable();
     }
+
+    if(!suppress_change){
+        field.did_change();
+    }
+
+    return field;
 }
 
 FVArrayField.prototype.remove = function(from_parent){
@@ -2097,14 +2168,16 @@ FVArrayField.prototype.remove = function(from_parent){
 
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
-        inner_field.remove();
+        inner_field.remove(false,{ignore_change:true});
     }
 
     FVField.prototype.remove.call(this, from_parent);
 }
 
-FVArrayField.prototype.remove_field = function(target){
+FVArrayField.prototype.remove_field = function(target, options){
     var field = this;
+
+    options = options || {};
 
     var inner_field,index;
     if(typeof target === "number" && (target%1)===0 && target>=0){
@@ -2125,6 +2198,12 @@ FVArrayField.prototype.remove_field = function(target){
     if(inner_field){
         inner_field.remove(true);
         field.fields.splice(index, 1);
+
+        if(!options.ignore_change){
+            field.did_change();
+        }
+
+        return inner_field;
     }
 }
 
@@ -2143,7 +2222,7 @@ FVArrayField.prototype.fields_error = function(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
         var unrecognized_fields = error.unrecognized || {};
-        
+
         for(var i = 0; i < field.fields.length; i++){
             var inner_field = field.fields[i];
 
@@ -2157,6 +2236,8 @@ FVArrayField.prototype.fields_error = function(error){
             inner_field.error(null);
         }
     }
+
+    return field;
 }
 
 
@@ -2166,7 +2247,9 @@ FVArrayField.prototype.clear_errors = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.clear_errors();
-    }    
+    }
+
+    return field;
 }
 
 FVArrayField.prototype.disable = function(){
@@ -2175,7 +2258,7 @@ FVArrayField.prototype.disable = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.disable();
-    }    
+    }
     for(var i=0; i<field.add_field_buttons.length; i++){
         var add_field_button = field.add_field_buttons[i];
         add_field_button.hide();
@@ -2199,13 +2282,13 @@ FVArrayField.prototype.enable = function(){
 
 FVArrayField.prototype.focus = function() {
     var field = this;
-    
+
     for(var i = 0; i < field.fields.length; i++){
         var inner_field = field.fields[i];
         if(inner_field){
             inner_field.focus();
             return field;
-        }    
+        }
     }
 
     return FVField.prototype.focus.call(this);
@@ -2235,7 +2318,7 @@ FVArrayField.prototype.error = function(error) {
 
         if(error.error===undefined){
             console.error("No error provided");
-            return;
+            return field;
         }
 
         if(error.error===5){
@@ -2269,6 +2352,8 @@ FVArrayField.prototype.error = function(error) {
         field.fields_error(null);
         field.hide_error();
     }
+
+    return field;
 }
 
 FVArrayField.prototype.val = function(set_val, options) {
@@ -2292,12 +2377,12 @@ FVArrayField.prototype.val = function(set_val, options) {
                 if(!inner_field){
                     inner_field = field.new_field(i);
 
-                    /* Allow the new_field function to just return a field - 
-                     * this will add the field if it wasn't added in the new_field 
+                    /* Allow the new_field function to just return a field -
+                     * this will add the field if it wasn't added in the new_field
                      * callback. */
                      if(inner_field){
                          if(field.fields.indexOf(inner_field)===-1){
-                             field.add_field(inner_field);
+                             field.add_field(inner_field,true);
                          }
                      }
                 }
@@ -2314,10 +2399,12 @@ FVArrayField.prototype.val = function(set_val, options) {
 
                 for(var i = 0; i < to_remove.length; i++){
                     var inner_field = to_remove[i];
-                    inner_field.remove();
+                    inner_field.remove(false,{
+                        ignore_change: true
+                    });
                 }
             }
-            
+
             if (!options.ignore_change) {
                 field.did_change(options);
             }
@@ -2325,6 +2412,7 @@ FVArrayField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 fieldval_ui_extend(FVKeyValueField, FVField);
 function FVKeyValueField(name, options) {
     var field = this;
@@ -2361,14 +2449,16 @@ FVKeyValueField.prototype.add_field_clicked = function() {
     var field = this;
     var returned_field = field.new_field(field.fields.length);
 
-    /* Allow the new_field function to just return a field - 
-     * this will add the field if it wasn't added in the new_field 
+    /* Allow the new_field function to just return a field -
+     * this will add the field if it wasn't added in the new_field
      * callback. */
      if(returned_field){
          if(field.fields.indexOf(returned_field)===-1){
              field.add_field(returned_field);
          }
      }
+
+     return field;
 }
 
 FVKeyValueField.prototype.new_field = function(){
@@ -2376,26 +2466,29 @@ FVKeyValueField.prototype.new_field = function(){
     throw new Error("FVKeyValueField.new_field must be overriden to create fields");
 }
 
-FVKeyValueField.prototype.add_field = function(inner_field){
+FVKeyValueField.prototype.add_field = function(inner_field, suppress_change){
     var field = this;
 
-    if(arguments.length===2){
-        //Unused "name" as first parameter
-        inner_field = arguments[1];//Use the field in the second argument
-    }
-
     inner_field.in_key_value(field,function(key_name){
-        field.remove_field(inner_field, key_name);
+        field.remove_field(inner_field);
     });
     inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
     inner_field.parent = field;
 
-    inner_field.name_val("");
+    inner_field.name_val("",{
+        ignore_change: true
+    });
 
     if(field.is_disabled){
         inner_field.disable();
     }
+
+    if(!suppress_change){
+        field.did_change();
+    }
+
+    return field;
 }
 
 FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_field){
@@ -2423,8 +2516,10 @@ FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_fie
     return final_name_val;
 }
 
-FVKeyValueField.prototype.remove_field = function(target){
+FVKeyValueField.prototype.remove_field = function(target, options){
     var field = this;
+
+    options = options || {};
 
     var inner_field;
     var index;
@@ -2454,6 +2549,12 @@ FVKeyValueField.prototype.remove_field = function(target){
         inner_field.remove(true);
         field.fields.splice(index, 1);
         delete field.keys[inner_field.key_name];
+
+        if(!options.ignore_change){
+            field.did_change();
+        }
+
+        return inner_field;
     }
 }
 
@@ -2461,6 +2562,8 @@ FVKeyValueField.prototype.error = function(error){
     var field = this;
 
     FVKeyValueField.superClass.error.call(this,error);
+
+    return field;
 }
 
 FVKeyValueField.prototype.fields_error = function(error){
@@ -2472,7 +2575,7 @@ FVKeyValueField.prototype.fields_error = function(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
         var unrecognized_fields = error.unrecognized || {};
-        
+
         for(var i in field.keys){
             if(field.keys.hasOwnProperty(i)){
                 var inner_field = field.keys[i];
@@ -2490,6 +2593,8 @@ FVKeyValueField.prototype.fields_error = function(error){
             }
         }
     }
+
+    return field;
 }
 
 
@@ -2499,7 +2604,9 @@ FVKeyValueField.prototype.clear_errors = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.clear_errors();
-    }    
+    }
+
+    return field;
 }
 
 FVKeyValueField.prototype.disable = function(){
@@ -2508,7 +2615,7 @@ FVKeyValueField.prototype.disable = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.disable();
-    }    
+    }
     for(var i=0; i<field.add_field_buttons.length; i++){
         var add_field_button = field.add_field_buttons[i];
         add_field_button.hide();
@@ -2532,13 +2639,13 @@ FVKeyValueField.prototype.enable = function(){
 
 FVKeyValueField.prototype.focus = function() {
     var field = this;
-    
+
     for(var i = 0; i < field.fields.length; i++){
         var inner_field = field.fields[i];
         if(inner_field){
             inner_field.focus();
             return field;
-        }    
+        }
     }
 
     return FVField.prototype.focus.call(this);
@@ -2564,10 +2671,10 @@ FVKeyValueField.prototype.remove = function(from_parent){
 
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
-        inner_field.remove();
+        inner_field.remove(false,{ignore_change:true});
     }
 
-    FVField.prototype.remove.call(this, from_parent);
+    return FVField.prototype.remove.call(this, from_parent);
 }
 
 FVKeyValueField.prototype.error = function(error) {
@@ -2579,7 +2686,7 @@ FVKeyValueField.prototype.error = function(error) {
 
         if(error.error===undefined){
             console.error("No error provided");
-            return;
+            return field;
         }
 
         if(error.error===5){
@@ -2613,6 +2720,8 @@ FVKeyValueField.prototype.error = function(error) {
         field.fields_error(null);
         field.hide_error();
     }
+
+    return field;
 }
 
 FVKeyValueField.prototype.val = function(set_val, options) {
@@ -2639,7 +2748,7 @@ FVKeyValueField.prototype.val = function(set_val, options) {
                 if(field.keys.hasOwnProperty(i)){
                     if(set_val[i]===undefined){
                         var inner_field = field.keys[i];
-                        field.remove_field(inner_field);
+                        field.remove_field(inner_field,{ignore_change:true});
                     }
                 }
             }
@@ -2648,18 +2757,20 @@ FVKeyValueField.prototype.val = function(set_val, options) {
 	        		var inner_field = field.keys[i];
 	                if(!inner_field){
 	                    inner_field = field.new_field(i);
-                        
-                        /* Allow the new_field function to just return a field - 
-                         * this will add the field if it wasn't added in the new_field 
+
+                        /* Allow the new_field function to just return a field -
+                         * this will add the field if it wasn't added in the new_field
                          * callback. */
                          if(inner_field){
                              if(field.fields.indexOf(inner_field)===-1){
-                                 field.add_field(inner_field);
+                                 field.add_field(inner_field,true);
                              }
                          }
 	                }
 	                inner_field.val(set_val[i], options);
-	                inner_field.name_val(i);
+	                inner_field.name_val(i,{
+                        ignore_change: true
+                    });
 				}
         	}
         }
@@ -2670,6 +2781,7 @@ FVKeyValueField.prototype.val = function(set_val, options) {
         return field;
     }
 }
+
 
 if ( typeof Object.getPrototypeOf !== "function" ) {
     if ( typeof "test".__proto__ === "object" ) {
@@ -2710,7 +2822,10 @@ FVProxyField.prototype.init = function(){
     if(field.inner_field){
         field.inner_field.init();
     }
+
+    return field;
 }
+
 FVProxyField.prototype.replace = function(inner_field, options){
     var field = this;
 
@@ -2817,6 +2932,8 @@ FVProxyField.prototype.replace = function(inner_field, options){
     if (!options.ignore_change) {
         field.did_change(options);
     }
+
+    return field;
 }
 
 FVProxyField.prototype.on_replace = function(callback){
@@ -2831,7 +2948,7 @@ FVProxyField.prototype.on_replace = function(callback){
 FVProxyField.prototype.val = function(set_val, options){
     var field = this;
     options = options || {}
-    
+
     if(field.inner_field){
         return field.inner_field.val.apply(field.inner_field, arguments);
     } else {
@@ -2843,6 +2960,7 @@ FVProxyField.prototype.val = function(set_val, options){
         }
     }
 }
+
 fieldval_ui_extend(FVForm, FVObjectField);
 
 function FVForm(fields){

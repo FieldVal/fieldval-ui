@@ -26,11 +26,11 @@ function FVTextField(name, options) {
     } else {
         field.input = $("<input type='"+field.input_type+"' />")
     }
-    
+
     field.enter_callbacks = [];
 
     field.previous_value = {};//Object to ensure invalid initial comparison
-    
+
     field.input.addClass("fv_text_input")
     .attr("placeholder", name)
     .on("keydown",function(e){
@@ -74,13 +74,15 @@ FVTextField.prototype.check_changed = function(){
         field.previous_value = this_value;
         field.did_change()
     }
+
+    return field;
 }
 
 FVTextField.prototype.on_enter = function(callback){
     var field = this;
 
     field.enter_callbacks.push(callback);
-    
+
     return field;
 }
 
@@ -121,7 +123,7 @@ FVTextField.prototype.enable = function() {
 
 FVTextField.prototype.focus = function() {
     var field = this;
-    
+
     field.input.focus();
 
     return FVField.prototype.focus.call(this);
@@ -129,7 +131,7 @@ FVTextField.prototype.focus = function() {
 
 FVTextField.prototype.blur = function() {
     var field = this;
-    
+
     field.input.blur();
 
     return FVField.prototype.blur.call(this);
@@ -153,7 +155,7 @@ FVTextField.prototype.val = function(set_val, options) {
         return value;
     } else {
         field.input.val(set_val);
-        
+
         if (!options.ignore_change) {
             field.did_change(options);
         }

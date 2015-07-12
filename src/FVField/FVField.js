@@ -20,7 +20,7 @@ function FVField(name, options) {
         })
         .addClass("fv_field fv_form")
         .data("field",field)
-        
+
         var submit_function = function(event){
             event.preventDefault();
             field.submit();
@@ -120,6 +120,7 @@ FVField.prototype.in_key_value = function(parent, remove_callback){
 
     field.name_input = new FVTextField("Key").on_change(function(name_val){
         field.key_name = field.key_value_parent.change_key_name(field.key_name, name_val, field);
+        field.key_value_parent.did_change();
     });
     field.name_input.element.addClass("fv_key_value_name_input")
     field.title.replaceWith(field.name_input.element);
@@ -143,12 +144,12 @@ FVField.prototype.init = function(){
     return field;
 }
 
-FVField.prototype.remove = function(from_parent){
+FVField.prototype.remove = function(from_parent, options){
     var field = this;
 
     field.element.remove();
     if(field.parent && !from_parent){//from_parent prevents cycling
-        field.parent.remove_field(field);
+        field.parent.remove_field(field, options);
         field.parent = null;
     }
 
@@ -209,7 +210,7 @@ FVField.prototype.did_change = function(options){
 
     if (options === undefined) {
         options = {}
-    }   
+    }
 
     var val = field.val();
 

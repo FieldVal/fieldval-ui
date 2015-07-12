@@ -21,6 +21,8 @@ FVObjectField.prototype.init = function(){
             inner_field.init();
         }
     }
+
+    return field;
 }
 
 FVObjectField.prototype.remove = function(from_parent){
@@ -29,11 +31,11 @@ FVObjectField.prototype.remove = function(from_parent){
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
-            inner_field.remove();
+            inner_field.remove(false,{ignore_change:true});
         }
     }
 
-    FVField.prototype.remove.call(this, from_parent);
+    return FVField.prototype.remove.call(this, from_parent);
 }
 
 FVObjectField.prototype.add_field = function(name, inner_field){
@@ -46,8 +48,10 @@ FVObjectField.prototype.add_field = function(name, inner_field){
     return field;
 }
 
-FVObjectField.prototype.remove_field = function(target){
+FVObjectField.prototype.remove_field = function(target, options){
     var field = this;
+
+    options = options || {};
 
     var inner_field,key;
     if(typeof target === "string"){
@@ -68,6 +72,12 @@ FVObjectField.prototype.remove_field = function(target){
     if(inner_field){
         inner_field.remove(true);//Field class will perform inner_field.element.remove()
         delete field.fields[key];
+
+        if(!options.ignore_change){
+            field.did_change();
+        }
+
+        return inner_field;
     }
 }
 
@@ -79,7 +89,7 @@ FVObjectField.prototype.change_name = function(name) {
 
 FVObjectField.prototype.disable = function() {
     var field = this;
-    
+
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
@@ -92,7 +102,7 @@ FVObjectField.prototype.disable = function() {
 
 FVObjectField.prototype.enable = function() {
     var field = this;
-    
+
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
@@ -105,7 +115,7 @@ FVObjectField.prototype.enable = function() {
 
 FVObjectField.prototype.focus = function() {
     var field = this;
-    
+
     for(var i in field.fields){
         if(field.fields.hasOwnProperty(i)){
             var inner_field = field.fields[i];
@@ -113,7 +123,7 @@ FVObjectField.prototype.focus = function() {
                 inner_field.focus();
                 return field;
             }
-        }    
+        }
     }
 
     return FVField.prototype.focus.call(this);
@@ -147,7 +157,7 @@ FVObjectField.prototype.error = function(error){
 
         if(error.error===undefined){
             console.error("No error provided");
-            return;
+            return field;
         }
 
         if(error.error===5){
@@ -181,6 +191,8 @@ FVObjectField.prototype.error = function(error){
         field.fields_error(null);
         field.hide_error();
     }
+
+    return field;
 }
 
 FVObjectField.prototype.fields_error = function(error){
@@ -192,7 +204,7 @@ FVObjectField.prototype.fields_error = function(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
         var unrecognized_fields = error.unrecognized || {};
-        
+
         for(var i in field.fields){
             if(field.fields.hasOwnProperty(i)){
                 var inner_field = field.fields[i];
@@ -210,6 +222,8 @@ FVObjectField.prototype.fields_error = function(error){
             }
         }
     }
+
+    return field;
 }
 
 FVObjectField.prototype.val = function(set_val, options) {
