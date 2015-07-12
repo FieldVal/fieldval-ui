@@ -25,10 +25,7 @@ gulp.task('js', function(){
     .pipe(uglify())
     .pipe(concat('fieldval-ui.min.js'))
     .pipe(gulp.dest('./'))
-    .on('error', gutil.log)
-    .on('end', function(){
-        return gulp.start('test');
-    });
+    .on('error', gutil.log);
 })
 
 gulp.task('less', function(){
@@ -45,18 +42,18 @@ gulp.task('less', function(){
 })
 
 gulp.task('test', function(done){
-    
+
     gulp.src("fieldval-ui.js")
     .pipe(istanbul({coverageVariable: "__coverage__"}))
     .pipe(gulp.dest('./test_tmp/'))
     .on('finish', function() {
-    
+
         gulp.src('test/init.js')
         .pipe(gulpImports())
         .pipe(concat("test.js"))
         .pipe(gulp.dest('./test'))
         .on('finish', function() {
-            
+
             var coverageFile = './coverage/coverage.json';
 
             gulp.src('test/test.html', {read: false})
@@ -70,17 +67,16 @@ gulp.task('test', function(done){
                 gulp.src(coverageFile)
                 .pipe(istanbulReport())
                 done();
-            });    
+            });
         })
     })
-    
+
 });
 
 gulp.task('default', function(){
     gulp.watch(['docs_src/**/*'], ['docs']);
     gulp.watch(['themes/**/*.subless','themes/**/*.less'], ['less']);
     gulp.watch(['src/**/*.js','bower_components/**/*.js'], ['js']);
-    gulp.watch(['test/**/*.js'], ['test']);
     gulp.start('docs','less','js');
 });
 

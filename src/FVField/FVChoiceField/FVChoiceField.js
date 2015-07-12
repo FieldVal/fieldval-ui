@@ -95,20 +95,24 @@ function FVChoiceField(name, options) {
 FVChoiceField.prototype.mousedown = function(){
     var field = this;
     field.is_mousedown = true;
+    return field;
 }
 FVChoiceField.prototype.mouseup = function(){
     var field = this;
     field.is_mousedown = false;
+    return field;
 }
 
 FVChoiceField.prototype.filter_enter_up = function() {
     var field = this;
     field.select_highlighted();
+    return field;
 }
 
 FVChoiceField.prototype.filter_esc_up = function() {
     var field = this;
     field.hide_list();
+    return field;
 }
 
 FVChoiceField.prototype.filter_key_up = function(e) {
@@ -117,22 +121,22 @@ FVChoiceField.prototype.filter_key_up = function(e) {
     if(e.keyCode===9){
         //Tab
         e.preventDefault();
-        return;
-    }if(e.keyCode===40){
+        return field;
+    } else if(e.keyCode===40){
         //Move down
         field.move_down();
         e.preventDefault();
-        return;
+        return field;
     } else if(e.keyCode===38){
         //Move up
         field.move_up();
         e.preventDefault();
-        return;
+        return field;
     } else if(e.keyCode===13){
         //Enter press
         field.filter_enter_up();
         e.preventDefault();
-        return;
+        return field;
     } else if(e.keyCode===27){
         //Esc
         field.filter_esc_up();
@@ -140,6 +144,7 @@ FVChoiceField.prototype.filter_key_up = function(e) {
     }
 
     field.filter(field.filter_input.val());
+    return field;
 }
 
 FVChoiceField.prototype.filter_key_down = function(e) {
@@ -147,6 +152,7 @@ FVChoiceField.prototype.filter_key_down = function(e) {
     if(e.keyCode===38 || e.keyCode===40 || e.keyCode===13){
         e.preventDefault();
     }
+    return field;
 }
 
 FVChoiceField.prototype.show_list = function(){
@@ -218,6 +224,8 @@ FVChoiceField.prototype.filter = function(text, initial){
     if(field.current_highlight){
         field.current_highlight.add_highlight();
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.value_to_text = function(value){
@@ -274,10 +282,12 @@ FVChoiceField.prototype.select_option = function(choice_option, options){
     if(field.clear_filter_on_select){
         field.filter_input.val("");
     }
-    
+
     if(!options.ignore_change){
         field.did_change(options);
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.move_up = function(){
@@ -294,6 +304,8 @@ FVChoiceField.prototype.move_up = function(){
             field.current_highlight = null;
         }
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.move_down = function(){
@@ -307,7 +319,7 @@ FVChoiceField.prototype.move_down = function(){
     } else {
         var index = field.option_array.indexOf(field.current_highlight);
         if(index<field.option_array.length-1){
-            
+
             field.current_highlight.remove_highlight();
 
             field.current_highlight = field.option_array[index+1];
@@ -315,6 +327,8 @@ FVChoiceField.prototype.move_down = function(){
             field.move_into_view();
         }
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.move_into_view = function(target){
@@ -332,11 +346,13 @@ FVChoiceField.prototype.move_into_view = function(target){
         }
 
         field.choice_list.scrollTop(
-            field.choice_list.scrollTop() - 
-            field.choice_list.offset().top + 
+            field.choice_list.scrollTop() -
+            field.choice_list.offset().top +
             offset - 50
         );
     },1);
+
+    return field;
 }
 
 FVChoiceField.prototype.add_option = function(choice_option, initial){
@@ -344,6 +360,8 @@ FVChoiceField.prototype.add_option = function(choice_option, initial){
 
     field.option_array.push(choice_option);
     field.choice_list.append(choice_option.element);
+
+    return field;
 }
 
 FVChoiceField.prototype.default_click = function(e, choice_option){
@@ -356,12 +374,16 @@ FVChoiceField.prototype.default_click = function(e, choice_option){
         e.originalEvent.stopPropagation();
     }
     field.select_option(choice_option);
+
+    return field;
 }
 
 FVChoiceField.prototype.finalize_option = function(option_element, initial){
     var field = this;
 
     option_element.appendTo(field.choice_list)
+
+    return field;
 }
 
 FVChoiceField.prototype.select_highlighted = function(){
@@ -370,6 +392,8 @@ FVChoiceField.prototype.select_highlighted = function(){
     if(field.current_highlight){
         field.select_option(field.current_highlight);
     }
+
+    return field;
 }
 
 FVChoiceField.prototype.input_focus = function(){
@@ -382,11 +406,13 @@ FVChoiceField.prototype.input_focus = function(){
     field.show_list();
 
     field.did_focus();
+
+    return field;
 }
 
 FVChoiceField.prototype.focus = function(from_input) {
     var field = this;
-    
+
     field.filter_input.focus();
 
     return FVField.prototype.focus.call(this);
@@ -394,7 +420,7 @@ FVChoiceField.prototype.focus = function(from_input) {
 
 FVChoiceField.prototype.blur = function() {
     var field = this;
-    
+
     field.hide_list();
 
     field.did_blur();

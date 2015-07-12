@@ -34,14 +34,16 @@ FVKeyValueField.prototype.add_field_clicked = function() {
     var field = this;
     var returned_field = field.new_field(field.fields.length);
 
-    /* Allow the new_field function to just return a field - 
-     * this will add the field if it wasn't added in the new_field 
+    /* Allow the new_field function to just return a field -
+     * this will add the field if it wasn't added in the new_field
      * callback. */
      if(returned_field){
          if(field.fields.indexOf(returned_field)===-1){
              field.add_field(returned_field);
          }
      }
+
+     return field;
 }
 
 FVKeyValueField.prototype.new_field = function(){
@@ -49,26 +51,29 @@ FVKeyValueField.prototype.new_field = function(){
     throw new Error("FVKeyValueField.new_field must be overriden to create fields");
 }
 
-FVKeyValueField.prototype.add_field = function(inner_field){
+FVKeyValueField.prototype.add_field = function(inner_field, suppress_change){
     var field = this;
 
-    if(arguments.length===2){
-        //Unused "name" as first parameter
-        inner_field = arguments[1];//Use the field in the second argument
-    }
-
     inner_field.in_key_value(field,function(key_name){
-        field.remove_field(inner_field, key_name);
+        field.remove_field(inner_field);
     });
     inner_field.element.appendTo(field.fields_element);
     field.fields.push(inner_field);
     inner_field.parent = field;
 
-    inner_field.name_val("");
+    inner_field.name_val("",{
+        ignore_change: true
+    });
 
     if(field.is_disabled){
         inner_field.disable();
     }
+
+    if(!suppress_change){
+        field.did_change();
+    }
+
+    return field;
 }
 
 FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_field){
@@ -96,8 +101,10 @@ FVKeyValueField.prototype.change_key_name = function(old_name,new_name,inner_fie
     return final_name_val;
 }
 
-FVKeyValueField.prototype.remove_field = function(target){
+FVKeyValueField.prototype.remove_field = function(target, options){
     var field = this;
+
+    options = options || {};
 
     var inner_field;
     var index;
@@ -127,6 +134,12 @@ FVKeyValueField.prototype.remove_field = function(target){
         inner_field.remove(true);
         field.fields.splice(index, 1);
         delete field.keys[inner_field.key_name];
+
+        if(!options.ignore_change){
+            field.did_change();
+        }
+
+        return inner_field;
     }
 }
 
@@ -134,6 +147,8 @@ FVKeyValueField.prototype.error = function(error){
     var field = this;
 
     FVKeyValueField.superClass.error.call(this,error);
+
+    return field;
 }
 
 FVKeyValueField.prototype.fields_error = function(error){
@@ -145,7 +160,7 @@ FVKeyValueField.prototype.fields_error = function(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
         var unrecognized_fields = error.unrecognized || {};
-        
+
         for(var i in field.keys){
             if(field.keys.hasOwnProperty(i)){
                 var inner_field = field.keys[i];
@@ -163,6 +178,8 @@ FVKeyValueField.prototype.fields_error = function(error){
             }
         }
     }
+
+    return field;
 }
 
 
@@ -172,7 +189,9 @@ FVKeyValueField.prototype.clear_errors = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.clear_errors();
-    }    
+    }
+
+    return field;
 }
 
 FVKeyValueField.prototype.disable = function(){
@@ -181,7 +200,7 @@ FVKeyValueField.prototype.disable = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.disable();
-    }    
+    }
     for(var i=0; i<field.add_field_buttons.length; i++){
         var add_field_button = field.add_field_buttons[i];
         add_field_button.hide();
@@ -205,13 +224,13 @@ FVKeyValueField.prototype.enable = function(){
 
 FVKeyValueField.prototype.focus = function() {
     var field = this;
-    
+
     for(var i = 0; i < field.fields.length; i++){
         var inner_field = field.fields[i];
         if(inner_field){
             inner_field.focus();
             return field;
-        }    
+        }
     }
 
     return FVField.prototype.focus.call(this);
@@ -237,10 +256,10 @@ FVKeyValueField.prototype.remove = function(from_parent){
 
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
-        inner_field.remove();
+        inner_field.remove(false,{ignore_change:true});
     }
 
-    FVField.prototype.remove.call(this, from_parent);
+    return FVField.prototype.remove.call(this, from_parent);
 }
 
 FVKeyValueField.prototype.error = function(error) {
@@ -252,7 +271,7 @@ FVKeyValueField.prototype.error = function(error) {
 
         if(error.error===undefined){
             console.error("No error provided");
-            return;
+            return field;
         }
 
         if(error.error===5){
@@ -286,6 +305,8 @@ FVKeyValueField.prototype.error = function(error) {
         field.fields_error(null);
         field.hide_error();
     }
+
+    return field;
 }
 
 FVKeyValueField.prototype.val = function(set_val, options) {
@@ -312,7 +333,7 @@ FVKeyValueField.prototype.val = function(set_val, options) {
                 if(field.keys.hasOwnProperty(i)){
                     if(set_val[i]===undefined){
                         var inner_field = field.keys[i];
-                        field.remove_field(inner_field);
+                        field.remove_field(inner_field,{ignore_change:true});
                     }
                 }
             }
@@ -321,18 +342,20 @@ FVKeyValueField.prototype.val = function(set_val, options) {
 	        		var inner_field = field.keys[i];
 	                if(!inner_field){
 	                    inner_field = field.new_field(i);
-                        
-                        /* Allow the new_field function to just return a field - 
-                         * this will add the field if it wasn't added in the new_field 
+
+                        /* Allow the new_field function to just return a field -
+                         * this will add the field if it wasn't added in the new_field
                          * callback. */
                          if(inner_field){
                              if(field.fields.indexOf(inner_field)===-1){
-                                 field.add_field(inner_field);
+                                 field.add_field(inner_field,true);
                              }
                          }
 	                }
 	                inner_field.val(set_val[i], options);
-	                inner_field.name_val(i);
+	                inner_field.name_val(i,{
+                        ignore_change: true
+                    });
 				}
         	}
         }

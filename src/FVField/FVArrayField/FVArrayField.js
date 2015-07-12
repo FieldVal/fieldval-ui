@@ -25,7 +25,7 @@ function FVArrayField(name, options) {
             field.create_add_field_button()
         )
     }
-    
+
     if(field.sortable){
         field.element.addClass("fv_array_field_sortable");
         field.fields_element.nestable({
@@ -52,6 +52,8 @@ FVArrayField.prototype.reorder = function(){
         var child_field = child.data("field");
         field.fields.push(child_field);
     }
+
+    return field;
 }
 
 FVArrayField.prototype.create_add_field_button = function(){
@@ -59,7 +61,7 @@ FVArrayField.prototype.create_add_field_button = function(){
 
     var add_field_button = $("<button/>",{type:"button"}).addClass("fv_add_field_button").text(field.add_button_text).on(FVForm.button_event,function(event){
         event.preventDefault();
-        field.add_field_clicked();   
+        field.add_field_clicked();
     });
 
     field.add_field_buttons.push(add_field_button);
@@ -71,14 +73,16 @@ FVArrayField.prototype.add_field_clicked = function() {
     var field = this;
     var returned_field = field.new_field(field.fields.length);
 
-    /* Allow the new_field function to just return a field - 
-     * this will add the field if it wasn't added in the new_field 
+    /* Allow the new_field function to just return a field -
+     * this will add the field if it wasn't added in the new_field
      * callback. */
     if(returned_field){
         if(field.fields.indexOf(returned_field)===-1){
             field.add_field(returned_field);
         }
     }
+
+    return field;
 }
 
 FVArrayField.prototype.new_field = function(index){
@@ -86,13 +90,8 @@ FVArrayField.prototype.new_field = function(index){
     throw new Error("FVArrayField.new_field must be overriden to create fields");
 }
 
-FVArrayField.prototype.add_field = function(inner_field){
+FVArrayField.prototype.add_field = function(inner_field, suppress_change){
     var field = this;
-
-    if(arguments.length===2){
-        //Unused "name" as first parameter
-        inner_field = arguments[1];//Use the field in the second argument
-    }
 
     inner_field.in_array(field, function(){
         field.remove_field(inner_field);
@@ -106,6 +105,12 @@ FVArrayField.prototype.add_field = function(inner_field){
     if(field.is_disabled){
         inner_field.disable();
     }
+
+    if(!suppress_change){
+        field.did_change();
+    }
+
+    return field;
 }
 
 FVArrayField.prototype.remove = function(from_parent){
@@ -113,14 +118,16 @@ FVArrayField.prototype.remove = function(from_parent){
 
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
-        inner_field.remove();
+        inner_field.remove(false,{ignore_change:true});
     }
 
     FVField.prototype.remove.call(this, from_parent);
 }
 
-FVArrayField.prototype.remove_field = function(target){
+FVArrayField.prototype.remove_field = function(target, options){
     var field = this;
+
+    options = options || {};
 
     var inner_field,index;
     if(typeof target === "number" && (target%1)===0 && target>=0){
@@ -141,6 +148,12 @@ FVArrayField.prototype.remove_field = function(target){
     if(inner_field){
         inner_field.remove(true);
         field.fields.splice(index, 1);
+
+        if(!options.ignore_change){
+            field.did_change();
+        }
+
+        return inner_field;
     }
 }
 
@@ -159,7 +172,7 @@ FVArrayField.prototype.fields_error = function(error){
         var invalid_fields = error.invalid || {};
         var missing_fields = error.missing || {};
         var unrecognized_fields = error.unrecognized || {};
-        
+
         for(var i = 0; i < field.fields.length; i++){
             var inner_field = field.fields[i];
 
@@ -173,6 +186,8 @@ FVArrayField.prototype.fields_error = function(error){
             inner_field.error(null);
         }
     }
+
+    return field;
 }
 
 
@@ -182,7 +197,9 @@ FVArrayField.prototype.clear_errors = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.clear_errors();
-    }    
+    }
+
+    return field;
 }
 
 FVArrayField.prototype.disable = function(){
@@ -191,7 +208,7 @@ FVArrayField.prototype.disable = function(){
     for(var i=0; i<field.fields.length; i++){
         var inner_field = field.fields[i];
         inner_field.disable();
-    }    
+    }
     for(var i=0; i<field.add_field_buttons.length; i++){
         var add_field_button = field.add_field_buttons[i];
         add_field_button.hide();
@@ -215,13 +232,13 @@ FVArrayField.prototype.enable = function(){
 
 FVArrayField.prototype.focus = function() {
     var field = this;
-    
+
     for(var i = 0; i < field.fields.length; i++){
         var inner_field = field.fields[i];
         if(inner_field){
             inner_field.focus();
             return field;
-        }    
+        }
     }
 
     return FVField.prototype.focus.call(this);
@@ -251,7 +268,7 @@ FVArrayField.prototype.error = function(error) {
 
         if(error.error===undefined){
             console.error("No error provided");
-            return;
+            return field;
         }
 
         if(error.error===5){
@@ -285,6 +302,8 @@ FVArrayField.prototype.error = function(error) {
         field.fields_error(null);
         field.hide_error();
     }
+
+    return field;
 }
 
 FVArrayField.prototype.val = function(set_val, options) {
@@ -308,12 +327,12 @@ FVArrayField.prototype.val = function(set_val, options) {
                 if(!inner_field){
                     inner_field = field.new_field(i);
 
-                    /* Allow the new_field function to just return a field - 
-                     * this will add the field if it wasn't added in the new_field 
+                    /* Allow the new_field function to just return a field -
+                     * this will add the field if it wasn't added in the new_field
                      * callback. */
                      if(inner_field){
                          if(field.fields.indexOf(inner_field)===-1){
-                             field.add_field(inner_field);
+                             field.add_field(inner_field,true);
                          }
                      }
                 }
@@ -330,10 +349,12 @@ FVArrayField.prototype.val = function(set_val, options) {
 
                 for(var i = 0; i < to_remove.length; i++){
                     var inner_field = to_remove[i];
-                    inner_field.remove();
+                    inner_field.remove(false,{
+                        ignore_change: true
+                    });
                 }
             }
-            
+
             if (!options.ignore_change) {
                 field.did_change(options);
             }

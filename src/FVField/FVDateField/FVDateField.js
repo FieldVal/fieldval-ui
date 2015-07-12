@@ -17,7 +17,7 @@ function FVDateField(name, options) {//format is currently unused
     var format_error = DateVal.date_format().check(field.format_string, function(emit_format_array){
         field.format_array = emit_format_array;
     })
-    
+
     if(format_error){
         console.error(format_error.error_message);
         return;
@@ -74,6 +74,8 @@ FVDateField.prototype.add_element_from_component = function(component, component
         field.inputs.push(input);
         field.input_holder.append(input)
     }
+
+    return field;
 }
 
 FVDateField.prototype.icon = function(params) {
@@ -115,7 +117,7 @@ FVDateField.prototype.enable = function() {
 
 FVDateField.prototype.focus = function() {
     var field = this;
-    
+
     var input = field.inputs[0];
     if(input){
         input.focus();

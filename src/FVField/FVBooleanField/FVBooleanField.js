@@ -59,7 +59,7 @@ FVBooleanField.prototype.val = function(set_val, options) {
             set_val = false;
         }
        	field.input.prop('checked', set_val);
-        
+
         if (!options.ignore_change) {
             field.did_change(options);
         }
