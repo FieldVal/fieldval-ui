@@ -651,14 +651,20 @@ FVChoiceOption.prototype.add_mouse_events = function(){
     var parent = choice_option.parent;
 
     choice_option.element.on("mousedown",function(e){
+        if((e.isDefaultPrevented && e.isDefaultPrevented()) || (e.originalEvent && e.originalEvent.defaultPrevented)) return;
+
         parent.mousedown();
         e.preventDefault();
     })
     .on("mouseup",function(e){
+        if((e.isDefaultPrevented && e.isDefaultPrevented()) || (e.originalEvent && e.originalEvent.defaultPrevented)) return;
+
         parent.mouseup();
         e.preventDefault();
     })
     .on(FVForm.button_event,function(e){
+        if((e.isDefaultPrevented && e.isDefaultPrevented()) || (e.originalEvent && e.originalEvent.defaultPrevented)) return;
+
         parent.default_click(e, choice_option);
         e.preventDefault();
     })
