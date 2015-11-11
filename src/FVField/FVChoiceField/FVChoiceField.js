@@ -440,7 +440,7 @@ FVChoiceField.prototype.val = function(set_val, options) {
         if(set_val!==undefined){
             for(var i = 0; i < field.option_array.length; i++){
                 var choice_option = field.option_array[i];
-                if(set_val === choice_option.get_value()){
+                if(choice_option.matches_value(set_val)){
                     options = options || {};
                     options.val_event = true;
                     field.select_option(choice_option, options);

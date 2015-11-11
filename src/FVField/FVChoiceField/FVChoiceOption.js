@@ -59,6 +59,16 @@ FVChoiceOption.prototype.matches_filter = function(filter){
     }
 }
 
+FVChoiceOption.prototype.matches_value = function(test_val){
+  var choice_option = this;
+
+  if(choice_option.get_value()===test_val){
+    return true;
+  }
+
+  return false;
+};
+
 FVChoiceOption.prototype.get_value = function(){
     var choice_option = this;
 
