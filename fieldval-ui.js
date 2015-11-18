@@ -654,13 +654,11 @@ FVChoiceOption.prototype.add_mouse_events = function(){
         if((e.isDefaultPrevented && e.isDefaultPrevented()) || (e.originalEvent && e.originalEvent.defaultPrevented)) return;
 
         parent.mousedown();
-        e.preventDefault();
     })
     .on("mouseup",function(e){
         if((e.isDefaultPrevented && e.isDefaultPrevented()) || (e.originalEvent && e.originalEvent.defaultPrevented)) return;
 
         parent.mouseup();
-        e.preventDefault();
     })
     .on(FVForm.button_event,function(e){
         if((e.isDefaultPrevented && e.isDefaultPrevented()) || (e.originalEvent && e.originalEvent.defaultPrevented)) return;
@@ -818,7 +816,8 @@ function FVChoiceField(name, options) {
 
     $('html').on(FVForm.button_event, function(e){
         if(field.filter_input.is(":visible")){
-            if (!$(e.target).closest(field.filter_input).length){
+            var closest = $(e.target).closest(field.element);
+            if (!closest.length){
                 field.hide_list();
             }
         }
