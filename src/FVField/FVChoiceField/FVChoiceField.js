@@ -69,7 +69,8 @@ function FVChoiceField(name, options) {
 
     $('html').on(FVForm.button_event, function(e){
         if(field.filter_input.is(":visible")){
-            if (!$(e.target).closest(field.filter_input).length){
+            var closest = $(e.target).closest(field.element);
+            if (!closest.length){
                 field.hide_list();
             }
         }
