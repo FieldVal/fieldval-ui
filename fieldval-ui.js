@@ -432,17 +432,19 @@ function FVTextField(name, options) {
                 field.enter_callbacks[i](e);
             }
 
-            if(field.input_type==="textarea" && (event.metaKey || event.ctrlKey)){
+            if(field.input_type==="textarea" && (e.metaKey || e.ctrlKey)){
+                e.preventDefault();
+
                 var form = field.element.closest("form");
                 if(form){
                     form.data("field").submit();
                 }
             }
-        }
-
-        if(field.input_type==="textarea" && field.consume_tabs && e.keyCode===9) {
-            e.preventDefault();
-            document.execCommand("insertText", false, "\t");
+        } else if(e.keyCode===9){
+            if(field.input_type==="textarea" && field.consume_tabs) {
+                e.preventDefault();
+                document.execCommand("insertText", false, "\t");
+            }
         }
     })
     .on("keyup paste cut",function(){
